@@ -37,6 +37,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,12 +69,31 @@ public abstract class ChestMenu implements AluminaMenu {
     public void setItem(int slot, @NotNull ItemStack item, @Nullable String functionKey) {
         items.remove(slot);
 
+        applyFunction(item, functionKey);
+
         MenuItem menuItem = new MenuItem(item, functionKey);
         items.put(slot, menuItem);
 
         if (functionKey == null) return;
 
         byKey.put(functionKey, menuItem);
+    }
+
+    /**
+     * Applies the function key to the item's data.
+     * @param item The item.
+     * @param key The function key.
+     */
+    private void applyFunction(@NotNull ItemStack item, @Nullable String key) {
+        if (key == null) return;
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
+
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        container.set(AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING, key);
+
+        item.setItemMeta(meta);
     }
 
     @Override
