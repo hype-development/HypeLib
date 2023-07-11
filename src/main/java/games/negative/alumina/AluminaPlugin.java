@@ -27,6 +27,7 @@ package games.negative.alumina;
 
 import games.negative.alumina.command.builder.CommandBuilder;
 import games.negative.alumina.command.structure.AluminaCommand;
+import games.negative.alumina.listener.MenuListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -119,6 +120,10 @@ public abstract class AluminaPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        registerListeners(
+                new MenuListener()
+        );
+        
         enable();
     }
 
