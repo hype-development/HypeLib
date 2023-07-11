@@ -35,6 +35,9 @@ import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -128,6 +131,26 @@ public abstract class ChestMenu implements AluminaMenu {
         items.forEach((index, item) -> inventory.setItem(index, item.item()));
 
         player.openInventory(inventory);
+    }
+
+    @Override
+    public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
+        // Override this method to handle clicks.
+    }
+
+    @Override
+    public void onFunctionClick(@NotNull Player player, @NotNull MenuItem item, @NotNull InventoryClickEvent event) {
+        // Override this method to handle function clicks.
+    }
+
+    @Override
+    public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
+        // Override this method to handle close.
+    }
+
+    @Override
+    public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
+        // Override this method to handle open.
     }
 
     /**
