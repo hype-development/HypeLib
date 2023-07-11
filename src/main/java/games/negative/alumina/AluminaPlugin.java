@@ -31,6 +31,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -104,6 +106,14 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
         AluminaCommand command = builder.build();
         commandMap.register(name, command);
+    }
+
+    public void registerListeners(@NotNull Listener... listeners) {
+        PluginManager manager = Bukkit.getPluginManager();
+
+        for (Listener listener : listeners) {
+            manager.registerEvents(listener, this);
+        }
     }
 
     @Override
