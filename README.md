@@ -1,9 +1,12 @@
 # alumina library
 alumina is a Java library for Minecraft Plugins built upon the Spigot API, which differs from the [minecraft-framework](https://github.com/Framework-Library/minecraft-framework) because this library is specifically made for the modern version of Minecraft compared to that one which aims to support all versions of Minecraft ranging from 1.8 to the latest.
 
-## Features
+## Main Features
 * [Enhanced command system](#enhanced-command-system)
 * [Enhanced message system](#enhanced-message-system)
+* [Enhanced menu system](#enhanced-menu-system)
+## Other Utilities
+* [Color Code Utility](#color-code-utility)
 
 ## Enhanced Command System
 This part of alumina is the same as [minecraft-framework](https://github.com/Framework-Library/minecraft-framework), as it is a pretty solid system already!
@@ -73,4 +76,72 @@ To send a message to a player, you can use the `send` method, or to broadcast a 
 ```java
 message.send(player); // Send to a player!
 message.broadcast(); // Broadcast to all online players!
+```
+
+## Enhanced Menu System
+This is a feature which can allow you to create intractable chest menus more efficiently and easily!
+
+### Creating a Menu
+When creating a menu, you need to make a dedicated class which holds all related information to the menu, such as the title, size, and items.
+
+```java
+public class ExampleMenu extends ChestMenu {
+    
+    public ExampleMenu() {
+        super("Amazing Menu", 1);
+
+        ItemStack diamond = new ItemStack(Material.DIAMOND);
+        setItem(0, diamond, "diamond");
+        
+        ItemStack emerald = new ItemStack(Material.EMERALD);
+        setItem(1, emerald, "emerald");
+    }
+
+    @Override
+    public void onFunctionClick(@NotNull Player player, @NotNull MenuItem item, @NotNull InventoryClickEvent event) {
+        event.setCancelled(true);
+
+        String key = item.key();
+        assert key != null;
+
+        switch (key.toLowerCase()) {
+            case "diamond" -> handleDiamond(player);
+            case "emerald" -> handleEmerald(player);
+        }
+    }
+    
+    private void handleDiamond(@NotNull Player player) {
+        player.sendMessage("You clicked on the diamond!");
+        // other handling code
+    }
+    
+    private void handleEmerald(@NotNull Player player) {
+        player.sendMessage("You clicked on the emerald!");
+        // other handling code
+    }
+    
+}
+```
+
+### Opening a Menu
+To open a menu, you can just use the `open` method when making a new instance of class menu you wish to open!
+
+```java
+new ExampleMenu().open(player);
+```
+
+
+## Color Code Utility
+This class is a small utility class which can assist you with color code manipulation, such as translating color codes and hex codes!
+
+### Translating Regular Color Codes
+This method is here in case you wish to just translate regular color codes, such as `&a` or `&c`.
+```java
+String message = ColorUtil.basicTranslate("&aHello world!");
+```
+
+### Translating Hex Color Codes
+This method is here in case you wish to translate hex color codes, such as `#00ff00` or `#ff0000`.
+```java
+String message = ColorUtil.hexTranslate("#00ff00Hello world!");
 ```
