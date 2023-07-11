@@ -121,25 +121,21 @@ public class AluminaCommand extends org.bukkit.command.Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
-        if (playerOnly && !(sender instanceof Player)) {
-            CANNOT_USE_AS_CONSOLE.send(sender);
-            return true;
-        }
-
-        if (!checkPermissions(sender)) {
-            NO_PERMISSION.send(sender);
-            return true;
-        }
-
-        if (!checkParams(sender, args))
-            return true;
-
-        if (checkSubCommands(sender, args))
+        if (checkConsolePlayerCommand(sender) || !checkPermissions(sender) || !checkParams(sender, args) || checkSubCommands(sender, args))
             return true;
 
         Context context = new Context(getName(), args, sender);
         component.execute(context);
         return true;
+    }
+
+    /**
+     * Checks if the console is using a player-only command
+     * @param sender The sender
+     * @return Whether the console is using a player-only command
+     */
+    private boolean checkConsolePlayerCommand(CommandSender sender) {
+        return (playerOnly && !(sender instanceof Player));
     }
 
     private boolean checkPermissions(@NotNull CommandSender sender) {
@@ -150,6 +146,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
             if (sender.hasPermission(permission))
                 return true;
         }
+        NO_PERMISSION.send(sender);
         return false;
     }
 
