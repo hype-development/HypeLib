@@ -123,7 +123,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
         registerListeners(
                 new MenuListener()
         );
-        
+
         enable();
     }
 
