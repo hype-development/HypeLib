@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 /**
- * Represents a chest menu.
+ * Represents a intractable chest menu.
  */
 public abstract class ChestMenu implements AluminaMenu {
 
@@ -54,6 +54,13 @@ public abstract class ChestMenu implements AluminaMenu {
     private final Map<Integer, MenuItem> items;
     private final Map<String, MenuItem> byKey;
 
+    /**
+     * Using this constructor will allow you to create a new Chest Menu!
+     *
+     * @param title The title of the menu.
+     * @param rows The amount of rows the menu should have.
+     * @apiNote The amount of rows must be greater than 0 and less than or equal to 6.
+     */
     public ChestMenu(@NotNull String title, int rows) {
         Preconditions.checkArgument(rows > 0, "Rows must be greater than 0.");
         Preconditions.checkArgument(rows <= 6, "Rows must be less than or equal to 6.");
@@ -65,6 +72,13 @@ public abstract class ChestMenu implements AluminaMenu {
         this.byKey = Maps.newHashMap();
     }
 
+    /**
+     * This method will allow you to set the item in a slot.
+     * @param slot The slot to set the item in.
+     * @param item The item to set.
+     * @param functionKey The function key to set.
+     *                    When the function key is null, the item will not be functional.
+     */
     @Override
     public void setItem(int slot, @NotNull ItemStack item, @Nullable String functionKey) {
         items.remove(slot);
@@ -96,11 +110,19 @@ public abstract class ChestMenu implements AluminaMenu {
         item.setItemMeta(meta);
     }
 
+    /**
+     * This method will allow you to clear a slot.
+     * @param slot The slot to clear.
+     */
     @Override
     public void clearSlot(int slot) {
         inventory.clear(slot);
     }
 
+    /**
+     * This method will allow you to open the menu for a player.
+     * @param player The player to open the menu for.
+     */
     @Override
     public void open(@NotNull Player player) {
         items.forEach((index, item) -> inventory.setItem(index, item.item()));
@@ -116,6 +138,12 @@ public abstract class ChestMenu implements AluminaMenu {
         return items;
     }
 
+    /**
+     * Get a menu item by function key.
+     * @param key The function key.
+     * @return The menu item.
+     */
+    @Nullable
     public MenuItem byKey(@NotNull String key) {
         return byKey.getOrDefault(key, null);
     }
