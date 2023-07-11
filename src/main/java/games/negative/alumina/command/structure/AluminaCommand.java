@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import games.negative.alumina.command.Command;
 import games.negative.alumina.command.Context;
 import games.negative.alumina.command.builder.CommandBuilder;
+import games.negative.alumina.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,11 @@ import java.util.List;
  * Represents the implementation of any alumina command.
  */
 public class AluminaCommand extends org.bukkit.command.Command {
+
+    private static final Message NO_PERMISSION = Message.of("&cYou do not have permission to use this command.");
+    private static final Message CANNOT_USE_AS_CONSOLE = Message.of("&cYou cannot use this command as console.");
+    private static final Message USAGE = Message.of("&cUsage: &7/%command% %usage%");
+
 
     private final Command component;
     private final List<AluminaCommand> subCommands;
@@ -81,12 +87,12 @@ public class AluminaCommand extends org.bukkit.command.Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
         if (playerOnly && !(sender instanceof Player)) {
-//            FrameworkMessage.COMMAND_CANNOT_USE_THIS_AS_CONSOLE.send(sender);
+            CANNOT_USE_AS_CONSOLE.send(sender);
             return true;
         }
 
         if (!checkPermissions(sender)) {
-//            FrameworkMessage.COMMAND_NO_PERMISSION.send(sender);
+            NO_PERMISSION.send(sender);
             return true;
         }
 
@@ -165,7 +171,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
                 iteration++;
             }
 
-//            FrameworkMessage.COMMAND_USAGE.replace("%command%", parentBuilder.toString()).replace("%usage%", builder.toString()).send(sender);
+            USAGE.replace("%command%", parentBuilder.toString()).replace("%usage%", builder.toString()).send(sender);
             return false;
         }
 
