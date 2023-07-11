@@ -43,6 +43,8 @@ import java.util.Map;
  */
 public abstract class AluminaPlugin extends JavaPlugin {
 
+    private static AluminaPlugin instance;
+
     /**
      * This method is called when the plugin is enabled.
      */
@@ -106,11 +108,16 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         enable();
     }
 
     @Override
     public void onDisable() {
         disable();
+    }
+
+    public static AluminaPlugin getAluminaInstance() {
+        return instance;
     }
 }
