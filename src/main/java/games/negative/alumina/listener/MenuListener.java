@@ -36,6 +36,9 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+/**
+ * Represents the menu listener.
+ */
 public class MenuListener implements Listener {
 
     @EventHandler

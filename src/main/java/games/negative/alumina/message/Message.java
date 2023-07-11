@@ -44,14 +44,25 @@ import java.util.regex.Pattern;
  */
 public class Message {
 
+    /*
+     * This pattern is used to match hex colors.
+     */
     private static final Pattern PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
+    /*
+     * This is the default, unmodified message.
+     */
     private final String def;
+
+    /*
+     * This is the current message with all modifications.
+     */
     private String current;
 
 
     /**
      * Creates a new message.
+     *
      * @param text The text of the message.
      */
     protected Message(@NotNull String text) {
@@ -61,6 +72,7 @@ public class Message {
 
     /**
      * Replaces a placeholder with a replacement.
+     *
      * @param placeholder The placeholder to replace.
      * @param replacement The replacement.
      * @return The message.
@@ -72,6 +84,7 @@ public class Message {
 
     /**
      * Send the final message to a {@link CommandSender}.
+     *
      * @param sender The sender to send the message to.
      */
     public void send(@NotNull CommandSender sender) {
@@ -101,6 +114,7 @@ public class Message {
 
     /**
      * Statically create a new message instance using {@link Message#of(String...)}
+     *
      * @param text The text of the message.
      * @return The message.
      */
@@ -110,6 +124,7 @@ public class Message {
 
     /**
      * Statically create a new message instance using {@link Message#of(String)}
+     *
      * @param text The text of the message.
      * @return The message.
      */
@@ -119,6 +134,7 @@ public class Message {
 
     /**
      * Statically create a new message instance using {@link Message#of(List)}
+     *
      * @param text The text of the message.
      * @return The message.
      */
@@ -128,6 +144,7 @@ public class Message {
 
     /**
      * Translates the message to support color codes and hex colors.
+     *
      * @return The translated message.
      */
     private String translate() {

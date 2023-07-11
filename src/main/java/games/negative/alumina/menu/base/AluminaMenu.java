@@ -42,12 +42,16 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface AluminaMenu {
 
+    /*
+     * This key will be used to store the function key in the item's metadata.
+     */
     NamespacedKey FUNCTION_KEY = new NamespacedKey(AluminaPlugin.getAluminaInstance(), "menu-function-key");
 
     /**
      * This method will allow you to set a functional item in the menu.
-     * @param slot The slot to set the item in.
-     * @param item The item to set.
+     *
+     * @param slot        The slot to set the item in.
+     * @param item        The item to set.
      * @param functionKey The function key to set.
      *                    When the function key is null, the item will not be functional.
      */
@@ -55,6 +59,7 @@ public interface AluminaMenu {
 
     /**
      * This method will allow you to set a non-functional item in the menu.
+     *
      * @param slot The slot to set the item in.
      * @param item The item to set.
      */
@@ -64,42 +69,48 @@ public interface AluminaMenu {
 
     /**
      * This method will allow you to clear a slot in the menu.
+     *
      * @param slot The slot to clear.
      */
     void clearSlot(int slot);
 
     /**
      * This method will allow you to open the menu for a player.
+     *
      * @param player The player to open the menu for.
      */
     void open(@NotNull Player player);
 
     /**
      * This method will allow you to listen to the open event of the menu.
+     *
      * @param player The player who opened the menu.
-     * @param event The event.
+     * @param event  The event.
      */
     void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event);
 
     /**
      * This method will allow you to listen to the close event of the menu.
+     *
      * @param player The player who closed the menu.
-     * @param event The event.
+     * @param event  The event.
      */
     void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event);
 
     /**
      * This method will allow you to listen to the click event of the menu.
+     *
      * @param player The player who clicked the menu.
-     * @param event The event.
+     * @param event  The event.
      */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
     /**
      * This method will allow you to listen to the function click event of the menu.
+     *
      * @param player The player who clicked the menu.
-     * @param item The item that was clicked.
-     * @param event The event.
+     * @param item   The item that was clicked.
+     * @param event  The event.
      */
     void onFunctionClick(@NotNull Player player, @NotNull MenuItem item, @NotNull InventoryClickEvent event);
 

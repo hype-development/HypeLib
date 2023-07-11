@@ -38,10 +38,14 @@ import java.util.regex.Pattern;
  */
 public class ColorUtil {
 
+    /*
+     * This pattern is used to match hex colors.
+     */
     private static final Pattern PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     /**
      * Translates a string with the basic color code.
+     *
      * @param input The string to translate.
      * @return The translated string.
      */
@@ -51,6 +55,7 @@ public class ColorUtil {
 
     /**
      * Translates a string with the basic color code and the hex color code.
+     *
      * @param input The string to translate.
      * @return The translated string.
      */

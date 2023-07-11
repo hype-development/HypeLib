@@ -45,21 +45,56 @@ import java.util.List;
  */
 public class AluminaCommand extends org.bukkit.command.Command {
 
+    /*
+     * The message for when the player does not have permission to use the command.
+     */
     private static final Message NO_PERMISSION = Message.of("&cYou do not have permission to use this command.");
+
+    /*
+     * The message for when a player-only command is used as console.
+     */
     private static final Message CANNOT_USE_AS_CONSOLE = Message.of("&cYou cannot use this command as console.");
+
+    /*
+     * The message for when a command is used incorrectly.
+     */
     private static final Message USAGE = Message.of("&cUsage: &7/%command% %usage%");
 
 
+    /*
+     * The command executor component.
+     */
     private final Command component;
+
+    /*
+     * The sub commands of this command.
+     */
     private final List<AluminaCommand> subCommands;
+
+    /*
+     * The permissions of this command.
+     */
     private final String[] permissions;
+
+    /*
+     * The required parameters of this command.
+     */
     private final String[] params;
+
+    /*
+     * Whether this command is player-only.
+     */
     private final boolean playerOnly;
+
+    /*
+     * The parent command of this command.
+     */
     private final AluminaCommand parent;
 
     /**
      * Creates a new alumina command.
-     * @param parent The parent command.
+     *
+     * @param parent  The parent command.
      * @param builder The command builder.
      */
     public AluminaCommand(@Nullable AluminaCommand parent, @NotNull CommandBuilder builder) {

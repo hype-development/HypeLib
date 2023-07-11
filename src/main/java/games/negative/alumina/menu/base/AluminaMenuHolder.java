@@ -61,6 +61,10 @@ public interface AluminaMenuHolder<T extends AluminaMenu> extends InventoryHolde
      */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
+    /**
+     * Gets the menu instance.
+     * @return The menu instance.
+     */
     @NotNull
     T getMenu();
 
