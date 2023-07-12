@@ -162,6 +162,11 @@ public class ItemBuilder {
         return this;
     }
 
+    /**
+     * Add multiple lines of lore to the item.
+     * @param text The text to add to the lore.
+     * @return The current instance of the builder.
+     */
     @NotNull
     public ItemBuilder addLoreLines(@NotNull List<String> text) {
         List<String> lore = this.meta.getLore();
