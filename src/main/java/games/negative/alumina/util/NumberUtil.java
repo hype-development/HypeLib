@@ -117,7 +117,7 @@ public class NumberUtil {
      * @throws NullPointerException If the text is not an {@link Integer}
      */
     @Nullable
-    public Integer getInteger(@NotNull String text) {
+    public static Integer getInteger(@NotNull String text) {
         if (!isInteger(text)) return null;
 
         return Integer.parseInt(text);
@@ -144,7 +144,7 @@ public class NumberUtil {
      * @throws NullPointerException If the text is not an {@link Long}
      */
     @Nullable
-    public Long getLong(@NotNull String text) {
+    public static Long getLong(@NotNull String text) {
         if (!isLong(text)) return null;
 
         return Long.parseLong(text);
@@ -171,7 +171,7 @@ public class NumberUtil {
      * @throws NullPointerException If the text is not an {@link Double}
      */
     @Nullable
-    public Double getDouble(@NotNull String text) {
+    public static Double getDouble(@NotNull String text) {
         if (!isDouble(text)) return null;
 
         return Double.parseDouble(text);
@@ -198,7 +198,7 @@ public class NumberUtil {
      * @throws NullPointerException If the text is not an {@link Float}
      */
     @Nullable
-    public Float getFloat(@NotNull String text) {
+    public static Float getFloat(@NotNull String text) {
         if (!isFloat(text)) return null;
 
         return Float.parseFloat(text);
@@ -225,7 +225,7 @@ public class NumberUtil {
      * @throws NullPointerException If the text is not an {@link Short}
      */
     @Nullable
-    public Short getShort(@NotNull String text) {
+    public static Short getShort(@NotNull String text) {
         if (!isShort(text)) return null;
 
         return Short.parseShort(text);
