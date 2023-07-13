@@ -155,7 +155,12 @@ public class AluminaCommand extends org.bukkit.command.Command {
             return false;
 
         String begin = args[0];
-        String[] snippet = Arrays.copyOfRange(args, 1, args.length);
+        String[] snippet;
+        try {
+            snippet = Arrays.copyOfRange(args, 1, args.length);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            snippet = new String[0];
+        }
 
         AluminaCommand subCommand = getAvailableSubCommand(begin);
         return (subCommand != null && subCommand.execute(sender, begin, snippet));
