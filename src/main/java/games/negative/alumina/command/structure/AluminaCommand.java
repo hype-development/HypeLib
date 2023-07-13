@@ -135,7 +135,11 @@ public class AluminaCommand extends org.bukkit.command.Command {
      * @return Whether the console is using a player-only command
      */
     private boolean checkConsolePlayerCommand(CommandSender sender) {
-        return (playerOnly && !(sender instanceof Player));
+        if (!playerOnly && sender instanceof Player)
+            return false;
+
+        CANNOT_USE_AS_CONSOLE.send(sender);
+        return true;
     }
 
     private boolean checkPermissions(@NotNull CommandSender sender) {
