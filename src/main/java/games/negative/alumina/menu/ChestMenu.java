@@ -97,6 +97,27 @@ public abstract class ChestMenu implements AluminaMenu {
     }
 
     /**
+     * This method will allow you to add an item to the menu.
+     * @param item The item to add.
+     * @param functionKey The function key to set.
+     */
+    @Override
+    public void addItem(@NotNull ItemStack item, @Nullable String functionKey) {
+        int available = -1;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            MenuItem menuItem = this.items.get(i);
+            if (menuItem == null) {
+                available = i;
+                break;
+            }
+        }
+
+        if (available == -1) return;
+
+        setItem(available, item, functionKey);
+    }
+
+    /**
      * Applies the function key to the item's data.
      * @param item The item.
      * @param key The function key.
