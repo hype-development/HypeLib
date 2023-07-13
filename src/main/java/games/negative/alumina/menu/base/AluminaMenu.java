@@ -68,6 +68,21 @@ public interface AluminaMenu {
     }
 
     /**
+     * This method will allow you to add a functional item to the menu.
+     * @param item The item to add.
+     * @param functionKey The function key to set.
+     */
+    void addItem(@NotNull ItemStack item, @Nullable String functionKey);
+
+    /**
+     * This method will allow you to add a non-functional item to the menu.
+     * @param item The item to add.
+     */
+    default void addItem(@NotNull ItemStack item) {
+        addItem(item, null);
+    }
+
+    /**
      * This method will allow you to clear a slot in the menu.
      *
      * @param slot The slot to clear.
