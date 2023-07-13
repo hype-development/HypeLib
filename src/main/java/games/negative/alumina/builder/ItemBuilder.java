@@ -30,12 +30,23 @@ package games.negative.alumina.builder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import games.negative.alumina.util.ColorUtil;
+import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * Represents a builder utility for {@link ItemStack} to make item creation easier for the developer.
@@ -178,6 +189,150 @@ public class ItemBuilder {
 
         this.meta.setLore(lore);
 
+        return this;
+    }
+
+    /**
+     * Replace the lore of the item.
+     * @param function The function to replace the lore.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder replaceLore(@NotNull UnaryOperator<String> function) {
+        List<String> lore = this.meta.getLore();
+        if (lore == null) lore = Lists.newArrayList();
+
+        lore.replaceAll(function);
+
+        this.meta.setLore(lore);
+        return this;
+    }
+
+    /**
+     * Replace a single line of lore.
+     * @param placeholder The placeholder to replace.
+     * @param replacement The replacement for the placeholder.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder replaceLore(@NotNull String placeholder, @NotNull String replacement) {
+        return this.replaceLore(line -> line.replace(placeholder, replacement));
+    }
+
+    /**
+     * Add an enchantment to the item.
+     * @param enchantment The enchantment to add.
+     * @param level The level of the enchantment.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int level) {
+        this.meta.addEnchant(enchantment, level, true);
+        return this;
+    }
+
+    /**
+     * Remove an enchantment from the item.
+     * @param enchantment The enchantment to remove.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder removeEnchantment(@NotNull Enchantment enchantment) {
+        this.meta.removeEnchant(enchantment);
+        return this;
+    }
+
+    /**
+     * Set the item to be unbreakable.
+     * @param unbreakable Whether the item should be unbreakable.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder setUnbreakable(boolean unbreakable) {
+        this.meta.setUnbreakable(unbreakable);
+        return this;
+    }
+
+    /**
+     * Add an item flag to the item.
+     * @param flags The flags to add.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder addItemFlags(@NotNull ItemFlag... flags) {
+        this.meta.addItemFlags(flags);
+        return this;
+    }
+
+    /**
+     * Remove an item flag from the item.
+     * @param flags The flags to remove.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder removeItemFlags(@NotNull ItemFlag... flags) {
+        this.meta.removeItemFlags(flags);
+        return this;
+    }
+
+    /**
+     * Set the skull texture of the item.
+     * @param player The player to set the skull texture to.
+     * @return The current instance of the builder.
+     * @throws ClassCastException If the item is not a skull.
+     */
+    @NotNull
+    public ItemBuilder setSkullOwner(@NotNull OfflinePlayer player) {
+        SkullMeta skullMeta = (SkullMeta) this.meta;
+        skullMeta.setOwningPlayer(player);
+        return this;
+    }
+
+    /**
+     * Set the skull texture of the item.
+     * @param profile The profile to set the skull texture to.
+     * @return The current instance of the builder.
+     * @throws ClassCastException If the item is not a skull.
+     */
+    @NotNull
+    public ItemBuilder setSkullOwner(@NotNull PlayerProfile profile) {
+        SkullMeta skullMeta = (SkullMeta) this.meta;
+        skullMeta.setOwnerProfile(profile);
+        return this;
+    }
+
+    /**
+     * Set the custom model data of the item.
+     * @param data The custom model data to set.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder setCustomModelData(int data) {
+        this.meta.setCustomModelData(data);
+        return this;
+    }
+
+    /**
+     * Set the color of the item.
+     * @param color The color to set.
+     * @return The current instance of the builder.
+     * @throws ClassCastException If the item is not a leather armor piece.
+     */
+    @NotNull
+    public ItemBuilder setLeatherColor(@Nullable Color color) {
+        LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) this.meta;
+        leatherArmorMeta.setColor(color);
+        return this;
+    }
+
+    /**
+     * Apply custom persistent data to the item.
+     * @param function The function to apply the persistent data.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder applyPersistentData(@NotNull Consumer<PersistentDataContainer> function) {
+        function.accept(this.meta.getPersistentDataContainer());
         return this;
     }
 
