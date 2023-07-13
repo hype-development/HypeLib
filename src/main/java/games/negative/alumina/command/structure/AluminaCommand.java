@@ -135,7 +135,11 @@ public class AluminaCommand extends org.bukkit.command.Command {
      * @return Whether the console is using a player-only command
      */
     private boolean checkConsolePlayerCommand(CommandSender sender) {
-        return (playerOnly && !(sender instanceof Player));
+        if (!playerOnly && sender instanceof Player)
+            return false;
+
+        CANNOT_USE_AS_CONSOLE.send(sender);
+        return true;
     }
 
     private boolean checkPermissions(@NotNull CommandSender sender) {
@@ -155,12 +159,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
             return false;
 
         String begin = args[0];
-        String[] snippet;
-        try {
-            snippet = Arrays.copyOfRange(args, 1, args.length);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            snippet = new String[0];
-        }
+        String[] snippet = Arrays.copyOfRange(args, 1, args.length);
 
         AluminaCommand subCommand = getAvailableSubCommand(begin);
         return (subCommand != null && subCommand.execute(sender, begin, snippet));
