@@ -37,11 +37,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TimeUtil {
 
-    /*
-     * Format template for the time.
-     */
-    private static final String format = "%day%%hour%%min%%sec%";
-
     /**
      * Format a time into a human-readable format.
      * @param time Time to format
@@ -73,5 +68,59 @@ public class TimeUtil {
         String secondFormat = (secondNotZero ? toSec + (small ? "" : " ") + second : "");
 
         return dayFormat + hourFormat + minuteFormat + secondFormat;
+    }
+
+    /**
+     * Format time from a string.
+     * @param input Input string
+     * @return Formatted time
+     */
+    public static long fromString(@NotNull String input) {
+        StringBuilder builder = new StringBuilder();
+        int seconds = 0;
+        int minutes = 0;
+        int hours = 0;
+        int days = 0;
+        int weeks = 0;
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                builder.append(c);
+            } else {
+                switch (c) {
+                    case 's' -> {
+                        if (builder.length() != 0) {
+                            seconds += Integer.parseInt(builder.toString());
+                            builder = new StringBuilder();
+                        }
+                    }
+                    case 'm' -> {
+                        if (builder.length() != 0) {
+                            minutes += Integer.parseInt(builder.toString());
+                            builder = new StringBuilder();
+                        }
+                    }
+                    case 'h' -> {
+                        if (builder.length() != 0) {
+                            hours += Integer.parseInt(builder.toString());
+                            builder = new StringBuilder();
+                        }
+                    }
+                    case 'd' -> {
+                        if (builder.length() != 0) {
+                            days += Integer.parseInt(builder.toString());
+                            builder = new StringBuilder();
+                        }
+                    }
+                    case 'w' -> {
+                        if (builder.length() != 0) {
+                            weeks += Integer.parseInt(builder.toString());
+                            builder = new StringBuilder();
+                        }
+                    }
+                    default -> throw new IllegalArgumentException("Not a valid duration format.");
+                }
+            }
+        }
+        return 1000L * (seconds + minutes * 60L + hours * 60 * 60L + days * 24 * 60 * 60L + weeks * 7 * 24 * 60 * 60L);
     }
 }
