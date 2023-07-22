@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import games.negative.alumina.command.Command;
 import games.negative.alumina.command.structure.AluminaCommand;
+import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,7 +49,7 @@ public class CommandBuilder {
     private String usage;
     private List<String> aliases;
     private boolean playerOnly;
-    private String[] permissions;
+    private Permission[] permissions;
     private String[] params;
     private final List<CommandBuilder> subCommands;
 
@@ -123,9 +124,31 @@ public class CommandBuilder {
      * @param permissions The permissions of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(@NotNull String... permissions) {
+    public CommandBuilder permission(@NotNull Permission... permissions) {
         Preconditions.checkNotNull(permissions, "Command permissions cannot be null.");
         this.permissions = permissions;
+        return this;
+    }
+
+    /**
+     * Set the permissions of the command.
+     * @param permissions The permissions of the command.
+     * @return The command builder.
+     */
+    public CommandBuilder permission(@NotNull String... permissions) {
+        Preconditions.checkNotNull(permissions, "Command permissions cannot be null.");
+        this.permissions = Arrays.stream(permissions).map(Permission::new).toArray(Permission[]::new);
+        return this;
+    }
+
+    /**
+     * Set the permission of the command.
+     * @param permission The permission of the command.
+     * @return The command builder.
+     */
+    public CommandBuilder permission(@NotNull Permission permission) {
+        Preconditions.checkNotNull(permission, "Command permission cannot be null.");
+        this.permissions = new Permission[] { permission };
         return this;
     }
 
@@ -135,9 +158,7 @@ public class CommandBuilder {
      * @return The command builder.
      */
     public CommandBuilder permission(@NotNull String permission) {
-        Preconditions.checkNotNull(permission, "Command permission cannot be null.");
-        this.permissions = new String[] { permission };
-        return this;
+        return this.permission(new Permission(permission));
     }
 
     /**
@@ -145,9 +166,9 @@ public class CommandBuilder {
      * @param permission The permissions of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(@NotNull List<String> permission) {
+    public CommandBuilder permission(@NotNull List<Permission> permission) {
         Preconditions.checkNotNull(permission, "Command permission cannot be null.");
-        this.permissions = permission.toArray(new String[0]);
+        this.permissions = permission.toArray(new Permission[0]);
         return this;
     }
 
@@ -240,7 +261,7 @@ public class CommandBuilder {
      * Get the permissions of the command.
      * @return The permissions of the command.
      */
-    public String[] getPermissions() {
+    public Permission[] getPermissions() {
         return permissions;
     }
 

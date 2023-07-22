@@ -33,6 +33,7 @@ import games.negative.alumina.command.builder.CommandBuilder;
 import games.negative.alumina.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,7 +75,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
     /*
      * The permissions of this command.
      */
-    private final String[] permissions;
+    private final Permission[] permissions;
 
     /*
      * The required parameters of this command.
@@ -147,7 +148,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         if (this.permissions == null)
             return true;
 
-        for (String permission : this.permissions) {
+        for (Permission permission : this.permissions) {
             if (sender.hasPermission(permission))
                 return true;
         }
@@ -227,7 +228,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return params;
     }
 
-    public String[] getPermissions() {
+    public Permission[] getPermissions() {
         return permissions;
     }
 
