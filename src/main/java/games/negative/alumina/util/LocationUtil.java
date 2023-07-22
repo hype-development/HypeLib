@@ -1,5 +1,6 @@
 package games.negative.alumina.util;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +22,13 @@ public class LocationUtil {
         World minWorld = min.getWorld();
         World maxWorld = max.getWorld();
 
-        if (locationWorld == null || minWorld == null || maxWorld == null)
-            return false;
+        Preconditions.checkNotNull(locationWorld, "Location world cannot be null!");
+        Preconditions.checkNotNull(minWorld, "Min world cannot be null!");
+        Preconditions.checkNotNull(maxWorld, "Max world cannot be null!");
 
-        if (!locationWorld.equals(minWorld) || !locationWorld.equals(maxWorld))
-            return false;
+        Preconditions.checkArgument(minWorld.equals(maxWorld), "Min world must be the same as max world!");
+        Preconditions.checkArgument(locationWorld.equals(minWorld), "Location world must be the same as min world!");
+        Preconditions.checkArgument(locationWorld.equals(maxWorld), "Location world must be the same as max world!");
 
         int x = location.getBlockX();
         int y = location.getBlockY();
