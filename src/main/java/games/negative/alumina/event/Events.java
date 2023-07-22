@@ -27,6 +27,7 @@ package games.negative.alumina.event;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Events utility class for more simply calling events
@@ -38,7 +39,7 @@ public class Events {
      *
      * @param event Event to call
      */
-    public static void call(Event event) {
+    public static void call(@NotNull Event event) {
         Bukkit.getPluginManager().callEvent(event);
     }
 
