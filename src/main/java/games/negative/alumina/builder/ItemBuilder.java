@@ -33,6 +33,8 @@ import games.negative.alumina.util.ColorUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -333,6 +335,41 @@ public class ItemBuilder {
     @NotNull
     public ItemBuilder applyPersistentData(@NotNull Consumer<PersistentDataContainer> function) {
         function.accept(this.meta.getPersistentDataContainer());
+        return this;
+    }
+
+    /**
+     * Add an attribute modifier to the item.
+     * @param attribute The attribute to add the modifier to.
+     * @param modifier The modifier to add.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder addAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+        this.meta.addAttributeModifier(attribute, modifier);
+        return this;
+    }
+
+    /**
+     * Remove an attribute modifier from the item.
+     * @param attribute The attribute to remove the modifier from.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder removeAttributeModifier(@NotNull Attribute attribute) {
+        this.meta.removeAttributeModifier(attribute);
+        return this;
+    }
+
+    /**
+     * Remove an attribute modifier from the item.
+     * @param attribute The attribute to remove the modifier from.
+     * @param modifier The modifier to remove.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder removeAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
+        this.meta.removeAttributeModifier(attribute, modifier);
         return this;
     }
 
