@@ -44,60 +44,67 @@ public class NumberUtil {
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(int number) {
+    public static String decimalFormat(int number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(long number) {
+    public static String decimalFormat(long number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(double number) {
+    public static String decimalFormat(double number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(float number) {
+    public static String decimalFormat(float number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(short number) {
+    public static String decimalFormat(short number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * Parse a number to a fancy format.
+     *
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String parse(byte number) {
+    public static String decimalFormat(byte number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
      * This method will check if the provided text is a {@link Integer}.
+     *
      * @param text Text to check
      * @return If the text is a {@link Integer}
      */
@@ -112,6 +119,7 @@ public class NumberUtil {
 
     /**
      * This method will get an {@link Integer} from the provided text.
+     *
      * @param text Text to get the {@link Integer} from
      * @return {@link Integer} from the text
      * @throws NullPointerException If the text is not an {@link Integer}
@@ -125,6 +133,7 @@ public class NumberUtil {
 
     /**
      * This method will check if the provided text is a {@link Long}.
+     *
      * @param text Text to check
      * @return If the text is a {@link Long}
      */
@@ -139,6 +148,7 @@ public class NumberUtil {
 
     /**
      * This method will get an {@link Long} from the provided text.
+     *
      * @param text Text to get the {@link Long} from
      * @return {@link Long} from the text
      * @throws NullPointerException If the text is not an {@link Long}
@@ -152,6 +162,7 @@ public class NumberUtil {
 
     /**
      * This method will check if the provided text is a {@link Double}.
+     *
      * @param text Text to check
      * @return If the text is a {@link Double}
      */
@@ -166,6 +177,7 @@ public class NumberUtil {
 
     /**
      * This method will get an {@link Double} from the provided text.
+     *
      * @param text Text to get the {@link Double} from
      * @return {@link Double} from the text
      * @throws NullPointerException If the text is not an {@link Double}
@@ -179,6 +191,7 @@ public class NumberUtil {
 
     /**
      * This method will check if the provided text is a {@link Float}.
+     *
      * @param text Text to check
      * @return If the text is a {@link Float}
      */
@@ -193,6 +206,7 @@ public class NumberUtil {
 
     /**
      * This method will get an {@link Float} from the provided text.
+     *
      * @param text Text to get the {@link Float} from
      * @return {@link Float} from the text
      * @throws NullPointerException If the text is not an {@link Float}
@@ -206,6 +220,7 @@ public class NumberUtil {
 
     /**
      * This method will check if the provided text is a {@link Short}.
+     *
      * @param text Text to check
      * @return If the text is a {@link Short}
      */
@@ -220,6 +235,7 @@ public class NumberUtil {
 
     /**
      * This method will get an {@link Short} from the provided text.
+     *
      * @param text Text to get the {@link Short} from
      * @return {@link Short} from the text
      * @throws NullPointerException If the text is not an {@link Short}
@@ -229,6 +245,132 @@ public class NumberUtil {
         if (!isShort(text)) return null;
 
         return Short.parseShort(text);
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(int number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch (number % 10) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(long number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch ((int) (number % 10)) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(double number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch ((int) (number % 10)) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(float number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch ((int) (number % 10)) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(short number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch (number % 10) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
+    }
+
+    /**
+     * This method will convert a number to a fancy version of
+     * the provided number such as 1st, 2nd, 3rd, 4th, etc.
+     *
+     * @param number Number to convert
+     * @return Fancy version of the number
+     */
+    @NotNull
+    public static String fancy(byte number) {
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + "th";
+        }
+
+        return switch (number % 10) {
+            case 1 -> number + "st";
+            case 2 -> number + "nd";
+            case 3 -> number + "rd";
+            default -> number + "th";
+        };
     }
 
 }
