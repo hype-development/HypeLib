@@ -60,11 +60,8 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     /**
      * This method is used to register a command.
-     * <p>
      * You do not need to register commands in the plugin.yml because this method will do it for you.
-     * <p>
      * This method will also unregister any existing commands with the same name.
-     * <p>
      *
      * @param builder The builder used to create the command.
      */
