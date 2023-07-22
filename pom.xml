@@ -7,7 +7,7 @@
     <!-- Credentials -->
     <groupId>games.negative.alumina</groupId>
     <artifactId>alumina</artifactId>
-    <version>1.0.0-SNAPSHOT.10</version>
+    <version>1.0.0-SNAPSHOT.11</version>
 
     <!-- Project Properties    -->
     <properties>
