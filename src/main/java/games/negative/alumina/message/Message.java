@@ -27,9 +27,13 @@
 
 package games.negative.alumina.message;
 
+import com.google.common.base.Preconditions;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -79,6 +83,34 @@ public class Message {
      */
     public Message replace(@NotNull String placeholder, @NotNull String replacement) {
         this.current = this.current.replace(placeholder, replacement);
+        return this;
+    }
+
+    /**
+     * Allow the message to be parsed by PlaceholderAPI.
+     * @param player The player to parse the message for.
+     * @return The message.
+     * @throws IllegalStateException If PlaceholderAPI is not installed.
+     */
+    public Message parsePlaceholderAPI(@NotNull OfflinePlayer player) {
+        Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
+
+        this.current = PlaceholderAPI.setPlaceholders(player, this.current);
+
+        return this;
+    }
+
+    /**
+     * Allow the message to be parsed by PlaceholderAPI.
+     * @param player The player to parse the message for.
+     * @return The message.
+     * @throws IllegalStateException If PlaceholderAPI is not installed.
+     */
+    public Message parsePlaceholderAPI(@NotNull Player player) {
+        Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
+
+        this.current = PlaceholderAPI.setPlaceholders(player, this.current);
+
         return this;
     }
 
