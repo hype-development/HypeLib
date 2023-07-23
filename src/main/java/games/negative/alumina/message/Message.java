@@ -31,10 +31,10 @@ import com.google.common.base.Preconditions;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -63,6 +63,10 @@ public class Message {
      */
     private String current;
 
+    /*
+     * This is used to determine if PlaceholderAPI should be used.
+     */
+    private boolean parsePlaceholderAPI = false;
 
     /**
      * Creates a new message.
@@ -88,29 +92,12 @@ public class Message {
 
     /**
      * Allow the message to be parsed by PlaceholderAPI.
-     * @param player The player to parse the message for.
      * @return The message.
      * @throws IllegalStateException If PlaceholderAPI is not installed.
      */
-    public Message parsePlaceholderAPI(@NotNull OfflinePlayer player) {
+    public Message parsePlaceholderAPI() {
         Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
-
-        this.current = PlaceholderAPI.setPlaceholders(player, this.current);
-
-        return this;
-    }
-
-    /**
-     * Allow the message to be parsed by PlaceholderAPI.
-     * @param player The player to parse the message for.
-     * @return The message.
-     * @throws IllegalStateException If PlaceholderAPI is not installed.
-     */
-    public Message parsePlaceholderAPI(@NotNull Player player) {
-        Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
-
-        this.current = PlaceholderAPI.setPlaceholders(player, this.current);
-
+        this.parsePlaceholderAPI = true;
         return this;
     }
 
@@ -121,7 +108,8 @@ public class Message {
      */
     public void send(@NotNull CommandSender sender) {
         String translate = translate();
-        String[] message = translate.split("\n");
+        String text = parsePAPI(sender, translate);
+        String[] message = text.split("\n");
 
         for (String line : message) {
             sender.sendMessage(line);
@@ -135,7 +123,8 @@ public class Message {
      */
     public void broadcast() {
         String translate = translate();
-        String[] message = translate.split("\n");
+        String text = parsePAPI(null, translate);
+        String[] message = text.split("\n");
 
         for (String line : message) {
             Bukkit.broadcastMessage(line);
@@ -187,5 +176,20 @@ public class Message {
             matcher = PATTERN.matcher(current);
         }
         return ChatColor.translateAlternateColorCodes('&', current);
+    }
+
+    /**
+     * Parses the message using PlaceholderAPI.
+     * @param sender The sender to parse the message for.
+     * @param message The message to parse.
+     * @return The parsed message.
+     * @apiNote The sender parameter can be null if you want to parse the message for the console.
+     */
+    @NotNull
+    private String parsePAPI(@Nullable CommandSender sender, @NotNull String message) {
+        boolean enabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+        if (!enabled || !parsePlaceholderAPI) return message;
+
+        return (sender == null ? PlaceholderAPI.setPlaceholders(null, message) : (sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : PlaceholderAPI.setPlaceholders(null, message)));
     }
 }
