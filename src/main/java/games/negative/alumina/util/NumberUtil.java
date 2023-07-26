@@ -257,14 +257,14 @@ public class NumberUtil {
     @NotNull
     public static String fancy(int number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
+            return decimalFormat(number) + "th";
         }
 
         return switch (number % 10) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
@@ -278,14 +278,14 @@ public class NumberUtil {
     @NotNull
     public static String fancy(long number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
+            return decimalFormat(number) + "th";
         }
 
         return switch ((int) (number % 10)) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
@@ -299,14 +299,14 @@ public class NumberUtil {
     @NotNull
     public static String fancy(double number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
+            return decimalFormat(number) + "th";
         }
 
         return switch ((int) (number % 10)) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
@@ -324,10 +324,10 @@ public class NumberUtil {
         }
 
         return switch ((int) (number % 10)) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
@@ -341,14 +341,14 @@ public class NumberUtil {
     @NotNull
     public static String fancy(short number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
+            return decimalFormat(number) + "th";
         }
 
         return switch (number % 10) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
@@ -362,14 +362,14 @@ public class NumberUtil {
     @NotNull
     public static String fancy(byte number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
-            return number + "th";
+            return decimalFormat(number) + "th";
         }
 
         return switch (number % 10) {
-            case 1 -> number + "st";
-            case 2 -> number + "nd";
-            case 3 -> number + "rd";
-            default -> number + "th";
+            case 1 -> decimalFormat(number) + "st";
+            case 2 -> decimalFormat(number) + "nd";
+            case 3 -> decimalFormat(number) + "rd";
+            default -> decimalFormat(number) + "th";
         };
     }
 
