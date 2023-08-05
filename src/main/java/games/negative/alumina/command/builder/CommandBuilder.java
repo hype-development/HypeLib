@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import games.negative.alumina.command.Command;
 import games.negative.alumina.command.structure.AluminaCommand;
+import lombok.Getter;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,18 +40,73 @@ import java.util.List;
 /**
  * This class represents a command builder, which is used to build commands.
  */
+@Getter
 public class CommandBuilder {
 
+    /**
+     * -- GETTER --
+     *  Get the component of the command.
+     *
+     * @return The component of the command.
+     */
     private final Command component;
 
+    /**
+     * -- GETTER --
+     *  Get the name of the command.
+     *
+     * @return The name of the command.
+     */
     // Command Settings
     private String name;
+    /**
+     * -- GETTER --
+     *  Get the description of the command.
+     *
+     * @return The description of the command.
+     */
     private String description;
+    /**
+     * -- GETTER --
+     *  Get the usage of the command.
+     *
+     * @return The usage of the command.
+     */
     private String usage;
+    /**
+     * -- GETTER --
+     *  Get the aliases of the command.
+     *
+     * @return The aliases of the command.
+     */
     private List<String> aliases;
+    /**
+     * -- GETTER --
+     *  Get the state of the command.
+     *
+     * @return The state of the command.
+     */
     private boolean playerOnly;
+    /**
+     * -- GETTER --
+     *  Get the permissions of the command.
+     *
+     * @return The permissions of the command.
+     */
     private Permission[] permissions;
+    /**
+     * -- GETTER --
+     *  Get the parameters of the command.
+     *
+     * @return The parameters of the command.
+     */
     private String[] params;
+    /**
+     * -- GETTER --
+     *  Get the sub commands of the command.
+     *
+     * @return The sub commands of the command.
+     */
     private final List<CommandBuilder> subCommands;
 
     /**
@@ -217,75 +273,4 @@ public class CommandBuilder {
         return new AluminaCommand(parent, this);
     }
 
-    /**
-     * Get the name of the command.
-     * @return The name of the command.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Get the aliases of the command.
-     * @return The aliases of the command.
-     */
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    /**
-     * Get the description of the command.
-     * @return The description of the command.
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Get the usage of the command.
-     * @return The usage of the command.
-     */
-    public String getUsage() {
-        return usage;
-    }
-
-    /**
-     * Get the state of the command.
-     * @return The state of the command.
-     */
-    public boolean isPlayerOnly() {
-        return playerOnly;
-    }
-
-    /**
-     * Get the permissions of the command.
-     * @return The permissions of the command.
-     */
-    public Permission[] getPermissions() {
-        return permissions;
-    }
-
-    /**
-     * Get the parameters of the command.
-     * @return The parameters of the command.
-     */
-    public String[] getParams() {
-        return params;
-    }
-
-    /**
-     * Get the component of the command.
-     * @return The component of the command.
-     */
-    public Command getComponent() {
-        return component;
-    }
-
-    /**
-     * Get the sub commands of the command.
-     * @return The sub commands of the command.
-     */
-    public List<CommandBuilder> getSubCommands() {
-        return subCommands;
-    }
 }
