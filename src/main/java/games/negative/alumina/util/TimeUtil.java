@@ -88,31 +88,31 @@ public class TimeUtil {
             } else {
                 switch (c) {
                     case 's' -> {
-                        if (builder.length() != 0) {
+                        if (!builder.isEmpty()) {
                             seconds += Integer.parseInt(builder.toString());
                             builder = new StringBuilder();
                         }
                     }
                     case 'm' -> {
-                        if (builder.length() != 0) {
+                        if (!builder.isEmpty()) {
                             minutes += Integer.parseInt(builder.toString());
                             builder = new StringBuilder();
                         }
                     }
                     case 'h' -> {
-                        if (builder.length() != 0) {
+                        if (!builder.isEmpty()) {
                             hours += Integer.parseInt(builder.toString());
                             builder = new StringBuilder();
                         }
                     }
                     case 'd' -> {
-                        if (builder.length() != 0) {
+                        if (!builder.isEmpty()) {
                             days += Integer.parseInt(builder.toString());
                             builder = new StringBuilder();
                         }
                     }
                     case 'w' -> {
-                        if (builder.length() != 0) {
+                        if (!builder.isEmpty()) {
                             weeks += Integer.parseInt(builder.toString());
                             builder = new StringBuilder();
                         }
