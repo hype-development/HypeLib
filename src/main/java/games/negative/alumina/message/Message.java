@@ -119,6 +119,25 @@ public class Message {
     }
 
     /**
+     * Send the final message to a iterable collection of a class that extends {@link CommandSender}
+     * @param iterable The iterable collection of a class that extends {@link CommandSender}
+     * @param <T> The class that extends {@link CommandSender}
+     */
+    public <T extends Iterable<? extends CommandSender>> void send(T iterable) {
+        String translate = translate();
+        String text = parsePAPI(null, translate);
+        String[] message = text.split("\n");
+
+        for (CommandSender sender : iterable) {
+            for (String line : message) {
+                sender.sendMessage(line);
+            }
+        }
+
+        this.current = def;
+    }
+
+    /**
      * Broadcast the final message to the server.
      */
     public void broadcast() {
