@@ -30,6 +30,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 
 /**
  * This class is used to represent the context of a command when executed
@@ -49,4 +51,13 @@ public record Context(@NotNull String name, @NotNull String[] args, @NotNull Com
         return sender() instanceof Player ? (Player) sender() : null;
     }
 
+    /**
+     * Returns the argument at the specified index.
+     * @param index The index of the argument.
+     * @return the argument at the specified index.
+     */
+    @NotNull
+    public Optional<String> argument(int index) {
+        return (index >= args.length ? Optional.empty() : Optional.of(args[index]));
+    }
 }
