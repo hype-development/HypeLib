@@ -30,6 +30,11 @@ package games.negative.alumina.util;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A simple pair class.
+ * @param <I> Input
+ * @param <O> Output
+ */
 @ToString
 public class Pair<I, O> implements Cloneable {
 
