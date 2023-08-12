@@ -30,6 +30,7 @@ package games.negative.alumina.util;
 import net.md_5.bungee.api.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.ref.PhantomReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,18 +41,10 @@ public class ColorUtil {
 
     /*
      * This pattern is used to match hex colors.
-     */
-    private static final Pattern PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
-
-    /**
-     * Translates a string with the basic color code.
      *
-     * @param input The string to translate.
-     * @return The translated string.
+     * Example &[FFFFFF] would be matched as #FFFFFF
      */
-    public static String basicTranslate(@NotNull String input) {
-        return ChatColor.translateAlternateColorCodes('&', input);
-    }
+    private static final Pattern PATTERN = Pattern.compile("&\\[([A-Fa-f0-9]{6})]");
 
     /**
      * Translates a string with the basic color code and the hex color code.
