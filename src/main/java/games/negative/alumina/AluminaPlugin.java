@@ -28,6 +28,8 @@ package games.negative.alumina;
 import games.negative.alumina.command.builder.CommandBuilder;
 import games.negative.alumina.command.structure.AluminaCommand;
 import games.negative.alumina.listener.MenuListener;
+import games.negative.alumina.message.color.AluminaColorAgent;
+import games.negative.alumina.message.color.ColorAgent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -47,6 +49,7 @@ import java.util.Map;
 public abstract class AluminaPlugin extends JavaPlugin {
 
     private static AluminaPlugin instance;
+    private ColorAgent colorAgent;
 
     /**
      * This method is called when the plugin is enabled.
@@ -117,6 +120,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.colorAgent = new AluminaColorAgent();
         registerListeners(
                 new MenuListener()
         );
@@ -131,5 +135,18 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     public static AluminaPlugin getAluminaInstance() {
         return instance;
+    }
+
+    @NotNull
+    public ColorAgent getColorAgent() {
+        // Complete null-safety check.
+        if (this.colorAgent == null)
+            this.colorAgent = new AluminaColorAgent();
+
+        return colorAgent;
+    }
+
+    public void setColorAgent(@NotNull ColorAgent colorAgent) {
+        this.colorAgent = colorAgent;
     }
 }

@@ -1,0 +1,40 @@
+package games.negative.alumina.message.color;
+
+import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Alumina's default color agent.
+ */
+public class AluminaColorAgent implements ColorAgent {
+
+    /*
+     * This pattern is used to match hex colors.
+     *
+     * Example &[FFFFFF] would be matched as #FFFFFF
+     */
+    private final Pattern PATTERN = Pattern.compile("&\\[([A-Fa-f0-9]{6})]");
+
+    /*
+     * This is the fallback color agent.
+     */
+    private final ColorAgent fallback;
+
+    public AluminaColorAgent() {
+        this.fallback = new MinecraftColorAgent();
+    }
+
+    @Override
+    public @NotNull String translate(@NotNull String input) {
+        Matcher matcher = PATTERN.matcher(input);
+        while (matcher.find()) {
+            String color = input.substring(matcher.start(), matcher.end());
+            input = input.replace(color, String.valueOf(ChatColor.of(color)));
+            matcher = PATTERN.matcher(input);
+        }
+        return fallback.translate(input);
+    }
+}

@@ -28,6 +28,8 @@
 package games.negative.alumina.message;
 
 import com.google.common.base.Preconditions;
+import games.negative.alumina.AluminaPlugin;
+import games.negative.alumina.message.color.ColorAgent;
 import games.negative.alumina.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
@@ -48,6 +50,11 @@ import java.util.regex.Pattern;
  * <p>
  */
 public class Message {
+
+    /*
+     * This is the color agent that is used to translate color codes.
+     */
+    private final ColorAgent colorAgent;
 
     /*
      * This is the default, unmodified message.
@@ -72,6 +79,7 @@ public class Message {
     protected Message(@NotNull String text) {
         this.def = text;
         this.current = text;
+        this.colorAgent = AluminaPlugin.getAluminaInstance().getColorAgent();
     }
 
     /**
@@ -88,6 +96,7 @@ public class Message {
 
     /**
      * Allow the message to be parsed by PlaceholderAPI.
+     *
      * @return The message.
      * @throws IllegalStateException If PlaceholderAPI is not installed.
      */
@@ -103,7 +112,7 @@ public class Message {
      * @param sender The sender to send the message to.
      */
     public void send(@NotNull CommandSender sender) {
-        String translate = ColorUtil.translate(this.current);
+        String translate = colorAgent.translate(this.current);
         String text = parsePAPI(sender, translate);
         String[] message = text.split("\n");
 
@@ -116,11 +125,12 @@ public class Message {
 
     /**
      * Send the final message to a iterable collection of a class that extends {@link CommandSender}
+     *
      * @param iterable The iterable collection of a class that extends {@link CommandSender}
-     * @param <T> The class that extends {@link CommandSender}
+     * @param <T>      The class that extends {@link CommandSender}
      */
     public <T extends Iterable<? extends CommandSender>> void send(T iterable) {
-        String translate = ColorUtil.translate(this.current);
+        String translate = colorAgent.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 
@@ -137,7 +147,7 @@ public class Message {
      * Broadcast the final message to the server.
      */
     public void broadcast() {
-        String translate = ColorUtil.translate(this.current);
+        String translate = colorAgent.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 
@@ -180,7 +190,8 @@ public class Message {
 
     /**
      * Parses the message using PlaceholderAPI.
-     * @param sender The sender to parse the message for.
+     *
+     * @param sender  The sender to parse the message for.
      * @param message The message to parse.
      * @return The parsed message.
      * @apiNote The sender parameter can be null if you want to parse the message for the console.
