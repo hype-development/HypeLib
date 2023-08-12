@@ -1,23 +1,93 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
+import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 /**
  * A location utility to handle some location related tasks.
  */
+@UtilityClass
 public class LocationUtil {
 
     /**
+     * This method is used to convert a location to a yaml map.
+     *
+     * @param location The location to convert.
+     * @return The yaml map.
+     */
+    @NotNull
+    public Map<String, Object> toYaml(@NotNull Location location) {
+        World world = location.getWorld();
+        Preconditions.checkNotNull(world, "World cannot be null!");
+
+        return Map.of(
+                "world", world.getName(),
+                "x", location.getX(),
+                "y", location.getY(),
+                "z", location.getZ(),
+                "yaw", location.getYaw(),
+                "pitch", location.getPitch()
+        );
+    }
+
+    /**
+     * This method is used to convert a configuration section to a location.
+     *
+     * @param section The section to convert.
+     * @return The location.
+     */
+    @NotNull
+    public Location fromYaml(@NotNull ConfigurationSection section) {
+        World world = Bukkit.getWorld(section.getString("world", "world"));
+        Preconditions.checkNotNull(world, "World cannot be null!");
+
+        return new Location(
+                world,
+                section.getDouble("x", 0),
+                section.getDouble("y", 0),
+                section.getDouble("z", 0),
+                (float) section.getDouble("yaw", 0),
+                (float) section.getDouble("pitch", 0)
+        );
+    }
+
+    /**
+     * This method is used to convert a map to a location.
+     *
+     * @param map The map to convert.
+     * @return The location.
+     */
+    @NotNull
+    public Location fromYaml(@NotNull Map<String, Object> map) {
+        World world = Bukkit.getWorld((String) map.get("world"));
+        Preconditions.checkNotNull(world, "World cannot be null!");
+
+        return new Location(
+                world,
+                (double) map.get("x"),
+                (double) map.get("y"),
+                (double) map.get("z"),
+                (float) map.get("yaw"),
+                (float) map.get("pitch")
+        );
+    }
+
+    /**
      * Check if a location is inside a cuboid.
+     *
      * @param location The location to check.
-     * @param min The minimum location of the cuboid.
-     * @param max The maximum location of the cuboid.
+     * @param min      The minimum location of the cuboid.
+     * @param max      The maximum location of the cuboid.
      * @return Whether the location is inside the cuboid.
      */
-    public static boolean isInside(@NotNull Location location, @NotNull Location min, @NotNull Location max) {
+    public boolean isInside(@NotNull Location location, @NotNull Location min, @NotNull Location max) {
         World locationWorld = location.getWorld();
         World minWorld = min.getWorld();
         World maxWorld = max.getWorld();
