@@ -27,7 +27,11 @@
 
 package games.negative.alumina.util;
 
-public class Pair<I, O> {
+import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+
+@ToString
+public class Pair<I, O> implements Cloneable {
 
     private I input;
     private O output;
@@ -52,4 +56,19 @@ public class Pair<I, O> {
     public void setOutput(O output) {
         this.output = output;
     }
+
+    @Override
+    @NotNull
+    public Pair<I, O> clone() {
+        try {
+            Pair<I, O> clone = (Pair<I, O>) super.clone();
+            clone.setInput(input);
+            clone.setOutput(output);
+
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            return new Pair<>(input, output);
+        }
+    }
+
 }
