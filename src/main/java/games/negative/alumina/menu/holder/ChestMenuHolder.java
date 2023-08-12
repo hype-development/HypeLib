@@ -31,6 +31,7 @@ import games.negative.alumina.menu.ChestMenu;
 import games.negative.alumina.menu.base.AluminaMenu;
 import games.negative.alumina.menu.base.AluminaMenuHolder;
 import games.negative.alumina.menu.base.MenuItem;
+import games.negative.alumina.util.DataHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -38,7 +39,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,10 +71,9 @@ public class ChestMenuHolder implements AluminaMenuHolder<ChestMenu> {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
 
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        if (!container.has(AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING)) return;
+        if (!DataHandler.has(meta, AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING)) return;
 
-        String function = container.get(AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING);
+        String function = DataHandler.get(meta, AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING);
         if (function == null) return;
 
         MenuItem menuItem = gui.byKey(function);
