@@ -33,6 +33,7 @@ import games.negative.alumina.menu.base.AluminaMenu;
 import games.negative.alumina.menu.base.MenuItem;
 import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -41,7 +42,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -128,8 +128,7 @@ public abstract class ChestMenu implements AluminaMenu {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
 
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING, key);
+        DataHandler.set(meta, AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING, key);
 
         item.setItemMeta(meta);
     }
