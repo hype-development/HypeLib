@@ -28,6 +28,7 @@
 package games.negative.alumina.message;
 
 import com.google.common.base.Preconditions;
+import games.negative.alumina.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -47,11 +48,6 @@ import java.util.regex.Pattern;
  * <p>
  */
 public class Message {
-
-    /*
-     * This pattern is used to match hex colors.
-     */
-    private static final Pattern PATTERN = Pattern.compile("#[a-fA-F0-9]{6}");
 
     /*
      * This is the default, unmodified message.
@@ -107,7 +103,7 @@ public class Message {
      * @param sender The sender to send the message to.
      */
     public void send(@NotNull CommandSender sender) {
-        String translate = translate();
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(sender, translate);
         String[] message = text.split("\n");
 
@@ -124,7 +120,7 @@ public class Message {
      * @param <T> The class that extends {@link CommandSender}
      */
     public <T extends Iterable<? extends CommandSender>> void send(T iterable) {
-        String translate = translate();
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 
@@ -141,7 +137,7 @@ public class Message {
      * Broadcast the final message to the server.
      */
     public void broadcast() {
-        String translate = translate();
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 
@@ -180,21 +176,6 @@ public class Message {
      */
     public static Message of(@NotNull List<String> text) {
         return new Message(String.join("\n", text));
-    }
-
-    /**
-     * Translates the message to support color codes and hex colors.
-     *
-     * @return The translated message.
-     */
-    private String translate() {
-        Matcher matcher = PATTERN.matcher(current);
-        while (matcher.find()) {
-            String color = current.substring(matcher.start(), matcher.end());
-            current = current.replace(color, String.valueOf(ChatColor.of(color)));
-            matcher = PATTERN.matcher(current);
-        }
-        return ChatColor.translateAlternateColorCodes('&', current);
     }
 
     /**
