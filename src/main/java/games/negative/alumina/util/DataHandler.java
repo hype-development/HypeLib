@@ -25,7 +25,7 @@ public class DataHandler {
      * @return The value, or null if it does not exist.
      */
     @Nullable
-    public <V extends PersistentDataType<V, V>, T extends PersistentDataHolder> V get(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type) {
+    public <V, T extends PersistentDataHolder> V get(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type) {
         PersistentDataContainer container = holder.getPersistentDataContainer();
         if (!container.has(key, type)) return null;
 
@@ -44,7 +44,7 @@ public class DataHandler {
      * @return The value, or the default value if it does not exist.
      */
     @NotNull
-    public <V extends PersistentDataType<V, V>, T extends PersistentDataHolder> V getOrDefault(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type, @NotNull V def) {
+    public <V, T extends PersistentDataHolder> V getOrDefault(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type, @NotNull V def) {
         V value = get(holder, key, type);
         return value == null ? def : value;
     }
@@ -71,7 +71,7 @@ public class DataHandler {
      * @param <V>    The type of the value.
      * @param <T>    The type of the holder.
      */
-    public <V extends PersistentDataType<V, V>, T extends PersistentDataHolder> void set(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type, @NotNull V value) {
+    public <V, T extends PersistentDataHolder> void set(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type, @NotNull V value) {
         PersistentDataContainer container = holder.getPersistentDataContainer();
         container.set(key, type, value);
     }
@@ -86,7 +86,7 @@ public class DataHandler {
      * @param <T>    The type of the holder.
      * @return If the holder has the value.
      */
-    public <V extends PersistentDataType<V, V>, T extends PersistentDataHolder> boolean has(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type) {
+    public <V, T extends PersistentDataHolder> boolean has(@NotNull T holder, @NotNull NamespacedKey key, @NotNull PersistentDataType<V, V> type) {
         PersistentDataContainer container = holder.getPersistentDataContainer();
         return container.has(key, type);
     }
