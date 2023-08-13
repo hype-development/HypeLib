@@ -27,7 +27,8 @@
 
 package games.negative.alumina.util;
 
-import lombok.ToString;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -35,32 +36,12 @@ import org.jetbrains.annotations.NotNull;
  * @param <I> Input
  * @param <O> Output
  */
-@ToString
+@Data
+@AllArgsConstructor
 public class Pair<I, O> implements Cloneable {
 
     private I input;
     private O output;
-
-    public Pair(I input, O output) {
-        this.input = input;
-        this.output = output;
-    }
-
-    public I getInput() {
-        return input;
-    }
-
-    public O getOutput() {
-        return output;
-    }
-
-    public void setInput(I input) {
-        this.input = input;
-    }
-
-    public void setOutput(O output) {
-        this.output = output;
-    }
 
     @Override
     @NotNull
