@@ -25,6 +25,7 @@
 
 package games.negative.alumina.command;
 
+import games.negative.alumina.message.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -59,5 +60,21 @@ public record Context(@NotNull String name, @NotNull String[] args, @NotNull Com
     @NotNull
     public Optional<String> argument(int index) {
         return (index >= args.length ? Optional.empty() : Optional.of(args[index]));
+    }
+
+    /**
+     * Send a message to the sender of the command.
+     * @param message The message to send.
+     */
+    public void message(@NotNull String message) {
+        sender().sendMessage(message);
+    }
+
+    /**
+     * Send a message to the sender of the command.
+     * @param message The message to send.
+     */
+    public void message(@NotNull Message message) {
+        message.send(sender());
     }
 }
