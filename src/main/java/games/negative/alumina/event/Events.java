@@ -39,7 +39,7 @@ public class Events {
      *
      * @param event Event to call
      */
-    public static void call(@NotNull Event event) {
+    public static <T extends Event> void call(@NotNull T event) {
         Bukkit.getPluginManager().callEvent(event);
     }
 
