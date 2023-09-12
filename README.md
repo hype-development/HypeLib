@@ -1,4 +1,5 @@
 # Wiki
+[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://docs.alumina.dev)
 
 ## Main Features
 * [Enhanced command system](#enhanced-command-system)
