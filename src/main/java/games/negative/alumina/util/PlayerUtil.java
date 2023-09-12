@@ -47,6 +47,10 @@ public class PlayerUtil {
             player.getPassengers().forEach(Entity::leaveVehicle);
     }
 
+    /**
+     * Reset the player's health.
+     * @param player The player to reset.
+     */
     private static void resetHealth(@NotNull Player player) {
         AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (attribute == null) return;
