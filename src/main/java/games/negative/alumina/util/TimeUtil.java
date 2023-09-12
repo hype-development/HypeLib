@@ -52,20 +52,15 @@ public class TimeUtil {
         int toHour = (int) ((time / (1000 * 60 * 60)) % 24);
         int toDays = (int) (time / (1000 * 60 * 60 * 24));
 
-        boolean dayNotZero = toDays != 0;
-        boolean hourNotZero = toHour != 0;
-        boolean minuteNotZero = toMin != 0;
-        boolean secondNotZero = toSec != 0;
-
         String day = (small ? "d" : (toDays == 1 ? "day" : "days"));
         String hour = (small ? "h" : (toHour == 1 ? "hour" : "hours"));
         String minute = (small ? "m" : (toMin == 1 ? "minute" : "minutes"));
         String second = (small ? "s" : (toSec == 1 ? "second" : "seconds"));
 
-        String dayFormat = (dayNotZero ? toDays + (small ? "" : " ") + day + " " : "");
-        String hourFormat = (hourNotZero ? toHour + (small ? "" : " ") + hour + " " : "");
-        String minuteFormat = (minuteNotZero ? toMin + (small ? "" : " ") + minute + " " : "");
-        String secondFormat = (secondNotZero ? toSec + (small ? "" : " ") + second : "");
+        String dayFormat = (toDays != 0 ? toDays + (small ? "" : " ") + day + " " : "");
+        String hourFormat = (toHour != 0 ? toHour + (small ? "" : " ") + hour + " " : "");
+        String minuteFormat = (toMin != 0 ? toMin + (small ? "" : " ") + minute + " " : "");
+        String secondFormat = (toSec != 0 ? toSec + (small ? "" : " ") + second : "");
 
         return dayFormat + hourFormat + minuteFormat + secondFormat;
     }
