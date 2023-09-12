@@ -40,7 +40,7 @@ public class TimeUtil {
     /**
      * Format a time into a human-readable format.
      * @param time Time to format
-     * @param small Whether to use small format
+     * @param small Whether to use small format such as 1s, 1d, etc.
      * @return Formatted time
      */
     @NotNull
@@ -63,6 +63,15 @@ public class TimeUtil {
         String secondFormat = (toSec != 0 ? toSec + (small ? "" : " ") + second : "");
 
         return dayFormat + hourFormat + minuteFormat + secondFormat;
+    }
+
+    /**
+     * Format a time into a human-readable format.
+     * @param time Time to format
+     * @return Formatted time
+     */
+    public static String format(long time) {
+        return format(time, false);
     }
 
     /**
