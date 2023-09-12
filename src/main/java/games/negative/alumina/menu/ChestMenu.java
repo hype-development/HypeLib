@@ -33,7 +33,7 @@ import games.negative.alumina.menu.base.AluminaMenu;
 import games.negative.alumina.menu.base.MenuItem;
 import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
-import games.negative.alumina.util.DataHandler;
+import games.negative.alumina.util.NBTEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -128,7 +128,7 @@ public abstract class ChestMenu implements AluminaMenu {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
 
-        DataHandler.set(meta, AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING, key);
+        NBTEditor.set(meta, AluminaMenu.FUNCTION_KEY, PersistentDataType.STRING, key);
 
         item.setItemMeta(meta);
     }

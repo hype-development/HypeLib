@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
  * This is a class used to reduce boilerplate when working with persistent data.
  */
 @UtilityClass
-public class DataHandler {
+public class NBTEditor {
 
     /**
      * This method is used to get a value from a {@link PersistentDataHolder}.
