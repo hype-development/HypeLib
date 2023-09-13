@@ -84,7 +84,9 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     @Override
     public void setItem(int slot, @NotNull ItemStack item, @Nullable String functionKey) {
-        items.remove(slot);
+        MenuItem removed = items.remove(slot);
+        if (removed != null)
+            byKey.remove(removed.key());
 
         applyFunction(item, functionKey);
 
@@ -140,6 +142,11 @@ public abstract class ChestMenu implements AluminaMenu {
     @Override
     public void clearSlot(int slot) {
         inventory.clear(slot);
+
+        // Ensure to remove from the map.
+        MenuItem removed = items.remove(slot);
+        if (removed != null)
+            byKey.remove(removed.key());
     }
 
     /**
