@@ -160,21 +160,42 @@ public abstract class ChestMenu implements AluminaMenu {
         player.openInventory(inventory);
     }
 
+    /**
+     * This method is invoked when a player clicks the menu, which allows you to handle clicks.
+     * @param player The player who clicked the menu.
+     * @param event  The event.
+     */
     @Override
     public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
         // Override this method to handle clicks.
     }
 
+    /**
+     * This method is invoked when a player clicks a functional item in the menu.
+     * @param player The player who clicked the menu.
+     * @param item   The item that was clicked.
+     * @param event  The event.
+     */
     @Override
     public void onFunctionClick(@NotNull Player player, @NotNull MenuItem item, @NotNull InventoryClickEvent event) {
         // Override this method to handle function clicks.
     }
 
+    /**
+     * This method is invoked when a player closes the menu, which allows you to handle close.
+     * @param player The player who closed the menu.
+     * @param event  The event.
+     */
     @Override
     public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
         // Override this method to handle close.
     }
 
+    /**
+     * This method is invoked when a player opens the menu, which allows you to handle open.
+     * @param player The player who opened the menu.
+     * @param event  The event.
+     */
     @Override
     public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
         // Override this method to handle open.
