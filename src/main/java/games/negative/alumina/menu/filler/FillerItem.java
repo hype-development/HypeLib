@@ -55,6 +55,13 @@ public class FillerItem extends ItemStack {
     public static final FillerItem GREEN = new FillerItem(Material.GREEN_STAINED_GLASS_PANE);
     public static final FillerItem RED = new FillerItem(Material.RED_STAINED_GLASS_PANE);
 
+    /**
+     * An array of all the filler items to retrieve them by index.
+     */
+    private static final FillerItem[] values = new FillerItem[] {
+        BLACK, WHITE, ORANGE, MAGENTA, LIGHT_BLUE, YELLOW, LIME, PINK, GRAY, LIGHT_GRAY, CYAN, PURPLE, BLUE, BROWN, GREEN, RED
+    };
+
     public FillerItem(@NotNull Material type) {
         super(type);
 
@@ -63,6 +70,42 @@ public class FillerItem extends ItemStack {
 
         meta.setDisplayName(" ");
         setItemMeta(meta);
+    }
+
+    /**
+     * Returns an array of all the filler items.
+     * @return an array of all the filler items.
+     */
+    public static FillerItem[] values() {
+        return values;
+    }
+
+    /**
+     * Returns the filler item with the given name.
+     * @param name the name of the filler item.
+     * @return the filler item with the given name.
+     */
+    public static FillerItem valueOf(@NotNull String name) {
+        for (FillerItem item : values) {
+            if (item.getType().name().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the filler item with the given material.
+     * @param material the material of the filler item.
+     * @return the filler item with the given material.
+     */
+    public static FillerItem valueOf(@NotNull Material material) {
+        for (FillerItem item : values) {
+            if (item.getType().equals(material)) {
+                return item;
+            }
+        }
+        return null;
     }
 
 }
