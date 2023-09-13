@@ -25,7 +25,7 @@
  *
  */
 
-package games.negative.alumina.util;
+package games.negative.alumina.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
