@@ -30,10 +30,8 @@ package games.negative.alumina.message;
 import com.google.common.base.Preconditions;
 import games.negative.alumina.AluminaPlugin;
 import games.negative.alumina.message.color.ColorAgent;
-import games.negative.alumina.model.message.Deliverable;
-import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.model.Deliverable;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,8 +39,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Represents a message that can be sent to a {@link CommandSender}.

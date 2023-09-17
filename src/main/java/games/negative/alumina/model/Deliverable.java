@@ -1,4 +1,4 @@
-package games.negative.alumina.model.message;
+package games.negative.alumina.model;
 
 import org.jetbrains.annotations.NotNull;
 
