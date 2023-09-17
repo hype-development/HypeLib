@@ -1,5 +1,5 @@
 # Repository
-![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/games.negative.alumina/alumina?server=https%3A%2F%2Frepo.negative.games&nexusVersion=3)
+![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/games.negative.alumina/alumina?server=https%3A%2F%2Frepo.negative.games&nexusVersion=3) [![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://docs.alumina.dev)
 
 ## Maven
 
@@ -29,7 +29,6 @@ implementation("games.negative.alumina:alumina:{VERSION}")
 ```
 
 # Wiki
-[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://docs.alumina.dev)
 
 ## Main Features
 * [Enhanced command system](#enhanced-command-system)
