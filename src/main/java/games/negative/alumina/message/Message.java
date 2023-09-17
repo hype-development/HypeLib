@@ -30,6 +30,7 @@ package games.negative.alumina.message;
 import com.google.common.base.Preconditions;
 import games.negative.alumina.AluminaPlugin;
 import games.negative.alumina.message.color.ColorAgent;
+import games.negative.alumina.model.message.Deliverable;
 import games.negative.alumina.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
@@ -49,7 +50,7 @@ import java.util.regex.Pattern;
  * This supports color codes, placeholders, and hex colors.
  * <p>
  */
-public class Message {
+public class Message implements Deliverable<CommandSender> {
 
     /*
      * This is the color agent that is used to translate color codes.
@@ -111,6 +112,7 @@ public class Message {
      *
      * @param sender The sender to send the message to.
      */
+    @Override
     public void send(@NotNull CommandSender sender) {
         String translate = colorAgent.translate(this.current);
         String text = parsePAPI(sender, translate);
