@@ -1,3 +1,33 @@
+# Repository
+![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/games.negative.alumina/alumina?server=https%3A%2F%2Frepo.negative.games&nexusVersion=3)
+
+## Maven
+
+```xml
+<repository>
+    <id>Negative Games</id>
+    <url>https://repo.negative.games/repository/development/</url>
+</repository>
+```
+
+```xml
+<dependency>
+    <groupId>games.negative.alumina</groupId>
+    <artifactId>alumina</artifactId>
+    <version>{VERSION}</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+## Gradle
+```groovy
+maven { url 'https://repo.negative.games/repository/development/' }
+```
+
+```groovy
+implementation("games.negative.alumina:alumina:{VERSION}")
+```
+
 # Wiki
 [![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://docs.alumina.dev)
 
