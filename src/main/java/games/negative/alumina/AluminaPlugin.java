@@ -83,7 +83,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
         }
 
         AluminaCommand command = builder.build();
-        commandMap.register(name, command);
+        commandMap.register(getName(), command);
 
         List<AluminaCommand> sub = getRecursiveSubCommand(command);
         if (sub.isEmpty()) return;
@@ -98,7 +98,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
                     cleanse(shortcut, existingShortcut, commandMap);
                 }
 
-                commandMap.register(shortcut, cmd);
+                commandMap.register(getName(), cmd);
             }
         }
     }
