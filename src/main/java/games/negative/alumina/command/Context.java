@@ -47,9 +47,18 @@ public record Context(@NotNull String name, @NotNull String[] args, @NotNull Com
      * @throws NullPointerException if the sender is not a player.
      * @return the player who executed the command.
      */
+    @Deprecated
     @Nullable
     public Player getPlayer() {
         return sender() instanceof Player ? (Player) sender() : null;
+    }
+
+    /**
+     * Returns the player who executed the command.
+     * @return the player who executed the command.
+     */
+    public Optional<Player> player() {
+        return sender() instanceof Player ? Optional.of((Player) sender()) : Optional.empty();
     }
 
     /**
