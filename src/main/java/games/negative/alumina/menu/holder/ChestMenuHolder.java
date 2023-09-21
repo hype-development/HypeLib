@@ -63,10 +63,10 @@ public class ChestMenuHolder implements AluminaMenuHolder<ChestMenu> {
 
     @Override
     public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
+        gui.onClick(player, event);
+        
         ItemStack item = event.getCurrentItem();
         if (item == null) return;
-
-        gui.onClick(player, event);
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
