@@ -51,6 +51,7 @@ import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
+import java.util.logging.Logger;
 
 /**
  * Represents a intractable chest menu.
@@ -76,10 +77,10 @@ public abstract class ChestMenu implements AluminaMenu {
     public ChestMenu(@NotNull String title, int rows) {
         Preconditions.checkArgument(MathUtil.between(rows, 1, 6), "Rows must be greater than 0 and less than or equal to 6.");
 
-        this.rows = rows * 9;
+        this.rows = rows;
         this.title = title;
 
-        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), this.rows, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
         this.items = Maps.newHashMap();
         this.byKey = Maps.newHashMap();
     }
@@ -168,6 +169,10 @@ public abstract class ChestMenu implements AluminaMenu {
     public void clearSlot(int slot) {
         inventory.clear(slot);
 
+        if (freeSlots != null && !freeSlots.contains(slot)) {
+            freeSlots.add(slot);
+        }
+
         // Ensure to remove from the map.
         MenuItem removed = items.remove(slot);
         if (removed != null)
@@ -192,7 +197,17 @@ public abstract class ChestMenu implements AluminaMenu {
     public void refresh() {
         if (inventory == null) this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows, ColorUtil.translate(title));
 
-        items.forEach((index, item) -> inventory.setItem(index, item.item()));
+        items.forEach((index, item) -> {
+            if (index >= inventory.getSize()) {
+                // Disabled for now.
+//                Logger logger = Bukkit.getLogger();
+//                logger.warning("Tried to set item in slot " + index + " but the inventory only has " + inventory.getSize() + " slots.");
+//                logger.warning("Item: " + item.toString());
+                return;
+            }
+
+            inventory.setItem(index, item.item());
+        });
     }
 
     /**
@@ -206,7 +221,7 @@ public abstract class ChestMenu implements AluminaMenu {
     public void setRows(int rows) {
         Preconditions.checkArgument(MathUtil.between(rows, 1, 6), "Rows must be greater than 0 and less than or equal to 6.");
 
-        this.rows = rows * 9;
+        this.rows = rows;
     }
 
     /**
