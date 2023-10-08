@@ -47,8 +47,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * Represents a intractable chest menu.
@@ -62,7 +64,7 @@ public abstract class ChestMenu implements AluminaMenu {
     private final Map<Integer, MenuItem> items;
     private final Map<String, MenuItem> byKey;
 
-    private HashSet<Integer> freeSlots;
+    private Queue<Integer> freeSlots;
 
     /**
      * Using this constructor will allow you to create a new Chest Menu!
@@ -127,7 +129,7 @@ public abstract class ChestMenu implements AluminaMenu {
         // whenever we need to find a free slot.
         // Even tho in the grand scheme of things, it's a micro-performance boost, it's still a boost, I guess.
         if (this.freeSlots == null) {
-            this.freeSlots = new HashSet<>();
+            this.freeSlots = new ArrayDeque<>();
 
             for (int i = 0; i < inventory.getSize(); i++) {
                 if (this.items.containsKey(i)) continue;
@@ -136,10 +138,8 @@ public abstract class ChestMenu implements AluminaMenu {
             }
         }
 
-        int available = this.freeSlots.stream().findFirst().orElse(-1);
-        if (available == -1) return;
-
-        this.freeSlots.remove(available);
+        Integer available = this.freeSlots.poll();
+        if (available == null) return;
 
         setItem(available, item, functionKey);
     }
