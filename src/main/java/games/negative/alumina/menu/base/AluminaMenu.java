@@ -97,6 +97,11 @@ public interface AluminaMenu {
     void open(@NotNull Player player);
 
     /**
+     * This method will allow you to refresh the menu.
+     */
+    void refresh();
+
+    /**
      * This method will allow you to listen to the open event of the menu.
      *
      * @param player The player who opened the menu.
