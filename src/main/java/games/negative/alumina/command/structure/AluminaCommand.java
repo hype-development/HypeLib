@@ -131,7 +131,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         if (checkConsolePlayerCommand(sender) || !checkPermissions(sender) || !checkParams(sender, args) || checkSubCommands(sender, args))
             return true;
 
-        Context context = new Context(getName(), args, sender);
+        Context context = new Context(args, sender);
         component.execute(context);
         return true;
     }

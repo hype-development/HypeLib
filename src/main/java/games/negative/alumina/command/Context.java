@@ -35,12 +35,11 @@ import java.util.Optional;
 
 
 /**
- * This class is used to represent the context of a command when executed
- * @param name The name of the command
+ * This class is used to represent the context of a command when executed.
  * @param args The arguments of the command
  * @param sender The sender of the command
  */
-public record Context(@NotNull String name, @NotNull String[] args, @NotNull CommandSender sender) {
+public record Context(@NotNull String[] args, @NotNull CommandSender sender) {
 
     /**
      * Returns the player who executed the command.
