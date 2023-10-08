@@ -72,8 +72,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @apiNote The number of rows must be greater than 0 and less than or equal to 6.
      */
     public ChestMenu(@NotNull String title, int rows) {
-        Preconditions.checkArgument(rows > 0, "Rows must be greater than 0.");
-        Preconditions.checkArgument(rows <= 6, "Rows must be less than or equal to 6.");
+        Preconditions.checkArgument(MathUtil.between(rows, 1, 6), "Rows must be greater than 0 and less than or equal to 6.");
 
         this.rows = rows * 9;
         this.title = title;
