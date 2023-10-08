@@ -26,6 +26,8 @@ public class FileLoader {
         File resourceFile = new File(folder, resource);
         if (resourceFile.exists()) return resourceFile;
 
+        resourceFile.getParentFile().mkdirs();
+
         try (InputStream in = plugin.getResource(resource)) {
             Preconditions.checkNotNull(in, "Plugin Resource " + resource + " does not exist.");
 
