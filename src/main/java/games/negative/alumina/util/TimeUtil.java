@@ -32,7 +32,7 @@ import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents a time formatting utility which is used to format time into
+ * Represents a time-formatting utility which is used to format time into
  * a human-readable format.
  */
 public class TimeUtil {
@@ -40,7 +40,7 @@ public class TimeUtil {
     /**
      * Format a time into a human-readable format.
      * @param time Time to format
-     * @param small Whether to use small format such as 1s, 1d, etc.
+     * @param small Whether to use a small format such as 1s, 1d, etc.
      * @return Formatted time
      */
     @NotNull

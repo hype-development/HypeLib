@@ -14,12 +14,12 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Player utility to handle some player related tasks.
+ * Player utility to handle some player-related tasks.
  */
 public class PlayerUtil {
 
     /**
-     * Reset the player's... player.
+     * Reset the player to default properties.
      * @param player The player to reset.
      */
     public static void reset(@NotNull Player player) {
