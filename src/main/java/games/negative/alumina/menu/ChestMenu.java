@@ -195,7 +195,7 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     @Override
     public void refresh() {
-        if (inventory == null) this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows, ColorUtil.translate(title));
+        if (inventory == null) this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), (rows * 9), ColorUtil.translate(title));
 
         items.forEach((index, item) -> {
             if (index >= inventory.getSize()) {
