@@ -77,7 +77,7 @@ public abstract class ChestMenu implements AluminaMenu {
         this.rows = rows * 9;
         this.title = title;
 
-        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), this.rows, ColorUtil.translate(title));
         this.items = Maps.newHashMap();
         this.byKey = Maps.newHashMap();
     }
