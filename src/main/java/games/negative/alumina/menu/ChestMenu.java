@@ -131,7 +131,7 @@ public abstract class ChestMenu implements AluminaMenu {
         if (this.freeSlots == null) {
             this.freeSlots = new ArrayDeque<>();
 
-            for (int i = 0; i < inventory.getSize(); i++) {
+            for (int i = 0; i < (9 * rows); i++) {
                 if (this.items.containsKey(i)) continue;
 
                 this.freeSlots.add(i);
