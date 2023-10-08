@@ -63,8 +63,8 @@ public class ItemBuilder {
      * @param item The item to create the builder from.
      */
     public ItemBuilder(@NotNull ItemStack item) {
-        this.item = item;
-        this.meta = item.getItemMeta();
+        this.item = item.clone();
+        this.meta = this.item.getItemMeta();
 
         Preconditions.checkNotNull(this.meta, "ItemMeta cannot be null!");
     }
@@ -74,8 +74,8 @@ public class ItemBuilder {
      * @param builder The builder to create the builder from.
      */
     public ItemBuilder(@NotNull ItemBuilder builder) {
-        this.item = builder.item;
-        this.meta = builder.meta;
+        this.item = builder.item.clone();
+        this.meta = builder.meta.clone();
     }
 
     /**
@@ -104,6 +104,17 @@ public class ItemBuilder {
     public ItemBuilder setName(@NotNull String text) {
         this.meta.setDisplayName(ColorUtil.translate(text));
         return this;
+    }
+
+    /**
+     * Replace a placeholder in the display name with a replacement.
+     * @param placeholder The placeholder to replace.
+     * @param replacement The replacement for the placeholder.
+     * @return The current instance of the builder.
+     */
+    @NotNull
+    public ItemBuilder replaceName(@NotNull String placeholder, @NotNull String replacement) {
+        return this.setName(this.meta.getDisplayName().replace(placeholder, replacement));
     }
 
     /**
