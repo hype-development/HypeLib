@@ -32,7 +32,8 @@ public class FileLoader {
             OutputStream out = new FileOutputStream(resourceFile);
             ByteStreams.copy(in, out);
         } catch (Exception e) {
-            e.printStackTrace();
+            plugin.getLogger().severe("Failed to load resource " + resource + ".");
+            return null;
         }
 
         return resourceFile;
