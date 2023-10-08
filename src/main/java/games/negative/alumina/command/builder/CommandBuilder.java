@@ -43,85 +43,26 @@ import java.util.List;
 @Getter
 public class CommandBuilder {
 
-    /**
-     * -- GETTER --
-     *  Get the component of the command.
-     *
-     * @return The component of the command.
-     */
+    // Command Component
     private final Command component;
 
-    /**
-     * -- GETTER --
-     *  Get the name of the command.
-     *
-     * @return The name of the command.
-     */
     // Command Settings
     private String name;
 
-    /**
-     * -- GETTER --
-     *  Get the description of the command.
-     *
-     * @return The description of the command.
-     */
     private String description;
 
-    /**
-     * -- GETTER --
-     *  Get the usage of the command.
-     *
-     * @return The usage of the command.
-     */
     private String usage;
 
-    /**
-     * -- GETTER --
-     *  Get the aliases of the command.
-     *
-     * @return The aliases of the command.
-     */
     private List<String> aliases;
 
-    /**
-     * -- GETTER --
-     *  Get the state of the command.
-     *
-     * @return The state of the command.
-     */
     private boolean playerOnly;
 
-    /**
-     * -- GETTER --
-     *  Get the permissions of the command.
-     *
-     * @return The permissions of the command.
-     */
     private Permission[] permissions;
 
-    /**
-     * -- GETTER --
-     *  Get the parameters of the command.
-     *
-     * @return The parameters of the command.
-     */
     private String[] params;
 
-    /**
-     * -- GETTER --
-     * Get the shortcuts of the command.
-     *
-     * @return The shortcuts of the command.
-     */
     private String[] shortcuts;
 
-    /**
-     * -- GETTER --
-     *  Get the sub commands of the command.
-     *
-     * @return The sub commands of the command.
-     */
     private final List<CommandBuilder> subCommands;
 
     /**
