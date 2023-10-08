@@ -33,6 +33,7 @@ import games.negative.alumina.menu.base.AluminaMenu;
 import games.negative.alumina.menu.base.MenuItem;
 import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.MathUtil;
 import games.negative.alumina.util.NBTEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -46,6 +47,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -53,24 +55,38 @@ import java.util.Map;
  */
 public abstract class ChestMenu implements AluminaMenu {
 
-    private final Inventory inventory;
+    private String title = "Chest Menu";
+    private int rows = 1;
+
+    private Inventory inventory;
     private final Map<Integer, MenuItem> items;
     private final Map<String, MenuItem> byKey;
+
+    private HashSet<Integer> freeSlots;
 
     /**
      * Using this constructor will allow you to create a new Chest Menu!
      *
      * @param title The title of the menu.
      * @param rows The amount of rows the menu should have.
-     * @apiNote The amount of rows must be greater than 0 and less than or equal to 6.
+     * @apiNote The number of rows must be greater than 0 and less than or equal to 6.
      */
     public ChestMenu(@NotNull String title, int rows) {
         Preconditions.checkArgument(rows > 0, "Rows must be greater than 0.");
         Preconditions.checkArgument(rows <= 6, "Rows must be less than or equal to 6.");
 
-        int size = rows * 9;
+        this.rows = rows * 9;
+        this.title = title;
 
-        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), size, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows, ColorUtil.translate(title));
+        this.items = Maps.newHashMap();
+        this.byKey = Maps.newHashMap();
+    }
+
+    /**
+     * Using this constructor will allow you to create a new Chest Menu!
+     */
+    public ChestMenu() {
         this.items = Maps.newHashMap();
         this.byKey = Maps.newHashMap();
     }
@@ -84,6 +100,9 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     @Override
     public void setItem(int slot, @NotNull ItemStack item, @Nullable String functionKey) {
+        if (this.freeSlots != null)
+            this.freeSlots.remove(slot);
+
         MenuItem removed = items.remove(slot);
         if (removed != null)
             byKey.remove(removed.key());
@@ -105,16 +124,23 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     @Override
     public void addItem(@NotNull ItemStack item, @Nullable String functionKey) {
-        int available = -1;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            MenuItem menuItem = this.items.get(i);
-            if (menuItem == null) {
-                available = i;
-                break;
+        // We're using a set to store the free slots, so we do not need to loop through the entire inventory
+        // whenever we need to find a free slot.
+        // Even tho in the grand scheme of things, it's a micro-performance boost, it's still a boost, I guess.
+        if (this.freeSlots == null) {
+            this.freeSlots = new HashSet<>();
+
+            for (int i = 0; i < inventory.getSize(); i++) {
+                if (this.items.containsKey(i)) continue;
+
+                this.freeSlots.add(i);
             }
         }
 
+        int available = this.freeSlots.stream().findFirst().orElse(-1);
         if (available == -1) return;
+
+        this.freeSlots.remove(available);
 
         setItem(available, item, functionKey);
     }
@@ -155,9 +181,33 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     @Override
     public void open(@NotNull Player player) {
-        items.forEach((index, item) -> inventory.setItem(index, item.item()));
+        refresh();
 
         player.openInventory(inventory);
+    }
+
+    /**
+     * This method will allow you to refresh the menu.
+     */
+    @Override
+    public void refresh() {
+        if (inventory == null) this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows, ColorUtil.translate(title));
+
+        items.forEach((index, item) -> inventory.setItem(index, item.item()));
+    }
+
+    /**
+     * This method will allow you to set the menu title.
+     * @param title The title to set.
+     */
+    public void setTitle(@NotNull String title) {
+        this.title = title;
+    }
+
+    public void setRows(int rows) {
+        Preconditions.checkArgument(MathUtil.between(rows, 1, 6), "Rows must be greater than 0 and less than or equal to 6.");
+
+        this.rows = rows * 9;
     }
 
     /**
@@ -207,6 +257,22 @@ public abstract class ChestMenu implements AluminaMenu {
      */
     public Map<Integer, MenuItem> getItems() {
         return items;
+    }
+
+    /**
+     * Get the menu title.
+     * @return The menu title.
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Get the amount of rows.
+     * @return The amount of rows.
+     */
+    public int getRows() {
+        return rows;
     }
 
     /**
