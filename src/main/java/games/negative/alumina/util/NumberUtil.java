@@ -383,7 +383,7 @@ public class NumberUtil {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMGTPE".charAt(exp - 1);
+        char suffix = "kMBTQqSsOND".charAt(exp - 1);
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
@@ -397,7 +397,7 @@ public class NumberUtil {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMGTPE".charAt(exp - 1);
+        char suffix = "kMBTQqSsOND".charAt(exp - 1);
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
@@ -411,7 +411,7 @@ public class NumberUtil {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMGTPE".charAt(exp - 1);
+        char suffix = "kMBTQqSsOND".charAt(exp - 1);
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
