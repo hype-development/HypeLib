@@ -205,6 +205,8 @@ public abstract class AluminaPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+
+        load();
     }
 
     @Override
