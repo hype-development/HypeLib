@@ -59,6 +59,11 @@ public abstract class AluminaPlugin extends JavaPlugin {
     private ColorAgent colorAgent;
 
     /**
+     * This method is called when the plugin is initially loaded.
+     */
+    public abstract void load();
+
+    /**
      * This method is called when the plugin is enabled.
      */
     public abstract void enable();
@@ -193,8 +198,12 @@ public abstract class AluminaPlugin extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         instance = this;
+    }
+
+    @Override
+    public void onEnable() {
         this.colorAgent = new AluminaColorAgent();
         registerListeners(
                 new MenuListener()
