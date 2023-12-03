@@ -33,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -47,6 +46,8 @@ public class NumberUtil {
      * Format a number to a fancy format.
      */
     private static final DecimalFormat FANCY_FORMAT = new DecimalFormat("###,###,###,###,###.##");
+
+    private static final String SUFFIXES = "kMBTQqSsOND";
 
     /**
      * Parse a number to a fancy format.
@@ -403,10 +404,23 @@ public class NumberUtil {
      * @return Condensed number
      */
     public static String condense(int number) {
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    public static String condense(int number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMBTQqSsOND".charAt(exp - 1);
+
+        String suffixes = (set == null) ? SUFFIXES : new String(set);
+        char suffix = suffixes.charAt(Math.min(exp - 1, suffixes.length() - 1));
+
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
@@ -416,10 +430,23 @@ public class NumberUtil {
      * @return Condensed number
      */
     public static String condense(double number) {
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    public static String condense(double number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMBTQqSsOND".charAt(exp - 1);
+
+        String suffixes = (set == null) ? SUFFIXES : new String(set);
+        char suffix = suffixes.charAt(Math.min(exp - 1, suffixes.length() - 1));
+
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
@@ -429,10 +456,23 @@ public class NumberUtil {
      * @return Condensed number
      */
     public static String condense(long number) {
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    public static String condense(long number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
         int exp = (int) (Math.log(number) / Math.log(1000));
-        char suffix = "kMBTQqSsOND".charAt(exp - 1);
+
+        String suffixes = (set == null) ? SUFFIXES : new String(set);
+        char suffix = suffixes.charAt(Math.min(exp - 1, suffixes.length() - 1));
+
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
     }
 
@@ -441,14 +481,31 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
-    public static String condense(BigDecimal number) {
+    public static String condense(final BigDecimal number) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    public static String condense(final BigDecimal number, final char[] set) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
         BigDecimal thousand = BigDecimal.valueOf(1000);
         if (number.compareTo(thousand) < 0) {
             return number.stripTrailingZeros().toPlainString(); // Return the number itself if less than 1000.
         }
 
         int exp = (int) (Math.floor(Math.log10(number.doubleValue()) / 3));
-        char suffix = "kMBTQqSsOND".charAt(exp - 1);
+
+        String suffixes = (set == null) ? SUFFIXES : new String(set);
+        char suffix = suffixes.charAt(Math.min(exp - 1, suffixes.length() - 1));
+
         BigDecimal result = number.divide(thousand.pow(exp), 1, RoundingMode.HALF_UP);
 
         return String.format("%.1f%c", result, suffix);
