@@ -28,8 +28,15 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Represents a number utility class used to handle numbers, parse them, etc.
@@ -98,6 +105,15 @@ public class NumberUtil {
      * @return Parsed number
      */
     public static String decimalFormat(byte number) {
+        return FANCY_FORMAT.format(number);
+    }
+
+    /**
+     * Parse a number to a fancy format.
+     * @param number Number to parse
+     * @return Parsed number
+     */
+    public static String decimalFormat(BigDecimal number) {
         return FANCY_FORMAT.format(number);
     }
 
@@ -418,6 +434,48 @@ public class NumberUtil {
         int exp = (int) (Math.log(number) / Math.log(1000));
         char suffix = "kMBTQqSsOND".charAt(exp - 1);
         return String.format("%.1f%c", number / Math.pow(1000, exp), suffix);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @return Condensed number
+     */
+    public static String condense(BigDecimal number) {
+        BigDecimal thousand = BigDecimal.valueOf(1000);
+        if (number.compareTo(thousand) < 0) {
+            return number.stripTrailingZeros().toPlainString(); // Return the number itself if less than 1000.
+        }
+
+        int exp = (int) (Math.floor(Math.log10(number.doubleValue()) / 3));
+        char suffix = "kMBTQqSsOND".charAt(exp - 1);
+        BigDecimal result = number.divide(thousand.pow(exp), 1, RoundingMode.HALF_UP);
+
+        return String.format("%.1f%c", result, suffix);
+    }
+
+    /**
+     * Simulates the result of the vanilla fortune enchantment.
+     * @param item The item to simulate
+     * @param tool The tool to simulate
+     * @return The simulated result
+     */
+    public static int simulateFortune(final ItemStack tool, final ItemStack item) {
+        Preconditions.checkNotNull(tool, "'tool' cannot be null!");
+        Preconditions.checkNotNull(item, "'item' cannot be null!");
+
+        int initial = item.getAmount();
+
+        ItemMeta meta = tool.getItemMeta();
+        if (meta == null) return initial;
+
+        if (!meta.hasEnchant(Enchantment.LOOT_BONUS_BLOCKS)) return initial;
+
+        int level = meta.getEnchantLevel(Enchantment.LOOT_BONUS_BLOCKS);
+
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int i = Math.max((random.nextInt(1, level + 2) - 1), 0);
+        return (initial * (i + 1));
     }
 
 }
