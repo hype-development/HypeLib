@@ -2,6 +2,8 @@ package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.ByteStreams;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -41,5 +43,18 @@ public class FileLoader {
         }
 
         return resourceFile;
+    }
+
+    /**
+     * Loads a file configuration from the plugin's resources folder.
+     * @param plugin The plugin to load the file from.
+     * @param resource The name of the file to load.
+     * @return The loaded file configuration.
+     */
+    public static FileConfiguration loadFileConfiguration(final JavaPlugin plugin, final String resource) {
+        File file = loadFile(plugin, resource);
+        if (file == null) return null;
+
+        return YamlConfiguration.loadConfiguration(file);
     }
 }
