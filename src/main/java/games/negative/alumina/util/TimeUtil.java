@@ -29,8 +29,9 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -42,11 +43,14 @@ public class TimeUtil {
 
     /**
      * Format a time into a human-readable format.
-     * @param time Time to format
+     *
+     * @param time  Time to format
      * @param small Whether to use a small format such as 1s, 1d, etc.
      * @return Formatted time
+     * @see #format(Instant, boolean)
+     * @deprecated Deprecated in favor of a more stable time-keeping data type.
      */
-    @NotNull
+    @Deprecated
     public static String format(long time, boolean small) {
         Preconditions.checkArgument(time >= 0, "Time cannot be smaller than 0.");
 
@@ -71,18 +75,74 @@ public class TimeUtil {
 
     /**
      * Format a time into a human-readable format.
+     *
+     * @param time  Time to format
+     * @param small Whether to use a small format such as 1s, 1d, etc.
+     * @return Formatted time
+     * @throws NullPointerException     if `time` is null
+     * @throws IllegalArgumentException if `time` is smaller than 0
+     */
+    public static String format(final Instant time, boolean small) {
+        Preconditions.checkNotNull(time, "`time` cannot be null!");
+        Preconditions.checkArgument(time.getEpochSecond() >= 0, "Time cannot be smaller than 0.");
+
+        Duration duration = Duration.between(Instant.ofEpochSecond(0), time);
+
+        long toDays = duration.toDays();
+        long toHours = duration.toHours() % 24;
+        long toMinutes = duration.toMinutes() % 60;
+        long toSeconds = duration.getSeconds() % 60;
+
+        String day = (small ? "d" : (toDays == 1 ? "day" : "days"));
+        String hour = (small ? "h" : (toHours == 1 ? "hour" : "hours"));
+        String minute = (small ? "m" : (toMinutes == 1 ? "minute" : "minutes"));
+        String second = (small ? "s" : (toSeconds == 1 ? "second" : "seconds"));
+
+        String dayFormat = (toDays != 0 ? toDays + (small ? "" : " ") + day + " " : "");
+        String hourFormat = (toHours != 0 ? toHours + (small ? "" : " ") + hour + " " : "");
+        String minuteFormat = (toMinutes != 0 ? toMinutes + (small ? "" : " ") + minute + " " : "");
+        String secondFormat = (toSeconds != 0 ? toSeconds + (small ? "" : " ") + second : "");
+
+        TimeFormatter formatter = new TimeFormatter(dayFormat, hourFormat, minuteFormat, secondFormat);
+        return formatter.toString();
+    }
+
+    /**
+     * Format a time into a human-readable format.
+     *
      * @param time Time to format
      * @return Formatted time
+     * @see #format(Instant)
+     * @deprecated Deprecated in favor of a more stable time-keeping data type.
      */
+    @Deprecated
     public static String format(long time) {
         return format(time, false);
     }
 
     /**
+     * Format a time into a human-readable format.
+     *
+     * @param time Time to format
+     * @return Formatted time
+     * @throws NullPointerException     if `time` is null
+     * @throws IllegalArgumentException if `time` is smaller than 0
+     */
+    public static String format(final Instant time) {
+        Preconditions.checkNotNull(time, "`time` cannot be null!");
+
+        return format(time, false);
+    }
+
+    /**
      * Format time from a string.
+     *
      * @param input Input string
      * @return Formatted time
+     * @deprecated Deprecated in favor of a more stable time-keeping data type.
+     * @see #parse(String) 
      */
+    @Deprecated
     public static long fromString(final String input) {
         Preconditions.checkNotNull(input, "'input' cannot be null!");
         Preconditions.checkArgument(!input.isEmpty(), "'input' cannot be empty!");
@@ -101,38 +161,87 @@ public class TimeUtil {
                     case 's' -> {
                         if (!builder.isEmpty()) {
                             seconds += Integer.parseInt(builder.toString());
-                            builder = new StringBuilder();
+                            builder.setLength(0);
                         }
                     }
                     case 'm' -> {
                         if (!builder.isEmpty()) {
                             minutes += Integer.parseInt(builder.toString());
-                            builder = new StringBuilder();
+                            builder.setLength(0);
                         }
                     }
                     case 'h' -> {
                         if (!builder.isEmpty()) {
                             hours += Integer.parseInt(builder.toString());
-                            builder = new StringBuilder();
+                            builder.setLength(0);
                         }
                     }
                     case 'd' -> {
                         if (!builder.isEmpty()) {
                             days += Integer.parseInt(builder.toString());
-                            builder = new StringBuilder();
+                            builder.setLength(0);
                         }
                     }
                     case 'w' -> {
                         if (!builder.isEmpty()) {
                             weeks += Integer.parseInt(builder.toString());
-                            builder = new StringBuilder();
+                            builder.setLength(0);
                         }
                     }
                     default -> throw new IllegalArgumentException("Not a valid duration format.");
                 }
             }
         }
-        return 1000L * (seconds + minutes * 60L + hours * 60 * 60L + days * 24 * 60 * 60L + weeks * 7 * 24 * 60 * 60L);
+
+        try {
+            long totalSeconds = 0;
+            totalSeconds = Math.addExact(totalSeconds, seconds);
+            totalSeconds = Math.addExact(totalSeconds, Math.multiplyExact(minutes, 60L));
+            totalSeconds = Math.addExact(totalSeconds, Math.multiplyExact(hours, 60L * 60L));
+            totalSeconds = Math.addExact(totalSeconds, Math.multiplyExact(days, 24L * 60L * 60L));
+            totalSeconds = Math.addExact(totalSeconds, Math.multiplyExact(weeks, 7L * 24L * 60L * 60L));
+            return Math.multiplyExact(totalSeconds, 1000L);
+        } catch (ArithmeticException ex) {
+            throw new IllegalArgumentException("Duration is too large and causes numeric overflow");
+        }
+    }
+
+
+    /**
+     * Parses a string representation of duration and returns the equivalent {@link Duration} object.
+     *
+     * @param input The input string representing duration.
+     * @return The parsed {@link Duration} object.
+     * @throws NullPointerException     if the input is null.
+     * @throws IllegalArgumentException if the input is empty or not a valid duration format.
+     */
+    public static Duration parse(final String input) {
+        Preconditions.checkNotNull(input, "'input' cannot be null!");
+        Preconditions.checkArgument(!input.isEmpty(), "'input' cannot be empty!");
+
+        StringBuilder builder = new StringBuilder();
+        Duration duration = Duration.ZERO;
+
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                builder.append(c);
+            } else {
+                if (!builder.isEmpty()) {
+                    int value = Integer.parseInt(builder.toString());
+                    switch (c) {
+                        case 's' -> duration = duration.plusSeconds(value);
+                        case 'm' -> duration = duration.plusMinutes(value);
+                        case 'h' -> duration = duration.plusHours(value);
+                        case 'd' -> duration = duration.plusDays(value);
+                        case 'w' -> duration = duration.plusDays(value * 7L);
+                        default -> throw new IllegalArgumentException("Not a valid duration format.");
+                    }
+                    builder.setLength(0);
+                }
+            }
+        }
+
+        return duration;
     }
 
     /**
