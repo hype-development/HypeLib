@@ -208,19 +208,17 @@ public abstract class AluminaPlugin extends JavaPlugin {
     /**
      * Loads a dependency into a JavaPlugin using the provided group id, artifact id, version.
      *
-     * @param plugin     the JavaPlugin to load the dependency into
      * @param groupId    the group id of the dependency
      * @param artifactId the artifact id of the dependency
      * @param version    the version of the dependency
      */
-    public void loadDependency(final JavaPlugin plugin, final String groupId, final String artifactId, final String version) {
-        loadDependency(plugin, groupId, artifactId, version, DependencyLoader.CENTRAL.url());
+    public void loadDependency(final String groupId, final String artifactId, final String version) {
+        loadDependency(groupId, artifactId, version, DependencyLoader.CENTRAL.url());
     }
 
     /**
      * Loads a dependency into a JavaPlugin using the provided group id, artifact id, version, and repository URL.
      *
-     * @param plugin     The JavaPlugin to load the dependency into.
      * @param groupId    The group id of the dependency.
      * @param artifactId The artifact id of the dependency.
      * @param version    The version of the dependency.
@@ -228,14 +226,13 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @throws NullPointerException if `plugin`, `groupId`, `artifactId`, `version`, or `repoUrl` is null.
      * @throws RuntimeException if unable to load the dependency.
      */
-    public void loadDependency(final JavaPlugin plugin, final String groupId, final String artifactId, final String version, final String repoUrl) {
-        Preconditions.checkNotNull(plugin, "'plugin' cannot be null!");
+    public void loadDependency(final String groupId, final String artifactId, final String version, final String repoUrl) {
         Preconditions.checkNotNull(groupId, "'groupId' cannot be null!");
         Preconditions.checkNotNull(artifactId, "'artifactId' cannot be null!");
         Preconditions.checkNotNull(version, "'version' cannot be null!");
         Preconditions.checkNotNull(repoUrl, "'repoUrl' cannot be null!");
 
-        DependencyLoader.loadDependency(plugin, new MavenDependency(groupId, artifactId, version, new MavenRepository(repoUrl)));
+        DependencyLoader.loadDependency(this, new MavenDependency(groupId, artifactId, version, new MavenRepository(repoUrl)));
     }
 
 
