@@ -31,7 +31,6 @@ package games.negative.alumina.util;
 import com.google.common.base.Preconditions;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -47,7 +46,7 @@ public class TimeUtil {
      * @param time  Time to format
      * @param small Whether to use a small format such as 1s, 1d, etc.
      * @return Formatted time
-     * @see #format(Instant, boolean)
+     * @see #format(Duration, boolean)
      * @deprecated Deprecated in favor of a more stable time-keeping data type.
      */
     @Deprecated
@@ -74,19 +73,15 @@ public class TimeUtil {
     }
 
     /**
-     * Format a time into a human-readable format.
+     * Format a duration into a human-readable format.
      *
-     * @param time  Time to format
-     * @param small Whether to use a small format such as 1s, 1d, etc.
-     * @return Formatted time
-     * @throws NullPointerException     if `time` is null
-     * @throws IllegalArgumentException if `time` is smaller than 0
+     * @param duration The duration to format
+     * @param small    Whether to use a small format such as 1s, 1d, etc.
+     * @return The formatted duration as a string
+     * @throws NullPointerException If `duration` is null
      */
-    public static String format(final Instant time, boolean small) {
-        Preconditions.checkNotNull(time, "`time` cannot be null!");
-        Preconditions.checkArgument(time.getEpochSecond() >= 0, "Time cannot be smaller than 0.");
-
-        Duration duration = Duration.between(Instant.ofEpochSecond(0), time);
+    public static String format(final Duration duration, boolean small) {
+        Preconditions.checkNotNull(duration, "`duration` cannot be null!");
 
         long toDays = duration.toDays();
         long toHours = duration.toHours() % 24;
@@ -112,7 +107,7 @@ public class TimeUtil {
      *
      * @param time Time to format
      * @return Formatted time
-     * @see #format(Instant)
+     * @see #format(Duration)
      * @deprecated Deprecated in favor of a more stable time-keeping data type.
      */
     @Deprecated
@@ -121,17 +116,16 @@ public class TimeUtil {
     }
 
     /**
-     * Format a time into a human-readable format.
+     * Format a duration into a human-readable format.
      *
-     * @param time Time to format
-     * @return Formatted time
-     * @throws NullPointerException     if `time` is null
-     * @throws IllegalArgumentException if `time` is smaller than 0
+     * @param duration The duration to format
+     * @return The formatted duration as a string
+     * @throws NullPointerException If `duration` is null
      */
-    public static String format(final Instant time) {
-        Preconditions.checkNotNull(time, "`time` cannot be null!");
+    public static String format(final Duration duration) {
+        Preconditions.checkNotNull(duration, "`duration` cannot be null!");
 
-        return format(time, false);
+        return format(duration, false);
     }
 
     /**
