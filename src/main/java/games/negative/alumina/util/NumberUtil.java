@@ -119,163 +119,88 @@ public class NumberUtil {
     }
 
     /**
-     * This method will check if the provided text is a {@link Integer}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Integer}
-     */
-    public static boolean isInteger(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        try {
-            Integer.parseInt(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    /**
      * This method will get an {@link Integer} from the provided text.
      *
      * @param text Text to get the {@link Integer} from
-     * @return {@link Integer} from the text
-     * @throws NullPointerException If the text is not an {@link Integer}
+     * @return {@link Integer} from the text, or null if it cannot be parsed
+     * @throws IllegalArgumentException If the text is null
      */
     public static Integer getInteger(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isInteger(text)) return null;
-
-        return Integer.parseInt(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Long}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Long}
-     */
-    public static boolean isLong(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Long.parseLong(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Integer.parseInt(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Long} from the provided text.
+     * This method parses a string to a Long value.
      *
-     * @param text Text to get the {@link Long} from
-     * @return {@link Long} from the text
-     * @throws NullPointerException If the text is not an {@link Long}
+     * @param text The string to be parsed
+     * @return The parsed Long value, or null if the string cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
     public static Long getLong(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isLong(text)) return null;
-
-        return Long.parseLong(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Double}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Double}
-     */
-    public static boolean isDouble(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Double.parseDouble(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Long.parseLong(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Double} from the provided text.
+     * Parses the given text to a Double value.
      *
-     * @param text Text to get the {@link Double} from
-     * @return {@link Double} from the text
-     * @throws NullPointerException If the text is not an {@link Double}
+     * @param text The text to parse
+     * @return The parsed Double value, or null if the text cannot be parsed
+     * @throws IllegalArgumentException if the text is null
      */
     public static Double getDouble(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isDouble(text)) return null;
-
-        return Double.parseDouble(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Float}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Float}
-     */
-    public static boolean isFloat(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Float.parseFloat(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Double.parseDouble(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Float} from the provided text.
+     * Parses the given string to a Float value.
      *
-     * @param text Text to get the {@link Float} from
-     * @return {@link Float} from the text
-     * @throws NullPointerException If the text is not an {@link Float}
+     * @param text The string to parse
+     * @return The parsed Float value, or null if the string cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
     public static Float getFloat(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isFloat(text)) return null;
-
-        return Float.parseFloat(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Short}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Short}
-     */
-    public static boolean isShort(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Short.parseShort(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Float.parseFloat(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Short} from the provided text.
+     * Parses the given text to a Short value.
      *
-     * @param text Text to get the {@link Short} from
-     * @return {@link Short} from the text
-     * @throws NullPointerException If the text is not an {@link Short}
+     * @param text The text to parse
+     * @return The parsed Short value, or null if the text cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
     public static Short getShort(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
-        if (!isShort(text)) return null;
-
-        return Short.parseShort(text);
+        try {
+            return Short.parseShort(text);
+        } catch (NumberFormatException exception) {
+            return null;
+        }
     }
 
     /**
