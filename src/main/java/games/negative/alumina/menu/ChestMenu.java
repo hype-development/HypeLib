@@ -60,7 +60,7 @@ public abstract class ChestMenu implements AluminaMenu {
     private String title = "Chest Menu";
     private int rows = 1;
 
-    private Inventory inventory;
+    protected Inventory inventory;
     private final Map<Integer, MenuItem> items;
     private final Map<String, MenuItem> byKey;
 
