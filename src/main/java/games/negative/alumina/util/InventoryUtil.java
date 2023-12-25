@@ -24,7 +24,7 @@ public class InventoryUtil {
      * @return A {@link String} array, the first element is the main content, the second element is the armor.
      * @throws IllegalStateException If the inventory cannot be converted.
      */
-    public String[] playerInventoryToBase64(final PlayerInventory playerInventory) throws IllegalStateException {
+    public static String[] playerInventoryToBase64(final PlayerInventory playerInventory) throws IllegalStateException {
         Preconditions.checkNotNull(playerInventory, "Player inventory cannot be null.");
 
         //get the main content part, this doesn't return the armor
@@ -40,7 +40,7 @@ public class InventoryUtil {
      * @return The base64 string.
      * @throws IllegalStateException If the item stack array cannot be converted.
      */
-    public String itemStackArrayToBase64(final ItemStack[] items) throws IllegalStateException {
+    public static String itemStackArrayToBase64(final ItemStack[] items) throws IllegalStateException {
         Preconditions.checkNotNull(items, "Item stack array cannot be null.");
 
         try {
@@ -69,7 +69,7 @@ public class InventoryUtil {
      * @return The base64 string.
      * @throws IllegalStateException If the inventory cannot be converted.
      */
-    public String inventoryToBase64(final Inventory inventory) throws IllegalStateException {
+    public static String inventoryToBase64(final Inventory inventory) throws IllegalStateException {
         Preconditions.checkNotNull(inventory, "Inventory cannot be null.");
 
         try {
@@ -98,7 +98,7 @@ public class InventoryUtil {
      * @return The inventory.
      * @throws IllegalStateException If the base64 string cannot be converted.
      */
-    public Inventory inventoryFromBase64(final String data) throws IllegalStateException, IOException {
+    public static Inventory inventoryFromBase64(final String data) throws IllegalStateException, IOException {
         Preconditions.checkNotNull(data, "Base64 string cannot be null.");
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
@@ -125,7 +125,7 @@ public class InventoryUtil {
      * @return The item stack array.
      * @throws IllegalStateException If the base64 string cannot be converted.
      */
-    public ItemStack[] itemStackArrayFromBase64(final String data) throws IllegalStateException, IOException {
+    public static ItemStack[] itemStackArrayFromBase64(final String data) throws IllegalStateException, IOException {
         Preconditions.checkNotNull(data, "Base64 string cannot be null.");
 
         try {
