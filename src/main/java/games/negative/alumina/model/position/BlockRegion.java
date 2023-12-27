@@ -50,6 +50,7 @@ public record BlockRegion(String name, World world, BlockPosition min, BlockPosi
      * Get all the blocks in the region.
      * @return All the blocks in the region.
      */
+    @NotNull
     public Collection<Block> getBlocks() {
         Location min = world.getBlockAt(this.min.x(), this.min.y(), this.min.z()).getLocation();
         Location max = world.getBlockAt(this.max.x(), this.max.y(), this.max.z()).getLocation();
@@ -72,6 +73,7 @@ public record BlockRegion(String name, World world, BlockPosition min, BlockPosi
      * @param filter The filter to use.
      * @return All the blocks in the region that match the filter.
      */
+    @NotNull
     public Collection<Block> getBlocks(@NotNull Predicate<Block> filter) {
         Location min = world.getBlockAt(this.min.x(), this.min.y(), this.min.z()).getLocation();
         Location max = world.getBlockAt(this.max.x(), this.max.y(), this.max.z()).getLocation();

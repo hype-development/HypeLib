@@ -1,5 +1,7 @@
 package games.negative.alumina.model;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * The Keyd interface represents an object that has a key associated with it.
  *
@@ -12,6 +14,7 @@ public interface Keyd<T> {
      *
      * @return the key
      */
+    @NotNull
     T key();
 
 }

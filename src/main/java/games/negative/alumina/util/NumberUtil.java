@@ -31,6 +31,8 @@ import com.google.common.base.Preconditions;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -114,7 +116,7 @@ public class NumberUtil {
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String decimalFormat(BigDecimal number) {
+    public static String decimalFormat(@NotNull BigDecimal number) {
         return FANCY_FORMAT.format(number);
     }
 
@@ -125,7 +127,9 @@ public class NumberUtil {
      * @return {@link Integer} from the text, or null if it cannot be parsed
      * @throws IllegalArgumentException If the text is null
      */
-    public static Integer getInteger(final String text) {
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Integer getInteger(@NotNull String text) {
         if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
@@ -142,7 +146,9 @@ public class NumberUtil {
      * @return The parsed Long value, or null if the string cannot be parsed
      * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Long getLong(final String text) {
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Long getLong(@NotNull String text) {
         if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
@@ -159,7 +165,9 @@ public class NumberUtil {
      * @return The parsed Double value, or null if the text cannot be parsed
      * @throws IllegalArgumentException if the text is null
      */
-    public static Double getDouble(final String text) {
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Double getDouble(@NotNull String text) {
         if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
@@ -176,7 +184,9 @@ public class NumberUtil {
      * @return The parsed Float value, or null if the string cannot be parsed
      * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Float getFloat(final String text) {
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Float getFloat(@NotNull String text) {
         if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
@@ -193,7 +203,9 @@ public class NumberUtil {
      * @return The parsed Short value, or null if the text cannot be parsed
      * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Short getShort(final String text) {
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Short getShort(@NotNull String text) {
         if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
@@ -210,6 +222,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(int number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -230,6 +243,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(long number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -250,6 +264,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(double number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -270,6 +285,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(float number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return number + "th";
@@ -290,6 +306,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(short number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -310,6 +327,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(byte number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -328,6 +346,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(int number) {
         return condense(number, null);
     }
@@ -338,6 +357,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(int number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -354,6 +374,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(double number) {
         return condense(number, null);
     }
@@ -364,6 +385,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(double number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -380,6 +402,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(long number) {
         return condense(number, null);
     }
@@ -390,6 +413,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(long number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -406,7 +430,8 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
-    public static String condense(final BigDecimal number) {
+    @NotNull
+    public static String condense(@NotNull BigDecimal number) {
         Preconditions.checkNotNull(number, "'number' cannot be null!");
 
         return condense(number, null);
@@ -418,7 +443,8 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
-    public static String condense(final BigDecimal number, final char[] set) {
+    @NotNull
+    public static String condense(@NotNull BigDecimal number, final char[] set) {
         Preconditions.checkNotNull(number, "'number' cannot be null!");
 
         BigDecimal thousand = BigDecimal.valueOf(1000);
@@ -442,7 +468,7 @@ public class NumberUtil {
      * @param tool The tool to simulate
      * @return The simulated result
      */
-    public static int simulateFortune(final ItemStack tool, final ItemStack item) {
+    public static int simulateFortune(@NotNull ItemStack tool, @NotNull ItemStack item) {
         Preconditions.checkNotNull(tool, "'tool' cannot be null!");
         Preconditions.checkNotNull(item, "'item' cannot be null!");
 

@@ -32,6 +32,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -45,7 +46,7 @@ public interface Events extends Listener, EventExecutor {
      * @param event Event to invoke
      * @param <T> Event type
      */
-    static <T extends Event> void call(final T event) {
+    static <T extends Event> void call(@NotNull final T event) {
         Preconditions.checkNotNull(event, "Event cannot be null");
 
         Bukkit.getPluginManager().callEvent(event);
@@ -58,7 +59,7 @@ public interface Events extends Listener, EventExecutor {
      * @return Events
      * @param <T> Event type
      */
-    static <T extends Event> Events listen(final Class<T> type, final Consumer<T> listener) {
+    static <T extends Event> Events listen(@NotNull final Class<T> type, @NotNull final Consumer<T> listener) {
         Preconditions.checkNotNull(type, "Event type cannot be null");
         Preconditions.checkNotNull(listener, "Event listener cannot be null");
 
@@ -73,7 +74,7 @@ public interface Events extends Listener, EventExecutor {
      * @return Events
      * @param <T> Event type
      */
-    static <T extends Event> Events listen(final Class<T> type, final EventPriority priority, final Consumer<T> listener) {
+    static <T extends Event> Events listen(@NotNull final Class<T> type, @NotNull final EventPriority priority, @NotNull final Consumer<T> listener) {
         Preconditions.checkNotNull(type, "Event type cannot be null");
         Preconditions.checkNotNull(priority, "Event priority cannot be null");
         Preconditions.checkNotNull(listener, "Event listener cannot be null");
@@ -94,7 +95,7 @@ public interface Events extends Listener, EventExecutor {
      * @return Events
      * @param <T> Event type
      */
-    static <T extends Event> Events listen(final Class<T> type, final EventPriority priority, final boolean ignoreCancelled, final Consumer<T> listener) {
+    static <T extends Event> Events listen(@NotNull final Class<T> type, @NotNull final EventPriority priority, final boolean ignoreCancelled, @NotNull final Consumer<T> listener) {
         Preconditions.checkNotNull(type, "Event type cannot be null");
         Preconditions.checkNotNull(priority, "Event priority cannot be null");
         Preconditions.checkNotNull(listener, "Event listener cannot be null");

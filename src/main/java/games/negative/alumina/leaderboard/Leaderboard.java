@@ -3,6 +3,8 @@ package games.negative.alumina.leaderboard;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +35,7 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param name Name of the leaderboard.
      * @param comparing Comparing type of the leaderboard.
      */
-    public Leaderboard(final String name, final LeaderboardComparingType comparing) {
+    public Leaderboard(@NotNull final String name, @NotNull final LeaderboardComparingType comparing) {
         Preconditions.checkNotNull(name, "Name cannot be null!");
         Preconditions.checkNotNull(comparing, "Comparing cannot be null!");
 
@@ -46,27 +48,23 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param key Key to get the value of.
      * @return Value of the given key.
      */
-    public abstract V getValue(final K key);
+    public abstract V getValue(@NotNull final K key);
 
     /**
      * Parses the key to a string.
      * @param key Key to parse.
      * @return Parsed key.
      */
-    public abstract String parseKey(final K key);
+    @NotNull
+    public abstract String parseKey(@NotNull final K key);
 
     /**
      * Parses the value to a string.
      * @param value Value to parse.
      * @return Parsed value.
      */
-    public abstract String parseValue(final V value);
-
-    /**
-     * Gets the error message of the leaderboard.
-     * @return Error message of the leaderboard.
-     */
-    public abstract String errorMessage();
+    @NotNull
+    public abstract String parseValue(@NotNull final V value);
 
     /**
      * Updates the leaderboard without replacing any keys.
@@ -80,7 +78,7 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param keys Keys to update the leaderboard with.
      * @param replace Whether to replace the current keys with the given keys.
      */
-    public void update(final List<K> keys, final boolean replace) {
+    public void update(@NotNull final List<K> keys, final boolean replace) {
         final List<LeaderboardEntry<K, V>> entries = Lists.newArrayList(sorted);
 
         for (K key : keys) {
@@ -100,7 +98,8 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param filter Filter to use.
      * @return Optional of the entry.
      */
-    public Optional<LeaderboardEntry<K, V>> getEntry(final Predicate<LeaderboardEntry<K, V>> filter) {
+    @NotNull
+    public Optional<LeaderboardEntry<K, V>> getEntry(@NotNull final Predicate<LeaderboardEntry<K, V>> filter) {
         Preconditions.checkNotNull(filter, "Filter cannot be null!");
 
         return sorted.stream().filter(filter).findFirst();
@@ -111,7 +110,8 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param filter Filter to use.
      * @return List of entries.
      */
-    public List<LeaderboardEntry<K, V>> getEntries(final Predicate<LeaderboardEntry<K, V>> filter) {
+    @NotNull
+    public List<LeaderboardEntry<K, V>> getEntries(@NotNull final Predicate<LeaderboardEntry<K, V>> filter) {
         Stream<LeaderboardEntry<K, V>> stream = sorted.stream();
 
         if (filter != null)
@@ -125,7 +125,8 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param filter Filter to use.
      * @return Optional of the parsed entry.
      */
-    public Optional<LeaderboardEntry<String, String>> getParsedEntry(final Predicate<LeaderboardEntry<K, V>> filter) {
+    @NotNull
+    public Optional<LeaderboardEntry<String, String>> getParsedEntry(@NotNull final Predicate<LeaderboardEntry<K, V>> filter) {
         Preconditions.checkNotNull(filter, "Filter cannot be null!");
 
         return sorted.stream().filter(filter).map(e -> new LeaderboardEntry<>(parseKey(e.key()), parseValue(e.value()), comparing)).findFirst();
@@ -136,7 +137,8 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param filter Filter to use.
      * @return List of parsed entries.
      */
-    public List<LeaderboardEntry<String, String>> getParsedEntries(final Predicate<LeaderboardEntry<K, V>> filter) {
+    @NotNull
+    public List<LeaderboardEntry<String, String>> getParsedEntries(@NotNull final Predicate<LeaderboardEntry<K, V>> filter) {
         Stream<LeaderboardEntry<K, V>> stream = sorted.stream();
         if (filter != null)
             stream = stream.filter(filter);
@@ -149,7 +151,8 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
      * @param key Key to get the position of.
      * @return Positioned leaderboard entry.
      */
-    public PositionedLeaderboardEntry<K, V> getPosition(final K key) {
+    @Nullable
+    public PositionedLeaderboardEntry<K, V> getPosition(@NotNull final K key) {
         int position = 1;
         for (LeaderboardEntry<K, V> entry : sorted) {
             if (entry.key().equals(key))

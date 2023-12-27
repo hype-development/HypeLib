@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -28,7 +29,7 @@ public class PlayerUtil {
      *
      * @param player The player to reset.
      */
-    public static void reset(final Player player) {
+    public static void reset(@NotNull Player player) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         for (PotionEffect effect : player.getActivePotionEffects())
@@ -62,7 +63,7 @@ public class PlayerUtil {
      *
      * @param player The player to reset.
      */
-    private static void resetHealth(final Player player) {
+    private static void resetHealth(@NotNull Player player) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -83,7 +84,7 @@ public class PlayerUtil {
      * @param <T>        The type of collection
      * @return The collection of items that could not be added to the player's inventory
      */
-    private <T extends Iterable<ItemStack>> Collection<ItemStack> fillInventory(final Player player, final T collection) {
+    private <T extends Iterable<ItemStack>> Collection<ItemStack> fillInventory(@NotNull Player player, @NotNull T collection) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
         Preconditions.checkNotNull(collection, "'collection' cannot be null!");
 
@@ -132,7 +133,7 @@ public class PlayerUtil {
      * @return The UUID of the player.
      * @throws IOException If an error occurs while getting the UUID.
      */
-    public static UUID getByName(final String username) throws IOException {
+    public static UUID getByName(@NotNull String username) throws IOException {
         Preconditions.checkNotNull(username, "'username' cannot be null!");
 
         JsonObject response = HTTPUtil.get("https://api.mojang.com/users/profiles/minecraft/" + username);

@@ -31,6 +31,8 @@ import games.negative.alumina.command.Command;
 import games.negative.alumina.command.structure.AluminaCommand;
 import lombok.Getter;
 import org.bukkit.permissions.Permission;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -68,7 +70,7 @@ public class CommandBuilder {
      * Creates a new command builder.
      * @param component The command component.
      */
-    public CommandBuilder(final Command component) {
+    public CommandBuilder(@NotNull final Command component) {
         Preconditions.checkNotNull(component, "Command component cannot be null.");
 
         this.component = component;
@@ -84,7 +86,7 @@ public class CommandBuilder {
      * @param name The name of the command.
      * @return The command builder.
      */
-    public CommandBuilder name(final String name) {
+    public CommandBuilder name(@NotNull final String name) {
         Preconditions.checkNotNull(name, "Command name cannot be null.");
 
         this.name = name;
@@ -96,7 +98,7 @@ public class CommandBuilder {
      * @param description The description of the command.
      * @return The command builder.
      */
-    public CommandBuilder description(final String description) {
+    public CommandBuilder description(@NotNull final String description) {
         Preconditions.checkNotNull(description, "Command description cannot be null.");
         this.description = description;
         return this;
@@ -107,7 +109,7 @@ public class CommandBuilder {
      * @param usage The usage of the command.
      * @return The command builder.
      */
-    public CommandBuilder usage(final String usage) {
+    public CommandBuilder usage(@NotNull final String usage) {
         Preconditions.checkNotNull(usage, "Command usage message cannot be null.");
         this.usage = usage;
         return this;
@@ -118,7 +120,7 @@ public class CommandBuilder {
      * @param aliases The aliases of the command.
      * @return The command builder.
      */
-    public CommandBuilder aliases(final String... aliases) {
+    public CommandBuilder aliases(@NotNull final String... aliases) {
         Preconditions.checkNotNull(aliases, "Command aliases cannot be null.");
         Preconditions.checkArgument(aliases.length > 0, "Command aliases cannot be empty.");
 
@@ -130,7 +132,7 @@ public class CommandBuilder {
      * @param aliases The aliases of the command.
      * @return The command builder.
      */
-    public CommandBuilder aliases(final List<String> aliases) {
+    public CommandBuilder aliases(@NotNull final List<String> aliases) {
         Preconditions.checkNotNull(aliases, "Command aliases cannot be null.");
         Preconditions.checkArgument(!aliases.isEmpty(), "Command aliases cannot be empty.");
 
@@ -143,7 +145,7 @@ public class CommandBuilder {
      * @param permissions The permissions of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(final Permission... permissions) {
+    public CommandBuilder permission(@NotNull final Permission... permissions) {
         Preconditions.checkNotNull(permissions, "Command permissions cannot be null.");
         Preconditions.checkArgument(permissions.length > 0, "Command permissions cannot be empty.");
 
@@ -156,7 +158,7 @@ public class CommandBuilder {
      * @param permissions The permissions of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(final String... permissions) {
+    public CommandBuilder permission(@NotNull final String... permissions) {
         Preconditions.checkNotNull(permissions, "Command permissions cannot be null.");
         Preconditions.checkArgument(permissions.length > 0, "Command permissions cannot be empty.");
 
@@ -169,7 +171,7 @@ public class CommandBuilder {
      * @param permission The permission of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(final Permission permission) {
+    public CommandBuilder permission(@NotNull final Permission permission) {
         Preconditions.checkNotNull(permission, "Command permission cannot be null.");
 
         this.permissions = new Permission[] { permission };
@@ -181,7 +183,7 @@ public class CommandBuilder {
      * @param permission The permission of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(final String permission) {
+    public CommandBuilder permission(@NotNull final String permission) {
         Preconditions.checkNotNull(permission, "Command permission cannot be null.");
 
         return this.permission(new Permission(permission));
@@ -192,7 +194,7 @@ public class CommandBuilder {
      * @param permission The permissions of the command.
      * @return The command builder.
      */
-    public CommandBuilder permission(final List<Permission> permission) {
+    public CommandBuilder permission(@NotNull final List<Permission> permission) {
         Preconditions.checkNotNull(permission, "Command permission cannot be null.");
         Preconditions.checkArgument(!permission.isEmpty(), "Command permission cannot be empty.");
 
@@ -205,7 +207,7 @@ public class CommandBuilder {
      * @param params The parameters of the command.
      * @return The command builder.
      */
-    public CommandBuilder params(final String... params) {
+    public CommandBuilder params(@NotNull final String... params) {
         Preconditions.checkNotNull(params, "Command params cannot be null.");
         Preconditions.checkArgument(params.length > 0, "Command params cannot be empty.");
 
@@ -218,7 +220,7 @@ public class CommandBuilder {
      * @param shortcuts The shortcuts of the command.
      * @return The command builder.
      */
-    public CommandBuilder shortcuts(final String... shortcuts) {
+    public CommandBuilder shortcuts(@NotNull final String... shortcuts) {
         Preconditions.checkNotNull(shortcuts, "Command shortcuts cannot be null.");
         Preconditions.checkArgument(shortcuts.length > 0, "Command shortcuts cannot be empty.");
 
@@ -237,7 +239,7 @@ public class CommandBuilder {
         return this;
     }
 
-    public CommandBuilder subcommands(final CommandBuilder... commands) {
+    public CommandBuilder subcommands(@NotNull final CommandBuilder... commands) {
         Preconditions.checkNotNull(commands, "Command subcommands cannot be null.");
         Preconditions.checkArgument(commands.length > 0, "Command subcommands cannot be empty.");
 
@@ -269,6 +271,7 @@ public class CommandBuilder {
      * Set the parameters of the command.
      * @return The command builder.
      */
+    @NotNull
     public AluminaCommand build() {
         return build(null);
     }
@@ -278,7 +281,8 @@ public class CommandBuilder {
      * @param parent The parent command.
      * @return The command builder.
      */
-    public AluminaCommand build(final AluminaCommand parent) {
+    @NotNull
+    public AluminaCommand build(@Nullable final AluminaCommand parent) {
         return new AluminaCommand(parent, this);
     }
 

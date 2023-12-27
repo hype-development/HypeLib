@@ -29,6 +29,7 @@ package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
 import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,7 +52,7 @@ public class ColorUtil {
      * @param input The string to translate.
      * @return The translated string.
      */
-    public static String translate(String input) {
+    public static String translate(@NotNull String input) {
         Preconditions.checkNotNull(input, "Input cannot be null.");
 
         Matcher matcher = PATTERN.matcher(input);

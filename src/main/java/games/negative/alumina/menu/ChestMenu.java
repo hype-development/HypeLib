@@ -47,6 +47,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Map;
@@ -73,7 +74,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param rows The amount of rows the menu should have.
      * @apiNote The number of rows must be greater than 0 and less than or equal to 6.
      */
-    public ChestMenu(final String title, final int rows) {
+    public ChestMenu(@NotNull final String title, final int rows) {
         Preconditions.checkNotNull(title, "title cannot be null");
         Preconditions.checkArgument(MathUtil.between(rows, 1, 6), "Rows must be greater than 0 and less than or equal to 6.");
 
@@ -101,7 +102,7 @@ public abstract class ChestMenu implements AluminaMenu {
      *                    When the function key is null, the item will not be functional.
      */
     @Override
-    public void setItem(final int slot, final ItemStack item, final String functionKey) {
+    public void setItem(final int slot, @NotNull final ItemStack item, @Nullable final String functionKey) {
         Preconditions.checkNotNull(item, "item cannot be null");
 
         if (this.freeSlots != null)
@@ -127,7 +128,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param functionKey The function key to set.
      */
     @Override
-    public void addItem(final ItemStack item, final String functionKey) {
+    public void addItem(@NotNull final ItemStack item, @Nullable final String functionKey) {
         Preconditions.checkNotNull(item, "item cannot be null");
 
         // We're using a set to store the free slots, so we do not need to loop through the entire inventory
@@ -154,7 +155,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param item The item.
      * @param key The function key.
      */
-    private void applyFunction(final ItemStack item, final String key) {
+    private void applyFunction(@NotNull final ItemStack item, @Nullable final String key) {
         Preconditions.checkNotNull(item, "item cannot be null");
 
         if (key == null) return;
@@ -187,7 +188,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param player The player to open the menu for.
      */
     @Override
-    public void open(final Player player) {
+    public void open(@NotNull final Player player) {
         Preconditions.checkNotNull(player, "player cannot be null");
 
         refresh();
@@ -215,7 +216,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * This method will allow you to set the menu title.
      * @param title The title to set.
      */
-    public void setTitle(final String title) {
+    public void setTitle(@NotNull final String title) {
         Preconditions.checkNotNull(title, "title cannot be null");
 
         this.title = title;
@@ -252,20 +253,8 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param event  The event.
      */
     @Override
-    public void onClick(final Player player, final InventoryClickEvent event) {
+    public void onClick(@NotNull final Player player, @NotNull final InventoryClickEvent event) {
         // Override this method to handle clicks.
-    }
-
-    /**
-     * This method is invoked when a player clicks a functional item in the menu.
-     * @param player The player who clicked the menu.
-     * @param item   The item that was clicked.
-     * @param event  The event.
-     * @deprecated Use {@link #onFunctionClick(Player, String, InventoryClickEvent)} instead.
-     */
-    @Override
-    public void onFunctionClick(final Player player, final MenuItem item, final InventoryClickEvent event) {
-        // Override this method to handle function clicks.
     }
 
     /**
@@ -285,7 +274,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param event  The event.
      */
     @Override
-    public void onClose(final Player player, InventoryCloseEvent event) {
+    public void onClose(@NotNull final Player player, @NotNull InventoryCloseEvent event) {
         // Override this method to handle close.
     }
 
@@ -295,7 +284,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param event  The event.
      */
     @Override
-    public void onOpen(final Player player, final InventoryOpenEvent event) {
+    public void onOpen(@NotNull final Player player, @NotNull final InventoryOpenEvent event) {
         // Override this method to handle open.
     }
 
@@ -303,6 +292,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * Get all menu items.
      * @return The menu items.
      */
+    @NotNull
     public Map<Integer, MenuItem> getItems() {
         return items;
     }
@@ -311,6 +301,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * Get the menu title.
      * @return The menu title.
      */
+    @NotNull
     public String getTitle() {
         return title;
     }
@@ -328,6 +319,7 @@ public abstract class ChestMenu implements AluminaMenu {
      * @param key The function key.
      * @return The menu item.
      */
+    @Nullable
     public MenuItem byKey(@NotNull String key) {
         return byKey.getOrDefault(key, null);
     }

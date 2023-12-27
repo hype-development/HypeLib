@@ -38,6 +38,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -111,7 +112,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
      * @param parent  The parent command.
      * @param builder The command builder.
      */
-    public AluminaCommand(final AluminaCommand parent, final CommandBuilder builder) {
+    public AluminaCommand(@Nullable final AluminaCommand parent, @NotNull final CommandBuilder builder) {
         super(builder.getName(), builder.getDescription(), builder.getUsage(), builder.getAliases());
 
         Preconditions.checkNotNull(builder, "Command builder cannot be null.");
@@ -138,7 +139,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
     }
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (checkConsolePlayerCommand(sender) || !checkPermissions(sender, true) || !checkParams(sender, args) || checkSubCommands(sender, args))
             return true;
 
@@ -178,7 +179,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return result;
     }
 
-    private Multimap<Integer, AluminaCommand> getRecursive(final AluminaCommand parent, final int depth) {
+    private Multimap<Integer, AluminaCommand> getRecursive(@NotNull final AluminaCommand parent, final int depth) {
         Preconditions.checkNotNull(parent, "Parent command cannot be null.");
 
         Multimap<Integer, AluminaCommand> map = ArrayListMultimap.create();
@@ -203,7 +204,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
      * @param sender The sender
      * @return Whether the console is using a player-only command
      */
-    private boolean checkConsolePlayerCommand(final CommandSender sender) {
+    private boolean checkConsolePlayerCommand(@NotNull final CommandSender sender) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
         if (!(sender instanceof Player) && playerOnly) {
@@ -214,7 +215,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return false;
     }
 
-    private boolean checkPermissions(final CommandSender sender, final boolean message) {
+    private boolean checkPermissions(@NotNull final CommandSender sender, final boolean message) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
         if (this.permissions == null)
@@ -229,7 +230,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return false;
     }
 
-    private boolean checkSubCommands(final CommandSender sender, final String[] args) {
+    private boolean checkSubCommands(@NotNull final CommandSender sender, @NotNull final String[] args) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
         Preconditions.checkNotNull(args, "Arguments cannot be null.");
 
@@ -243,7 +244,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return (subCommand != null && subCommand.execute(sender, begin, snippet));
     }
 
-    public AluminaCommand getAvailableSubCommand(final String argument) {
+    public AluminaCommand getAvailableSubCommand(@NotNull final String argument) {
         Preconditions.checkNotNull(argument, "Argument cannot be null.");
 
         for (AluminaCommand subCommand : subCommands) {
@@ -253,7 +254,7 @@ public class AluminaCommand extends org.bukkit.command.Command {
         return null;
     }
 
-    public boolean checkParams(final CommandSender sender, final String[] args) {
+    public boolean checkParams(@NotNull final CommandSender sender, @NotNull final String[] args) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
         Preconditions.checkNotNull(args, "Arguments cannot be null.");
 

@@ -25,6 +25,8 @@
 
 package games.negative.alumina.command;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public interface Command {
      * This method is called when the command is executed.
      * @param context The context of the command.
      */
-    void execute(Context context);
+    void execute(@NotNull Context context);
 
     /**
      * This method is called when the command is tab completed.

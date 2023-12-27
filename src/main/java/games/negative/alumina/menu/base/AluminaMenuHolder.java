@@ -32,6 +32,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents the base menu holder class for all custom menus.
@@ -44,26 +45,27 @@ public interface AluminaMenuHolder<T extends AluminaMenu> extends InventoryHolde
      * @param player The player who opened the menu.
      * @param event The event that was called.
      */
-    void onOpen(final Player player, final InventoryOpenEvent event);
+    void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event);
 
     /**
      * This method will be called when the menu is closed.
      * @param player The player who closed the menu.
      * @param event The event that was called.
      */
-    void onClose(final Player player, final InventoryCloseEvent event);
+    void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event);
 
     /**
      * This method will be called when the player clicks on an item in the menu.
      * @param player The player who clicked on the item.
      * @param event The event that was called.
      */
-    void onClick(final Player player, final InventoryClickEvent event);
+    void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
     /**
      * Gets the menu instance.
      * @return The menu instance.
      */
+    @NotNull
     T getMenu();
 
 }
