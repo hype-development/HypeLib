@@ -1,4 +1,4 @@
-package games.negative.alumina.task;
+package games.negative.alumina.util;
 
 import games.negative.alumina.AluminaPlugin;
 import org.bukkit.Bukkit;
