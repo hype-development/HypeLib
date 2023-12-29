@@ -52,7 +52,7 @@ public class FileLoader {
      * @param resource The name of the file to load.
      * @return The loaded file configuration.
      */
-    public static FileConfiguration loadFileConfiguration(final JavaPlugin plugin, final String resource) {
+    public static FileConfiguration loadFileConfiguration(@NotNull final JavaPlugin plugin, @NotNull final String resource) {
         File file = loadFile(plugin, resource);
         if (file == null) return null;
 
