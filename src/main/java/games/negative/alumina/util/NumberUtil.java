@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -117,6 +118,15 @@ public class NumberUtil {
      * @return Parsed number
      */
     public static String decimalFormat(@NotNull BigDecimal number) {
+        return FANCY_FORMAT.format(number);
+    }
+
+    /**
+     * Parse a number to a fancy format.
+     * @param number Number to parse
+     * @return Parsed number
+     */
+    public static String decimalFormat(@NotNull BigInteger number) {
         return FANCY_FORMAT.format(number);
     }
 
@@ -460,6 +470,31 @@ public class NumberUtil {
         BigDecimal result = number.divide(thousand.pow(exp), 1, RoundingMode.HALF_UP);
 
         return String.format("%.1f%c", result, suffix);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @return Condensed number
+     */
+    @NotNull
+    public static String condense(@NotNull BigInteger number) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    @NotNull
+    public static String condense(@NotNull BigInteger number, final char[] set) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
+        return condense(new BigDecimal(number), set);
     }
 
     /**
