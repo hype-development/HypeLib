@@ -4,6 +4,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+
 
 /**
  * The PotionBuilder class is used to construct PotionEffect objects with custom options.
@@ -32,6 +34,18 @@ public class PotionBuilder {
      */
     public PotionBuilder duration(int duration) {
         this.duration = duration;
+        return this;
+    }
+
+    /**
+     * Sets the duration of the PotionEffect based on the given {@link Duration}.
+     * The duration is calculated by converting the given duration to milliseconds and then dividing by 50.
+     *
+     * @param duration the duration of the PotionEffect
+     * @return the PotionBuilder instance with the updated duration
+     */
+    public PotionBuilder duration(@NotNull Duration duration) {
+        this.duration = (int) duration.toMillis() / 50;
         return this;
     }
 
