@@ -31,8 +31,11 @@ import com.google.common.base.Preconditions;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.concurrent.ThreadLocalRandom;
@@ -114,168 +117,112 @@ public class NumberUtil {
      * @param number Number to parse
      * @return Parsed number
      */
-    public static String decimalFormat(BigDecimal number) {
+    public static String decimalFormat(@NotNull BigDecimal number) {
         return FANCY_FORMAT.format(number);
     }
 
     /**
-     * This method will check if the provided text is a {@link Integer}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Integer}
+     * Parse a number to a fancy format.
+     * @param number Number to parse
+     * @return Parsed number
      */
-    public static boolean isInteger(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        try {
-            Integer.parseInt(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    public static String decimalFormat(@NotNull BigInteger number) {
+        return FANCY_FORMAT.format(number);
     }
 
     /**
      * This method will get an {@link Integer} from the provided text.
      *
      * @param text Text to get the {@link Integer} from
-     * @return {@link Integer} from the text
-     * @throws NullPointerException If the text is not an {@link Integer}
+     * @return {@link Integer} from the text, or null if it cannot be parsed
+     * @throws IllegalArgumentException If the text is null
      */
-    public static Integer getInteger(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isInteger(text)) return null;
-
-        return Integer.parseInt(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Long}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Long}
-     */
-    public static boolean isLong(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Integer getInteger(@NotNull String text) {
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Long.parseLong(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Integer.parseInt(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Long} from the provided text.
+     * This method parses a string to a Long value.
      *
-     * @param text Text to get the {@link Long} from
-     * @return {@link Long} from the text
-     * @throws NullPointerException If the text is not an {@link Long}
+     * @param text The string to be parsed
+     * @return The parsed Long value, or null if the string cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Long getLong(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isLong(text)) return null;
-
-        return Long.parseLong(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Double}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Double}
-     */
-    public static boolean isDouble(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Long getLong(@NotNull String text) {
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Double.parseDouble(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Long.parseLong(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Double} from the provided text.
+     * Parses the given text to a Double value.
      *
-     * @param text Text to get the {@link Double} from
-     * @return {@link Double} from the text
-     * @throws NullPointerException If the text is not an {@link Double}
+     * @param text The text to parse
+     * @return The parsed Double value, or null if the text cannot be parsed
+     * @throws IllegalArgumentException if the text is null
      */
-    public static Double getDouble(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isDouble(text)) return null;
-
-        return Double.parseDouble(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Float}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Float}
-     */
-    public static boolean isFloat(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Double getDouble(@NotNull String text) {
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Float.parseFloat(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Double.parseDouble(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Float} from the provided text.
+     * Parses the given string to a Float value.
      *
-     * @param text Text to get the {@link Float} from
-     * @return {@link Float} from the text
-     * @throws NullPointerException If the text is not an {@link Float}
+     * @param text The string to parse
+     * @return The parsed Float value, or null if the string cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Float getFloat(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
-
-        if (!isFloat(text)) return null;
-
-        return Float.parseFloat(text);
-    }
-
-    /**
-     * This method will check if the provided text is a {@link Short}.
-     *
-     * @param text Text to check
-     * @return If the text is a {@link Short}
-     */
-    public static boolean isShort(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Float getFloat(@NotNull String text) {
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
         try {
-            Short.parseShort(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            return Float.parseFloat(text);
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 
     /**
-     * This method will get an {@link Short} from the provided text.
+     * Parses the given text to a Short value.
      *
-     * @param text Text to get the {@link Short} from
-     * @return {@link Short} from the text
-     * @throws NullPointerException If the text is not an {@link Short}
+     * @param text The text to parse
+     * @return The parsed Short value, or null if the text cannot be parsed
+     * @throws IllegalArgumentException If the text parameter is null
      */
-    public static Short getShort(final String text) {
-        Preconditions.checkNotNull(text, "'text' cannot be null!");
+    @SuppressWarnings("ConstantValue")
+    @Nullable
+    public static Short getShort(@NotNull String text) {
+        if (text == null) throw new IllegalArgumentException("'text' cannot be null!");
 
-        if (!isShort(text)) return null;
-
-        return Short.parseShort(text);
+        try {
+            return Short.parseShort(text);
+        } catch (NumberFormatException exception) {
+            return null;
+        }
     }
 
     /**
@@ -285,6 +232,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(int number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -305,6 +253,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(long number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -325,6 +274,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(double number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -345,6 +295,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(float number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return number + "th";
@@ -365,6 +316,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(short number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -385,6 +337,7 @@ public class NumberUtil {
      * @param number Number to convert
      * @return Fancy version of the number
      */
+    @NotNull
     public static String fancy(byte number) {
         if (number % 100 >= 11 && number % 100 <= 13) {
             return decimalFormat(number) + "th";
@@ -403,6 +356,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(int number) {
         return condense(number, null);
     }
@@ -413,6 +367,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(int number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -429,6 +384,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(double number) {
         return condense(number, null);
     }
@@ -439,6 +395,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(double number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -455,6 +412,7 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
+    @NotNull
     public static String condense(long number) {
         return condense(number, null);
     }
@@ -465,6 +423,7 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
+    @NotNull
     public static String condense(long number, final char[] set) {
         if (number < 1000) return String.valueOf(number); // Return the number itself if less than 1000.
 
@@ -481,7 +440,8 @@ public class NumberUtil {
      * @param number Number to condense
      * @return Condensed number
      */
-    public static String condense(final BigDecimal number) {
+    @NotNull
+    public static String condense(@NotNull BigDecimal number) {
         Preconditions.checkNotNull(number, "'number' cannot be null!");
 
         return condense(number, null);
@@ -493,7 +453,8 @@ public class NumberUtil {
      * @param set Set of suffixes to use
      * @return Condensed number
      */
-    public static String condense(final BigDecimal number, final char[] set) {
+    @NotNull
+    public static String condense(@NotNull BigDecimal number, final char[] set) {
         Preconditions.checkNotNull(number, "'number' cannot be null!");
 
         BigDecimal thousand = BigDecimal.valueOf(1000);
@@ -512,12 +473,37 @@ public class NumberUtil {
     }
 
     /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @return Condensed number
+     */
+    @NotNull
+    public static String condense(@NotNull BigInteger number) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
+        return condense(number, null);
+    }
+
+    /**
+     * Condenses a number into a shorter version using suffixes.
+     * @param number Number to condense
+     * @param set Set of suffixes to use
+     * @return Condensed number
+     */
+    @NotNull
+    public static String condense(@NotNull BigInteger number, final char[] set) {
+        Preconditions.checkNotNull(number, "'number' cannot be null!");
+
+        return condense(new BigDecimal(number), set);
+    }
+
+    /**
      * Simulates the result of the vanilla fortune enchantment.
      * @param item The item to simulate
      * @param tool The tool to simulate
      * @return The simulated result
      */
-    public static int simulateFortune(final ItemStack tool, final ItemStack item) {
+    public static int simulateFortune(@NotNull ItemStack tool, @NotNull ItemStack item) {
         Preconditions.checkNotNull(tool, "'tool' cannot be null!");
         Preconditions.checkNotNull(item, "'item' cannot be null!");
 

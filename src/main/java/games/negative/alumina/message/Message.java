@@ -36,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class Message implements Deliverable<CommandSender> {
      *
      * @param text The text of the message.
      */
-    protected Message(final String text) {
+    protected Message(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null.");
 
         this.def = text;
@@ -87,7 +88,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param replacement The replacement.
      * @return The message.
      */
-    public Message replace(final String placeholder, final String replacement) {
+    public Message replace(@NotNull final String placeholder, @NotNull final String replacement) {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null.");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null.");
 
@@ -113,7 +114,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param sender The sender to send the message to.
      */
     @Override
-    public void send(final CommandSender sender) {
+    public void send(@NotNull final CommandSender sender) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
         String translate = colorAgent.translate(this.current);
@@ -133,7 +134,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param iterable The iterable collection of a class that extends {@link CommandSender}
      * @param <T>      The class that extends {@link CommandSender}
      */
-    public <T extends Iterable<? extends CommandSender>> void send(final T iterable) {
+    public <T extends Iterable<? extends CommandSender>> void send(@NotNull final T iterable) {
         Preconditions.checkNotNull(iterable, "Iterable cannot be null.");
         Preconditions.checkArgument(iterable.iterator().hasNext(), "Iterable cannot be empty.");
 
@@ -171,7 +172,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param text The text of the message.
      * @return The message.
      */
-    public static Message of(final String... text) {
+    public static Message of(@NotNull final String... text) {
         Preconditions.checkNotNull(text, "Text cannot be null.");
         Preconditions.checkArgument(text.length > 0, "Text cannot be empty.");
 
@@ -184,7 +185,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param text The text of the message.
      * @return The message.
      */
-    public static Message of(final String text) {
+    public static Message of(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null.");
 
         return new Message(text);
@@ -196,9 +197,9 @@ public class Message implements Deliverable<CommandSender> {
      * @param text The text of the message.
      * @return The message.
      */
-    public static Message of(final List<String> text) {
+    public static Message of(@NotNull final List<String> text) {
         Preconditions.checkNotNull(text, "Text cannot be null.");
-        Preconditions.checkArgument(text.size() > 0, "Text cannot be empty.");
+        Preconditions.checkArgument(!text.isEmpty(), "Text cannot be empty.");
 
         return new Message(String.join("\n", text));
     }
@@ -212,7 +213,7 @@ public class Message implements Deliverable<CommandSender> {
      * @apiNote The sender parameter can be null if you want to parse the message for the console.
      */
     @NotNull
-    private String parsePAPI(final CommandSender sender, final String message) {
+    private String parsePAPI(@Nullable final CommandSender sender, @NotNull final String message) {
         Preconditions.checkNotNull(message, "Message cannot be null.");
 
         boolean enabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");

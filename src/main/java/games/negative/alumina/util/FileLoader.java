@@ -5,6 +5,8 @@ import com.google.common.io.ByteStreams;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +22,8 @@ public class FileLoader {
      * @param resource The name of the file to load.
      * @return The loaded file.
      */
-    public static File loadFile(final JavaPlugin plugin, final String resource) {
+    @Nullable
+    public static File loadFile(@NotNull final JavaPlugin plugin, @NotNull final String resource) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null.");
         Preconditions.checkNotNull(resource, "Resource cannot be null.");
 
@@ -51,7 +54,8 @@ public class FileLoader {
      * @param resource The name of the file to load.
      * @return The loaded file configuration.
      */
-    public static FileConfiguration loadFileConfiguration(final JavaPlugin plugin, final String resource) {
+    @Nullable
+    public static FileConfiguration loadFileConfiguration(@NotNull final JavaPlugin plugin, @NotNull final String resource) {
         File file = loadFile(plugin, resource);
         if (file == null) return null;
 

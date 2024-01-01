@@ -43,6 +43,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -79,7 +80,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      *
      * @param builder The builder used to create the command.
      */
-    public void registerCommand(final CommandBuilder builder) {
+    public void registerCommand(@NotNull CommandBuilder builder) {
         Preconditions.checkNotNull(builder, "Command builder cannot be null!");
 
         CommandMap commandMap = initCommandMap();
@@ -118,7 +119,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @param parent The parent command.
      * @return A list of all subcommands.
      */
-    private List<AluminaCommand> getRecursiveSubCommand(final AluminaCommand parent) {
+    private List<AluminaCommand> getRecursiveSubCommand(@NotNull AluminaCommand parent) {
         Preconditions.checkNotNull(parent, "Parent command cannot be null!");
 
         // Recursively get all subcommands of all subcommands.
@@ -141,7 +142,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @param existing The existing command.
      * @param commandMap The command map.
      */
-    private void cleanse(final String name, final Command existing, final CommandMap commandMap) {
+    private void cleanse(@NotNull String name, @NotNull Command existing, @NotNull CommandMap commandMap) {
         Preconditions.checkNotNull(name, "Command name cannot be null!");
         Preconditions.checkNotNull(existing, "Existing command cannot be null!");
         Preconditions.checkNotNull(commandMap, "Command map cannot be null!");
@@ -186,7 +187,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
         return commandMap;
     }
     
-    public void registerListeners(final Listener... listeners) {
+    public void registerListeners(@NotNull Listener... listeners) {
         Preconditions.checkNotNull(listeners, "Listeners cannot be null!");
         Preconditions.checkArgument(listeners.length > 0, "Listeners cannot be empty!");
 
@@ -201,7 +202,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * This method is used to load a file from the plugin's resources folder.
      * @param name The name of the file to load.
      */
-    public void loadFile(final String name) {
+    public void loadFile(@NotNull String name) {
         FileLoader.loadFile(this, name);
     }
 
@@ -212,7 +213,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @param artifactId the artifact id of the dependency
      * @param version    the version of the dependency
      */
-    public void loadDependency(final String groupId, final String artifactId, final String version) {
+    public void loadDependency(@NotNull String groupId, @NotNull String artifactId, @NotNull String version) {
         loadDependency(groupId, artifactId, version, DependencyLoader.CENTRAL.url());
     }
 
@@ -226,7 +227,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @throws NullPointerException if `plugin`, `groupId`, `artifactId`, `version`, or `repoUrl` is null.
      * @throws RuntimeException if unable to load the dependency.
      */
-    public void loadDependency(final String groupId, final String artifactId, final String version, final String repoUrl) {
+    public void loadDependency(@NotNull String groupId, @NotNull String artifactId, @NotNull String version, @NotNull String repoUrl) {
         Preconditions.checkNotNull(groupId, "'groupId' cannot be null!");
         Preconditions.checkNotNull(artifactId, "'artifactId' cannot be null!");
         Preconditions.checkNotNull(version, "'version' cannot be null!");
@@ -270,7 +271,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
         return colorAgent;
     }
 
-    public void setColorAgent(final ColorAgent colorAgent) {
+    public void setColorAgent(@NotNull ColorAgent colorAgent) {
         Preconditions.checkNotNull(colorAgent, "Color Agent cannot be null!");
 
         this.colorAgent = colorAgent;

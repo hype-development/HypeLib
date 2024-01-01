@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class LocationUtil {
      * @param location The location to convert.
      * @return The yaml map.
      */
-    public static Map<String, Object> toYaml(final Location location) {
+    public static Map<String, Object> toYaml(@NotNull Location location) {
         Preconditions.checkNotNull(location, "Location cannot be null!");
 
         World world = location.getWorld();
@@ -41,7 +42,7 @@ public class LocationUtil {
      * @param section The section to convert.
      * @return The location.
      */
-    public static Location fromYaml(final ConfigurationSection section) {
+    public static Location fromYaml(@NotNull ConfigurationSection section) {
         Preconditions.checkNotNull(section, "Section cannot be null!");
 
         World world = Bukkit.getWorld(section.getString("world", "world"));

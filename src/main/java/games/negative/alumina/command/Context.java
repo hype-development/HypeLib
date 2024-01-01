@@ -27,8 +27,13 @@ package games.negative.alumina.command;
 
 import com.google.common.base.Preconditions;
 import games.negative.alumina.message.Message;
+import games.negative.alumina.model.future.BukkitFuture;
+import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.PlayerUtil;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -44,6 +49,7 @@ public record Context(String[] args, CommandSender sender) {
      * Returns the player who executed the command.
      * @return the player who executed the command.
      */
+    @NotNull
     public Optional<Player> player() {
         return sender() instanceof Player ? Optional.of((Player) sender()) : Optional.empty();
     }
@@ -53,6 +59,7 @@ public record Context(String[] args, CommandSender sender) {
      * @param index The index of the argument.
      * @return the argument at the specified index.
      */
+    @NotNull
     public Optional<String> argument(final int index) {
         return (index >= args.length ? Optional.empty() : Optional.of(args[index]));
     }
@@ -61,19 +68,32 @@ public record Context(String[] args, CommandSender sender) {
      * Send a message to the sender of the command.
      * @param message The message to send.
      */
-    public void message(final String message) {
+    public void message(@NotNull final String message) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
-        sender().sendMessage(message);
+        sender().sendMessage(ColorUtil.translate(message));
     }
 
     /**
      * Send a message to the sender of the command.
      * @param message The message to send.
      */
-    public void message(final Message message) {
+    public void message(@NotNull final Message message) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
         message.send(sender());
+    }
+
+    /**
+     * Retrieves an OfflinePlayer object for the given username.
+     *
+     * @param username The username of the player.
+     * @return A BukkitFuture object that completes with the OfflinePlayer.
+     * @throws NullPointerException if 'username' is null.
+     */
+    public BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+        Preconditions.checkNotNull(username, "username cannot be null");
+
+        return PlayerUtil.getOfflinePlayer(username);
     }
 }

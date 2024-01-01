@@ -48,12 +48,12 @@ public class ChestMenuHolder implements AluminaMenuHolder<ChestMenu> {
     private final ChestMenu gui;
     private Inventory inventory;
 
-    public ChestMenuHolder(final ChestMenu gui) {
+    public ChestMenuHolder(@NotNull ChestMenu gui) {
         this.gui = gui;
     }
 
     @Override
-    public void onOpen(final Player player, final InventoryOpenEvent event) {
+    public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
         Preconditions.checkNotNull(player, "player cannot be null");
         Preconditions.checkNotNull(event, "event cannot be null");
 
@@ -61,7 +61,7 @@ public class ChestMenuHolder implements AluminaMenuHolder<ChestMenu> {
     }
 
     @Override
-    public void onClose(final Player player, final InventoryCloseEvent event) {
+    public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
         Preconditions.checkNotNull(player, "player cannot be null");
         Preconditions.checkNotNull(event, "event cannot be null");
 
@@ -86,7 +86,6 @@ public class ChestMenuHolder implements AluminaMenuHolder<ChestMenu> {
         MenuItem menuItem = gui.byKey(function);
         if (menuItem == null) return;
 
-        gui.onFunctionClick(player, menuItem, event); // This is deprecated but we will still support it for now.
         gui.onFunctionClick(player, function, event);
     }
 

@@ -7,7 +7,7 @@
     <!-- Credentials -->
     <groupId>games.negative.alumina</groupId>
     <artifactId>alumina</artifactId>
-    <version>1.0.0-SNAPSHOT.33</version>
+    <version>1.0.0</version>
 
     <!-- Project Properties    -->
     <properties>
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.3-R0.1-SNAPSHOT</version>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 

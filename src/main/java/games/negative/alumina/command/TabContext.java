@@ -17,6 +17,7 @@ public record TabContext(CommandSender sender, String[] args) {
      * Returns the player who executed the command.
      * @return the player who executed the command.
      */
+    @NotNull
     public Optional<Player> player() {
         return sender() instanceof Player ? Optional.of((Player) sender()) : Optional.empty();
     }
@@ -35,6 +36,7 @@ public record TabContext(CommandSender sender, String[] args) {
      * Returns the current argument used in the command.
      * @return the current argument.
      */
+    @NotNull
     public String current() {
         return argument(args.length - 1).orElseThrow(() -> new IllegalStateException("No current argument"));
     }

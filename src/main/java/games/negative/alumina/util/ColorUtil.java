@@ -29,7 +29,10 @@ package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
 import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,15 +54,53 @@ public class ColorUtil {
      * @param input The string to translate.
      * @return The translated string.
      */
-    public static String translate(String input) {
+    public static String translate(@NotNull String input, @Nullable Pattern pattern) {
         Preconditions.checkNotNull(input, "Input cannot be null.");
 
-        Matcher matcher = PATTERN.matcher(input);
+        if (pattern == null) pattern = PATTERN;
+
+        Matcher matcher = pattern.matcher(input);
         while (matcher.find()) {
             String color = input.substring(matcher.start(), matcher.end());
             input = input.replace(color, String.valueOf(ChatColor.of(color)));
-            matcher = PATTERN.matcher(input);
+            matcher = pattern.matcher(input);
         }
         return ChatColor.translateAlternateColorCodes('&', input);
+    }
+
+    /**
+     * Translates a string with the basic color code and the hex color code.
+     * @param input The string to translate.
+     * @return The translated string.
+     */
+    public static String translate(@NotNull String input) {
+        return translate(input, null);
+    }
+
+    /**
+     * Translates a list of strings with the basic color code and the hex color code.
+     * @param input The list of strings to translate.
+     * @param pattern The pattern to use.
+     * @return The translated list of strings.
+     */
+    public static List<String> translate(@NotNull List<String> input, @Nullable Pattern pattern) {
+        Preconditions.checkNotNull(input, "Input cannot be null.");
+
+        if (pattern == null) pattern = PATTERN;
+
+        for (int i = 0; i < input.size(); i++) {
+            String line = input.get(i);
+            input.set(i, translate(line, pattern));
+        }
+        return input;
+    }
+
+    /**
+     * Translates a list of strings with the basic color code and the hex color code.
+     * @param input The list of strings to translate.
+     * @return The translated list of strings.
+     */
+    public static List<String> translate(@NotNull List<String> input) {
+        return translate(input, null);
     }
 }

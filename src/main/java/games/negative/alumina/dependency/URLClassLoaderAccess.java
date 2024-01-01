@@ -25,6 +25,8 @@
 
 package games.negative.alumina.dependency;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -42,7 +44,7 @@ public abstract class URLClassLoaderAccess {
      * @param classLoader the class loader
      * @return the access object
      */
-    static URLClassLoaderAccess create(URLClassLoader classLoader) {
+    static URLClassLoaderAccess create(@NotNull URLClassLoader classLoader) {
         if (Reflection.isSupported()) {
             return new Reflection(classLoader);
         } else if (Unsafe.isSupported()) {
@@ -54,7 +56,7 @@ public abstract class URLClassLoaderAccess {
 
     private final URLClassLoader classLoader;
 
-    protected URLClassLoaderAccess(URLClassLoader classLoader) {
+    protected URLClassLoaderAccess(@NotNull URLClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 

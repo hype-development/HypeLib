@@ -30,6 +30,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Suppliers;
 import games.negative.alumina.AluminaPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.InputStream;
@@ -57,7 +58,7 @@ public class DependencyLoader {
      * @param artifactId the artifact id of the dependency
      * @param version    the version of the dependency
      */
-    public static void loadDependency(final JavaPlugin plugin, final String groupId, final String artifactId, final String version) {
+    public static void loadDependency(@NotNull final JavaPlugin plugin, @NotNull final String groupId, @NotNull final String artifactId, @NotNull final String version) {
         Preconditions.checkNotNull(plugin, "'plugin' cannot be null!");
         Preconditions.checkNotNull(groupId, "'groupId' cannot be null!");
         Preconditions.checkNotNull(artifactId, "'artifactId' cannot be null!");
@@ -75,7 +76,7 @@ public class DependencyLoader {
      * @param version    the version of the dependency
      * @param repoUrl    the repository URL where the dependency is located
      */
-    public static void loadDependency(final JavaPlugin plugin, final String groupId, final String artifactId, final String version, final String repoUrl) {
+    public static void loadDependency(@NotNull final JavaPlugin plugin, @NotNull final String groupId, @NotNull final String artifactId, @NotNull final String version, @NotNull final String repoUrl) {
         Preconditions.checkNotNull(plugin, "'plugin' cannot be null!");
         Preconditions.checkNotNull(groupId, "'groupId' cannot be null!");
         Preconditions.checkNotNull(artifactId, "'artifactId' cannot be null!");
@@ -93,7 +94,7 @@ public class DependencyLoader {
      * @throws NullPointerException if `plugin` or `dependency` is null
      * @throws RuntimeException     if unable to load the dependency
      */
-    public static void loadDependency(final JavaPlugin plugin, final MavenDependency dependency) {
+    public static void loadDependency(@NotNull final JavaPlugin plugin, @NotNull final MavenDependency dependency) {
         Preconditions.checkNotNull(plugin, "'plugin' cannot be null!");
         Preconditions.checkNotNull(dependency, "'dependency' cannot be null!");
 

@@ -2,6 +2,7 @@ package games.negative.alumina.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class HTTPUtil {
      * @return The response.
      * @throws IOException If an error occurs while sending the request.
      */
-    public static JsonObject get(final String url) throws IOException {
+    public static JsonObject get(@NotNull final String url) throws IOException {
         URL httpUrl = new URL(url);
 
         // Open a connection to the URL
@@ -51,7 +52,7 @@ public class HTTPUtil {
      * @return The response.
      * @throws IOException If an error occurs while sending the request.
      */
-    public static JsonObject post(final String url, final String body) throws IOException {
+    public static JsonObject post(@NotNull final String url, @NotNull final String body) throws IOException {
         URL httpUrl = new URL(url);
 
         // Open a connection to the URL

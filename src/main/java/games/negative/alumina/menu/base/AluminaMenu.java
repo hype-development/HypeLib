@@ -34,6 +34,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the base class for all custom menus.
@@ -53,7 +55,7 @@ public interface AluminaMenu {
      * @param functionKey The function key to set.
      *                    When the function key is null, the item will not be functional.
      */
-    void setItem(int slot, final ItemStack item, final String functionKey);
+    void setItem(int slot, @NotNull final ItemStack item, @Nullable final String functionKey);
 
     /**
      * This method will allow you to set a non-functional item in the menu.
@@ -61,7 +63,7 @@ public interface AluminaMenu {
      * @param slot The slot to set the item in.
      * @param item The item to set.
      */
-    default void setItem(final int slot, final ItemStack item) {
+    default void setItem(final int slot, @NotNull final ItemStack item) {
         setItem(slot, item, null);
     }
 
@@ -70,13 +72,13 @@ public interface AluminaMenu {
      * @param item The item to add.
      * @param functionKey The function key to set.
      */
-    void addItem(final ItemStack item, final String functionKey);
+    void addItem(@NotNull final ItemStack item, @Nullable final String functionKey);
 
     /**
      * This method will allow you to add a non-functional item to the menu.
      * @param item The item to add.
      */
-    default void addItem(final ItemStack item) {
+    default void addItem(@NotNull final ItemStack item) {
         addItem(item, null);
     }
 
@@ -92,7 +94,7 @@ public interface AluminaMenu {
      *
      * @param player The player to open the menu for.
      */
-    void open(final Player player);
+    void open(@NotNull final Player player);
 
     /**
      * This method will allow you to refresh the menu.
@@ -105,7 +107,7 @@ public interface AluminaMenu {
      * @param player The player who opened the menu.
      * @param event  The event.
      */
-    void onOpen(final Player player, final InventoryOpenEvent event);
+    void onOpen(@NotNull final Player player, @NotNull final InventoryOpenEvent event);
 
     /**
      * This method will allow you to listen to the close event of the menu.
@@ -113,7 +115,7 @@ public interface AluminaMenu {
      * @param player The player who closed the menu.
      * @param event  The event.
      */
-    void onClose(final Player player, final InventoryCloseEvent event);
+    void onClose(@NotNull final Player player, @NotNull final InventoryCloseEvent event);
 
     /**
      * This method will allow you to listen to the click event of the menu.
@@ -121,18 +123,7 @@ public interface AluminaMenu {
      * @param player The player who clicked the menu.
      * @param event  The event.
      */
-    void onClick(final Player player, final InventoryClickEvent event);
-
-    /**
-     * This method will allow you to listen to the function click event of the menu.
-     *
-     * @param player The player who clicked the menu.
-     * @param item   The item that was clicked.
-     * @param event  The event.
-     * @deprecated Use {@link #onFunctionClick(Player, String, InventoryClickEvent)} instead.
-     */
-    @Deprecated
-    void onFunctionClick(final Player player, final MenuItem item, final InventoryClickEvent event);
+    void onClick(@NotNull final Player player, @NotNull final InventoryClickEvent event);
 
     /**
      * This method will allow you to listen to the function click event of the menu.
@@ -140,5 +131,5 @@ public interface AluminaMenu {
      * @param key The function key.
      * @param event The event.
      */
-    void onFunctionClick(final Player player, final String key, final InventoryClickEvent event);
+    void onFunctionClick(@NotNull final Player player, @NotNull final String key, @NotNull final InventoryClickEvent event);
 }

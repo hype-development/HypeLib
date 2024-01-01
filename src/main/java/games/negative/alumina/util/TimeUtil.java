@@ -29,6 +29,7 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -80,7 +81,7 @@ public class TimeUtil {
      * @return The formatted duration as a string
      * @throws NullPointerException If `duration` is null
      */
-    public static String format(final Duration duration, boolean small) {
+    public static String format(@NotNull Duration duration, boolean small) {
         Preconditions.checkNotNull(duration, "`duration` cannot be null!");
 
         long toDays = duration.toDays();
@@ -122,7 +123,7 @@ public class TimeUtil {
      * @return The formatted duration as a string
      * @throws NullPointerException If `duration` is null
      */
-    public static String format(final Duration duration) {
+    public static String format(@NotNull Duration duration) {
         Preconditions.checkNotNull(duration, "`duration` cannot be null!");
 
         return format(duration, false);
@@ -137,7 +138,7 @@ public class TimeUtil {
      * @see #parse(String) 
      */
     @Deprecated
-    public static long fromString(final String input) {
+    public static long fromString(@NotNull String input) {
         Preconditions.checkNotNull(input, "'input' cannot be null!");
         Preconditions.checkArgument(!input.isEmpty(), "'input' cannot be empty!");
 
@@ -209,7 +210,7 @@ public class TimeUtil {
      * @throws NullPointerException     if the input is null.
      * @throws IllegalArgumentException if the input is empty or not a valid duration format.
      */
-    public static Duration parse(final String input) {
+    public static Duration parse(@NotNull String input) {
         Preconditions.checkNotNull(input, "'input' cannot be null!");
         Preconditions.checkArgument(!input.isEmpty(), "'input' cannot be empty!");
 
