@@ -145,6 +145,9 @@ public class PlayerUtil {
         if (response == null) return null;
 
         String uuidStr = response.get("id").getAsString();
+        uuidStr = uuidStr.replaceAll("\"", "")
+                .replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+
         return UUID.fromString(uuidStr);
     }
 
