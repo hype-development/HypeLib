@@ -7,7 +7,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * A task to completed in the future with a result.
+ * A task to complete in the future with a result.
+ * Typically used for asynchronous tasks that have a "callback" functionality of sorts.
  * Exactly the same as {@link CompletableFuture} but using Bukkit Threads.
  * @param <T> The type of the result.
  */
