@@ -22,8 +22,10 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
             if (async) {
                 task.accept(value);
+                this.cancel();
             } else {
                 Tasks.run(() -> task.accept(value));
+                this.cancel();
             }
         }, 0, 1);
     }
