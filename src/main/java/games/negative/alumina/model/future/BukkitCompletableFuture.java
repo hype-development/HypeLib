@@ -14,7 +14,7 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
     private static final Duration LIFETIME = Duration.ofMinutes(30);
 
-    private final AtomicReference<T> reference = new AtomicReference<>();
+    private AtomicReference<T> reference = null;
     private Consumer<T> task;
     private boolean async = false;
     private final BukkitTask bukkitTask;
@@ -30,9 +30,9 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
                 return;
             }
 
-            T value = reference.get();
-            if (value == null || task == null) return;
+            if (reference == null || task == null) return;
 
+            T value = reference.get();
             if (async) {
                 task.accept(value);
                 this.cancel();
@@ -45,12 +45,14 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
     @Override
     public BukkitFuture<T> supply(@NotNull Supplier<T> supplier) {
+        if (this.reference == null) this.reference = new AtomicReference<>(null);
         Tasks.run(() -> this.reference.set(supplier.get()));
         return this;
     }
 
     @Override
     public BukkitFuture<T> supplyAsync(@NotNull Supplier<T> supplier) {
+        if (this.reference == null) this.reference = new AtomicReference<>(null);
         Tasks.async(() -> this.reference.set(supplier.get()));
         return this;
     }
@@ -69,7 +71,7 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
     @Override
     public void cancel() {
-        this.reference.set(null);
+        this.reference = null;
         this.bukkitTask.cancel();
     }
 }
