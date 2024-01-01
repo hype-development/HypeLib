@@ -4,19 +4,32 @@ import games.negative.alumina.util.Tasks;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
+    private static final Duration LIFETIME = Duration.ofMinutes(30);
+
     private final AtomicReference<T> reference = new AtomicReference<>();
     private Consumer<T> task;
     private boolean async = false;
     private final BukkitTask bukkitTask;
+    private final Instant initialization;
 
     public BukkitCompletableFuture() {
+        this.initialization = Instant.now();
+
         this.bukkitTask = Tasks.async(() -> {
+            // Cancel the task if it has been running for more than 30 minutes.
+            if (Duration.between(initialization, Instant.now()).compareTo(LIFETIME) > 0) {
+                this.cancel();
+                return;
+            }
+
             T value = reference.get();
             if (value == null || task == null) return;
 
