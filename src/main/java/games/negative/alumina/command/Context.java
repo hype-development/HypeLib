@@ -27,12 +27,16 @@ package games.negative.alumina.command;
 
 import com.google.common.base.Preconditions;
 import games.negative.alumina.message.Message;
+import games.negative.alumina.model.future.BukkitFuture;
 import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.PlayerUtil;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 
 /**
@@ -79,5 +83,18 @@ public record Context(String[] args, CommandSender sender) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
         message.send(sender());
+    }
+
+    /**
+     * Retrieves an OfflinePlayer object for the given username.
+     *
+     * @param username The username of the player.
+     * @return A BukkitFuture object that completes with the OfflinePlayer.
+     * @throws NullPointerException if 'username' is null.
+     */
+    public BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+        Preconditions.checkNotNull(username, "username cannot be null");
+
+        return PlayerUtil.getOfflinePlayer(username);
     }
 }

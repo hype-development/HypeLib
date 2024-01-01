@@ -3,8 +3,11 @@ package games.negative.alumina.util;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
+import games.negative.alumina.model.future.BukkitCompletableFuture;
+import games.negative.alumina.model.future.BukkitFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -143,6 +146,38 @@ public class PlayerUtil {
 
         String uuidStr = response.get("id").getAsString();
         return UUID.fromString(uuidStr);
+    }
+
+    /**
+     * Retrieves an OfflinePlayer object for the given username.
+     *
+     * @param username The username of the player.
+     * @return A BukkitFuture object that completes with the OfflinePlayer.
+     * @throws NullPointerException if 'username' is null.
+     */
+    public static BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+        Preconditions.checkNotNull(username, "'username' cannot be null!");;
+
+        BukkitFuture<OfflinePlayer> future = new BukkitCompletableFuture<>();
+        BukkitFuture<UUID> uuidFuture = new BukkitCompletableFuture<>();
+        uuidFuture.supplyAsync(() -> {
+            try {
+                return getByName(username);
+            } catch (IOException e) {
+                return null;
+            }
+        });
+
+        uuidFuture.whenCompleteAsync(uuid -> {
+            if (uuid == null) {
+                future.cancel();
+                return;
+            }
+
+            future.supply(() -> Bukkit.getOfflinePlayer(uuid));
+        });
+
+        return future;
     }
 
     /**
