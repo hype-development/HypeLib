@@ -1,4 +1,4 @@
-package games.negative.alumina.model.position;
+package games.negative.alumina.position;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -24,9 +24,7 @@ import java.util.function.Predicate;
  *
  * @param min The minimum block position.
  * @param max The maximum block position.
- * @deprecated Use {@link games.negative.alumina.position.BlockRegion} instead.
  */
-@Deprecated
 public record BlockRegion(String name, World world, BlockPosition min, BlockPosition max) implements ConfigurationSerializable {
 
     public BlockRegion {

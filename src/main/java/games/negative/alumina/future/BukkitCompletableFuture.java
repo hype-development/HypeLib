@@ -1,4 +1,4 @@
-package games.negative.alumina.model.future;
+package games.negative.alumina.future;
 
 import games.negative.alumina.util.Tasks;
 import org.bukkit.scheduler.BukkitTask;
@@ -12,10 +12,10 @@ import java.util.function.Supplier;
 
 /**
  * A task to complete in the future with a result.
+ * Typically used for asynchronous tasks that have a "callback" functionality of sorts.
+ * Exactly the same as {@link java.util.concurrent.CompletableFuture} but using Bukkit Threads.
  * @param <T> The type of the result.
- * @deprecated Use {@link games.negative.alumina.future.BukkitCompletableFuture} instead.
  */
-@Deprecated
 public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
 
     private static final Duration LIFETIME = Duration.ofMinutes(30);

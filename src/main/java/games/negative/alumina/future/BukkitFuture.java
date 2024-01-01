@@ -1,4 +1,4 @@
-package games.negative.alumina.model.future;
+package games.negative.alumina.future;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -11,9 +11,7 @@ import java.util.function.Supplier;
  * Typically used for asynchronous tasks that have a "callback" functionality of sorts.
  * Exactly the same as {@link CompletableFuture} but using Bukkit Threads.
  * @param <T> The type of the result.
- * @deprecated Use {@link games.negative.alumina.future.BukkitFuture} instead.
  */
-@Deprecated
 public interface BukkitFuture<T> {
 
     /**

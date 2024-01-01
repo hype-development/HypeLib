@@ -1,4 +1,4 @@
-package games.negative.alumina.model.registry;
+package games.negative.alumina.registry;
 
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
@@ -9,12 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * A registry is a map that can be used to store values.
+ * A simple implementation of a registry.
  * @param <K> The key type.
  * @param <V> The value type.
- * @deprecated Use {@link games.negative.alumina.registry.SimpleRegistry} instead.
  */
-@Deprecated
 public class SimpleRegistry<K, V> implements Registry<K, V> {
 
     private final Map<K, V> registry;

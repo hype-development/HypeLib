@@ -1,4 +1,4 @@
-package games.negative.alumina.model.position;
+package games.negative.alumina.position;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.jetbrains.annotations.NotNull;
@@ -10,9 +10,7 @@ import java.util.Map;
  * @param x X coordinate
  * @param y Y coordinate
  * @param z Z coordinate
- * @deprecated Use {@link games.negative.alumina.position.BlockPosition} instead.
  */
-@Deprecated
 public record BlockPosition(int x, int y, int z) implements ConfigurationSerializable {
 
     @NotNull
