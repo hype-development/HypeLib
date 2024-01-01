@@ -3,6 +3,7 @@ package games.negative.alumina.util;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -141,5 +143,44 @@ public class PlayerUtil {
 
         String uuidStr = response.get("id").getAsString();
         return UUID.fromString(uuidStr);
+    }
+
+    /**
+     * Checks if a player with the given UUID is online.
+     *
+     * @param uuid The UUID of the player.
+     * @return true if the player is online, false otherwise.
+     * @throws NullPointerException if 'uuid' is null.
+     */
+    public static boolean isOnline(@NotNull UUID uuid) {
+        Preconditions.checkNotNull(uuid, "'uuid' cannot be null!");
+
+        return Bukkit.getPlayer(uuid) != null;
+    }
+
+    /**
+     * Checks if the given username is online.
+     *
+     * @param username The username to check.
+     * @return {@code true} if the username is online, {@code false} otherwise.
+     * @throws IOException If an error occurs while checking the status.
+     */
+    public static boolean isOnline(@NotNull String username) throws IOException {
+        Preconditions.checkNotNull(username, "'username' cannot be null!");
+
+        return Bukkit.getPlayer(username) != null;
+    }
+
+    /**
+     * Retrieves a player by their UUID.
+     *
+     * @param uuid The UUID of the player.
+     * @return Optional<Player> The player, or an empty Optional if the player is not found.
+     * @throws NullPointerException if 'uuid' is null.
+     */
+    public static Optional<Player> getPlayer(@NotNull UUID uuid) {
+        Preconditions.checkNotNull(uuid, "'uuid' cannot be null!");
+
+        return Optional.ofNullable(Bukkit.getPlayer(uuid));
     }
 }
