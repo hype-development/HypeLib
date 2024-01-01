@@ -3,7 +3,6 @@ package games.negative.alumina.model.future;
 import games.negative.alumina.util.Tasks;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -42,13 +41,13 @@ public class BukkitCompletableFuture<T> implements BukkitFuture<T> {
     }
 
     @Override
-    public void whenComplete(@Nullable Consumer<T> task) {
+    public void whenComplete(@NotNull Consumer<T> task) {
         this.task = task;
         this.async = false;
     }
 
     @Override
-    public void whenCompleteAsync(@Nullable Consumer<T> task) {
+    public void whenCompleteAsync(@NotNull Consumer<T> task) {
         this.task = task;
         async = true;
     }

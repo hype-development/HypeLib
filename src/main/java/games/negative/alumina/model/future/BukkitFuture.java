@@ -32,13 +32,13 @@ public interface BukkitFuture<T> {
      * Supply a value to the future asynchronously.
      * @param task The task to supply the value.
      */
-    void whenComplete(@Nullable Consumer<T> task);
+    void whenComplete(@NotNull Consumer<T> task);
 
     /**
      * Supply a value to the future asynchronously.
      * @param task The task to supply the value.
      */
-    void whenCompleteAsync(@Nullable Consumer<T> task);
+    void whenCompleteAsync(@NotNull Consumer<T> task);
 
     /**
      * Cancel the future task.
