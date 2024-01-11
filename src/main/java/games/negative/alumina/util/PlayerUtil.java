@@ -30,6 +30,8 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import games.negative.alumina.future.BukkitCompletableFuture;
 import games.negative.alumina.future.BukkitFuture;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
@@ -42,6 +44,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -245,5 +248,39 @@ public class PlayerUtil {
         Preconditions.checkNotNull(uuid, "'uuid' cannot be null!");
 
         return Optional.ofNullable(Bukkit.getPlayer(uuid));
+    }
+
+    /**
+     * Sends a title and subtitle message to a player with specified fade in, stay, and fade out times.
+     * @param player The player to send the title and subtitle to.
+     * @param title The title message. Can be null.
+     * @param subtitle The subtitle message. Can be null.
+     * @param fadeIn The time in ticks for the title and subtitle to fade in.
+     * @param stay The time in ticks for the title and subtitle to stay on the screen.
+     * @param fadeOut The time in ticks for the title and subtitle to fade out.
+     * @throws IllegalArgumentException If the player is null.
+     * @throws IllegalStateException If both title and subtitle are null.
+     */
+    public static void sendTitle(@NotNull Player player, @Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
+        Preconditions.checkNotNull(player, "'player' cannot be null!");
+
+        if (title == null && subtitle == null) throw new IllegalStateException("You cannot have `title` and `subtitle` be null at the same time!");
+
+        player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+    }
+
+    /**
+     * Sends an action bar message to a player.
+     *
+     * @param player The player to send the action bar message to.
+     * @param message The message to be displayed in the action bar.
+     *
+     * @throws NullPointerException if {@code player} or {@code message} is null.
+     */
+    public static void sendActionBar(@NotNull Player player, @NotNull String message) {
+        Preconditions.checkNotNull(player, "'player' cannot be null!");
+        Preconditions.checkNotNull(message, "'message' cannot be null!");
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
     }
 }
