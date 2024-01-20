@@ -19,7 +19,7 @@
 <dependency>
     <groupId>games.negative.alumina</groupId>
     <artifactId>alumina</artifactId>
-    <version>1.0.1</version>
+    <version>1.2.1</version>
     <scope>compile</scope>
 </dependency>
 ```
