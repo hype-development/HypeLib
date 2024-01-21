@@ -42,4 +42,14 @@ public interface Keyd<T> {
     @NotNull
     T key();
 
+    /**
+     * Sets the key for the object.
+     *
+     * @param key the key to set
+     * @throws UnsupportedOperationException if setting the key is not supported by the object
+     */
+    default void setKey(@NotNull T key) {
+        throw new UnsupportedOperationException("This object does not support setting the key.");
+    }
+
 }
