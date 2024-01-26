@@ -247,9 +247,8 @@ public abstract class AluminaPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.colorAgent = new AluminaColorAgent();
-        registerListeners(
-                new MenuListener()
-        );
+
+        new MenuListener();
 
         enable();
     }

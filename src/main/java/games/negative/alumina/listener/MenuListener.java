@@ -27,10 +27,9 @@
 
 package games.negative.alumina.listener;
 
+import games.negative.alumina.event.Events;
 import games.negative.alumina.menu.base.AluminaMenuHolder;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -39,35 +38,34 @@ import org.bukkit.inventory.InventoryHolder;
 /**
  * Represents the menu listener.
  */
-public class MenuListener implements Listener {
+public class MenuListener {
 
-    @EventHandler
-    public void onClick(InventoryClickEvent event) {
-        InventoryHolder holder = event.getInventory().getHolder();
-        if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
+    public MenuListener() {
+        Events.listen(InventoryClickEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
 
-        Player player = (Player) event.getWhoClicked();
+            Player player = (Player) event.getWhoClicked();
 
-        menuHolder.onClick(player, event);
-    }
+            menuHolder.onClick(player, event);
+        });
 
-    @EventHandler
-    public void onOpen(InventoryOpenEvent event) {
-        InventoryHolder holder = event.getInventory().getHolder();
-        if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
+        Events.listen(InventoryOpenEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
 
-        Player player = (Player) event.getPlayer();
+            Player player = (Player) event.getPlayer();
 
-        menuHolder.onOpen(player, event);
-    }
+            menuHolder.onOpen(player, event);
+        });
 
-    @EventHandler
-    public void onClose(InventoryCloseEvent event) {
-        InventoryHolder holder = event.getInventory().getHolder();
-        if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
+        Events.listen(InventoryCloseEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
 
-        Player player = (Player) event.getPlayer();
+            Player player = (Player) event.getPlayer();
 
-        menuHolder.onClose(player, event);
+            menuHolder.onClose(player, event);
+        });
     }
 }
