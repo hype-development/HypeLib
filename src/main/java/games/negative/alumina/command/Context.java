@@ -30,11 +30,13 @@ import games.negative.alumina.future.BukkitFuture;
 import games.negative.alumina.message.Message;
 import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.PlayerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 
@@ -88,10 +90,26 @@ public record Context(String[] args, CommandSender sender) {
      * Retrieves an OfflinePlayer object for the given username.
      *
      * @param username The username of the player.
+     * @return An Optional object that provides the OfflinePlayer.
+     * @throws NullPointerException if 'username' is null.
+     */
+    public Optional<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+        Preconditions.checkNotNull(username, "username cannot be null");
+
+        return Arrays.stream(Bukkit.getOfflinePlayers()).filter(offlinePlayer -> {
+            String name = offlinePlayer.getName();
+            return name != null && name.equalsIgnoreCase(username);
+        }).findFirst();
+    }
+
+    /**
+     * Retrieves an OfflinePlayer object for the given username using the Mojang API
+     *
+     * @param username The username of the player.
      * @return A BukkitFuture object that completes with the OfflinePlayer.
      * @throws NullPointerException if 'username' is null.
      */
-    public BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+    public BukkitFuture<OfflinePlayer> searchOfflinePlayer(@NotNull String username) {
         Preconditions.checkNotNull(username, "username cannot be null");
 
         return PlayerUtil.getOfflinePlayer(username);
