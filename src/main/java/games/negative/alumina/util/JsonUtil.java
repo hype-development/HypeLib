@@ -57,11 +57,8 @@ public class JsonUtil {
         file.getParentFile().mkdirs();
         if (!file.exists()) file.createNewFile();
 
-
         try (Writer writer = new FileWriter(file)) {
             gson.toJson(instance, writer);
-        } catch (IOException e) {
-            throw new IOException("Failed to save file " + file.getName(), e);
         }
     }
 
@@ -136,12 +133,10 @@ public class JsonUtil {
         if (gson == null) gson = GSON;
 
         file.getParentFile().mkdirs();
-        if (!file.exists()) throw new IOException("File " + file.getName() + " does not exist.");
+        Preconditions.checkArgument(file.exists(), "File " + file.getName() + " does not exist.");
 
         try (Reader reader = new FileReader(file)) {
             return gson.fromJson(reader, clazz);
-        } catch (IOException e) {
-            throw new IOException("Failed to load file " + file.getName(), e);
         }
     }
 
