@@ -1,4 +1,5 @@
 ![logo](assets/alumina.png)
+![features](assets/Features.png)
 
 ![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/games.negative.alumina/alumina?server=https%3A%2F%2Frepo.negative.games&nexusVersion=3&logo=sonatype&label=version)
 [![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://jd.alumina.dev) ![Discord](https://img.shields.io/discord/822346437240815656?logo=discord&label=discord)
