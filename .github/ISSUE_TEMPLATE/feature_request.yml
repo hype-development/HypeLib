@@ -4,7 +4,7 @@ description: Request a new feature for this project.
 
 title: "[Feature Request] "
 
-labels: [ "enhancement" ]
+labels: [ "feature request" ]
 
 body:
   - type: textarea
