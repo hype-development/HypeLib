@@ -37,6 +37,7 @@ import java.util.Map;
 /**
  * A location utility to handle some location-related tasks.
  */
+@Deprecated
 public class LocationUtil {
 
     /**
