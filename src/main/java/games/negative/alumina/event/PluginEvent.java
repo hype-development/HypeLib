@@ -33,6 +33,10 @@ import org.jetbrains.annotations.NotNull;
  * This class is a wrapper for {@link org.bukkit.event.Event} that
  * allows for easier event creation without needing to declare a handler list
  * and some more redundant code.
+ *
+ * @apiNote If you are using the {@link Events} utility, and you want to use custom events, this class will not work!
+ * You must add a static instance of {@link HandlerList} and override {@link #getHandlers()}.
+ * Might be deprecated in the future!
  */
 public abstract class PluginEvent extends Event {
 
