@@ -23,6 +23,12 @@ body:
         
         The provided text will be rendered as Java code, so you don't have to provide a Code block for it.
       render: java
+      placeholder: |
+        public class Main {
+          public static void main(String[] args) {
+            System.out.println("Hello, world!");
+          }
+        }
   - type: textarea
     attributes:
       label: "Error Message / Stacktrace"
