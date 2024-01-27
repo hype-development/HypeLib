@@ -1,0 +1,31 @@
+name: Bug Report
+
+description: Request a new feature for this project.
+
+title: "[Bug] "
+
+labels: [ "bug" ]
+
+body:
+  - type: textarea
+    attributes:
+      label: "Bug Report Description"
+      description: "Provide a detailed description of the problem you ran into."
+      placeholder: "I was doing this and that happened..."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: "Problematic Code"
+      description: |-
+        Provide some code that caused the problem.
+        
+        The provided text will be rendered as Java code, so you don't have to provide a Code block for it.
+      render: java
+  - type: textarea
+    attributes:
+      label: "Error Message / Stacktrace"
+      description: "Provide the error message you got when you ran the code."
+      placeholder: "Error message goes here..."
+      render: yesyes
