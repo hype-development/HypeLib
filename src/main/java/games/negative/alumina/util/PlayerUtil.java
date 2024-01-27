@@ -229,9 +229,8 @@ public class PlayerUtil {
      *
      * @param username The username to check.
      * @return {@code true} if the username is online, {@code false} otherwise.
-     * @throws IOException If an error occurs while checking the status.
      */
-    public static boolean isOnline(@NotNull String username) throws IOException {
+    public static boolean isOnline(@NotNull String username) {
         Preconditions.checkNotNull(username, "'username' cannot be null!");
 
         return Bukkit.getPlayer(username) != null;
