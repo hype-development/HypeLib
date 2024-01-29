@@ -698,7 +698,7 @@ public class MenuButton implements Unique {
 
         if (action == null) return;
 
-        action.onClick(player, event);
+        action.onClick(this, player, event);
     }
 
     /**
@@ -765,7 +765,7 @@ public class MenuButton implements Unique {
     @FunctionalInterface
     public interface ClickAction {
 
-        void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
+        void onClick(@NotNull MenuButton button, @NotNull Player player, @NotNull InventoryClickEvent event);
 
     }
 }
