@@ -695,7 +695,8 @@ public class MenuButton implements Unique {
     public void process(@NotNull Player player, @NotNull InventoryClickEvent event) {
         Preconditions.checkNotNull(player, "Player cannot be null");
         Preconditions.checkNotNull(event, "Event cannot be null");
-        Preconditions.checkNotNull(action, "Action cannot be null");
+
+        if (action == null) return;
 
         action.onClick(player, event);
     }
