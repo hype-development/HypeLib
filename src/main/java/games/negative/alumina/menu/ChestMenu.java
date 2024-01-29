@@ -669,6 +669,7 @@ import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.MathUtil;
 import games.negative.alumina.util.NBTEditor;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -690,6 +691,7 @@ public abstract class ChestMenu implements InteractiveMenu {
 
     private static final NamespacedKey FUNCTION = new NamespacedKey(AluminaPlugin.getAluminaInstance(), "chest-menu-function");
 
+    @Setter
     private String title = "Chest Menu";
     private int rows = 1;
 
@@ -697,6 +699,9 @@ public abstract class ChestMenu implements InteractiveMenu {
 
     protected Inventory inventory;
 
+    /**
+     * Represents a chest menu with a specific title and number of rows.
+     */
     public ChestMenu(@NotNull String title, int rows) {
         Preconditions.checkNotNull(title, "Title cannot be null");
         Preconditions.checkArgument(MathUtil.between(rows, MIN_ROWS, MAX_ROWS), "Rows must be between " + MIN_ROWS + " and " + MAX_ROWS);
@@ -708,20 +713,33 @@ public abstract class ChestMenu implements InteractiveMenu {
         this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
     }
 
+    /**
+     * Represents a chest menu without a title or number of rows.
+     */
     public ChestMenu() {
         this.buttons = Sets.newHashSet();
     }
 
+    /**
+     * Opens the menu for the specified player.
+     *
+     * @param player The player for whom the menu should be opened.
+     */
     public void open(@NotNull Player player) {
         Preconditions.checkNotNull(player, "Player cannot be null");
 
         if (inventory == null) inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
 
-        refresh();
+        refresh(player);
 
         player.openInventory(inventory);
     }
 
+    /**
+     * Refreshes the inventory of the ChestMenu for the specified player.
+     *
+     * @param player The player whose inventory needs to be refreshed. Must not be null.
+     */
     public void refresh(@NotNull Player player) {
         inventory.clear();
 
@@ -744,6 +762,11 @@ public abstract class ChestMenu implements InteractiveMenu {
         }
     }
 
+    /**
+     * Refreshes the button at the specified slot in the inventory.
+     *
+     * @param slot The slot number of the button to refresh. Must be between 0 and (rows * 9).
+     */
     public void refreshButton(int slot) {
         Preconditions.checkArgument(MathUtil.between(slot, 0, rows * 9), "Slot must be between 0 and " + (rows * 9));
 
@@ -761,16 +784,37 @@ public abstract class ChestMenu implements InteractiveMenu {
         inventory.setItem(slot, item);
     }
 
+    /**
+     * Called when a player opens an inventory.
+     *
+     * @param player The player who opened the inventory.
+     * @param event The InventoryOpenEvent triggered by the player opening the inventory.
+     * @apiNote Override this method to perform actions when the player opens the inventory.
+     */
     @Override
     public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
 
     }
 
+    /**
+     * Called when the player closes the inventory associated with this menu.
+     *
+     * @param player The player who closed the inventory.
+     * @param event The InventoryCloseEvent triggered by the player closing the inventory.
+     * @apiNote Override this method to perform actions when the player closes the inventory.
+     */
     @Override
     public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
 
     }
 
+    /**
+     * Called when a player clicks on an inventory item.
+     *
+     * @param player The player who clicked.
+     * @param event  The inventory click event.
+     * @apiNote Do not override this method!!!!!! pretty please :)
+     */
     @Override
     public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
         ItemStack current = event.getCurrentItem();
@@ -795,18 +839,35 @@ public abstract class ChestMenu implements InteractiveMenu {
         button.process(player, event);
     }
 
+    /**
+     * Adds a menu button to the list of buttons in the menu.
+     *
+     * @param button The menu button to be added. Cannot be null.
+     * @throws NullPointerException if the button parameter is null.
+     */
     public void addButton(@NotNull MenuButton button) {
         Preconditions.checkNotNull(button, "Button cannot be null");
 
         buttons.add(button);
     }
 
+    /**
+     * Removes the specified menu button from the list of buttons in the chest menu.
+     *
+     * @param button The menu button to remove. Cannot be null.
+     * @throws NullPointerException if the button is null.
+     */
     public void removeButton(@NotNull MenuButton button) {
         Preconditions.checkNotNull(button, "Button cannot be null");
 
         buttons.remove(button);
     }
 
+    /**
+     * Returns the index of the first free slot in the inventory.
+     *
+     * @return The index of the first free slot, or -1 if there are no free slots.
+     */
     private int getFreeSlot() {
         int index = 0;
         for (ItemStack content : inventory.getContents()) {
@@ -817,12 +878,30 @@ public abstract class ChestMenu implements InteractiveMenu {
         return -1;
     }
 
+    /**
+     * Checks if a slot in the inventory is occupied.
+     *
+     * @param slot The index of the slot to check. Use -1 to check if any free slot is available.
+     * @return True if the slot is occupied, false otherwise.
+     */
     private boolean isSlotOccupied(int slot) {
         if (slot == -1) return getFreeSlot() == -1;
 
         Preconditions.checkArgument(MathUtil.between(slot, 0, rows * 9), "Slot must be between 0 and " + (rows * 9));
 
         return inventory.getItem(slot) != null;
+    }
+
+    /**
+     * Sets the number of rows in the menu.
+     *
+     * @param rows The number of rows to set. Must be between MIN_ROWS and MAX_ROWS.
+     * @throws IllegalArgumentException if the rows value is not between MIN_ROWS and MAX_ROWS.
+     */
+    public void setRows(int rows) {
+        Preconditions.checkArgument(MathUtil.between(rows, MIN_ROWS, MAX_ROWS), "Rows must be between " + MIN_ROWS + " and " + MAX_ROWS);
+
+        this.rows = rows;
     }
 
 }
