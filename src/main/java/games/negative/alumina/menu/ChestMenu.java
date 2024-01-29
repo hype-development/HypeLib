@@ -759,6 +759,24 @@ public class ChestMenu implements InteractiveMenu {
         }
     }
 
+    public void refreshButton(int slot) {
+        Preconditions.checkArgument(MathUtil.between(slot, 0, rows * 9), "Slot must be between 0 and " + (rows * 9));
+
+        for (MenuButton button : buttons) {
+            if (button.getSlot() != slot) continue;
+
+            ItemStack item = button.getItem();
+            ItemMeta meta = item.getItemMeta();
+            if (meta == null) continue;
+
+            NBTEditor.set(meta, FUNCTION, PersistentDataType.STRING, button.uuid().toString());
+
+            item.setItemMeta(meta);
+
+            inventory.setItem(slot, item);
+        }
+    }
+
     @Override
     public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
 
@@ -771,7 +789,26 @@ public class ChestMenu implements InteractiveMenu {
 
     @Override
     public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
+        ItemStack current = event.getCurrentItem();
+        if (current == null) return;
 
+        ItemMeta meta = current.getItemMeta();
+        if (meta == null) return;
+
+        String function = NBTEditor.get(meta, FUNCTION, PersistentDataType.STRING);
+        if (function == null) {
+            // Check by slot.
+            MenuButton button = buttons.stream().filter(menuButton -> menuButton.getSlot() == event.getSlot()).findFirst().orElse(null);
+            if (button == null) return;
+
+            button.process(player, event);
+            return;
+        }
+
+        MenuButton button = buttons.stream().filter(menuButton -> menuButton.uuid().toString().equals(function)).findFirst().orElse(null);
+        if (button == null) return;
+
+        button.process(player, event);
     }
 
     private int getFreeSlot() {
