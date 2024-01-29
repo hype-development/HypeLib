@@ -697,4 +697,8 @@ public interface InteractiveMenu {
      */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
+    void open(@NotNull Player player);
+
+    void refresh(@NotNull Player player);
+
 }

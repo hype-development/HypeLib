@@ -731,6 +731,7 @@ public abstract class ChestMenu implements InteractiveMenu {
      *
      * @param player The player for whom the menu should be opened.
      */
+    @Override
     public void open(@NotNull Player player) {
         Preconditions.checkNotNull(player, "Player cannot be null");
 
@@ -746,6 +747,7 @@ public abstract class ChestMenu implements InteractiveMenu {
      *
      * @param player The player whose inventory needs to be refreshed. Must not be null.
      */
+    @Override
     public void refresh(@NotNull Player player) {
         inventory.clear();
 
