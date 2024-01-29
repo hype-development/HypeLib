@@ -662,7 +662,6 @@
 
 package games.negative.alumina.menu.holder;
 
-import games.negative.alumina.menu.ChestMenu;
 import games.negative.alumina.menu.InteractiveMenuHolder;
 import games.negative.alumina.menu.PaginatedMenu;
 import lombok.RequiredArgsConstructor;
