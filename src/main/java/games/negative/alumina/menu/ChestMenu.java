@@ -672,12 +672,14 @@ import games.negative.alumina.util.NBTEditor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -913,4 +915,25 @@ public abstract class ChestMenu implements InteractiveMenu {
         this.rows = rows;
     }
 
+    /**
+     * Updates the title of the chest menu and refreshes the inventory for all viewers.
+     *
+     * @param input The new title to set. Must not be null.
+     * @throws NullPointerException if the input parameter is null.
+     */
+    public void updateTitle(@NotNull String input) {
+        Preconditions.checkNotNull(input, "Title cannot be null");
+
+        this.title = input;
+
+        if (inventory == null)
+            inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
+
+        for (HumanEntity viewer : inventory.getViewers()) {
+            InventoryView view = viewer.getOpenInventory();
+            if (!(view.getTopInventory().getHolder() instanceof ChestMenuHolder)) continue;
+
+            view.setTitle(ColorUtil.translate(title));
+        }
+    }
 }
