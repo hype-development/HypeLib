@@ -673,6 +673,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -694,6 +695,9 @@ public abstract class ChestMenu implements InteractiveMenu {
     @Setter
     private String title = "Chest Menu";
     private int rows = 1;
+
+    @Setter
+    private boolean cancelClicks = false;
 
     private final Set<MenuButton> buttons;
 
@@ -817,6 +821,11 @@ public abstract class ChestMenu implements InteractiveMenu {
      */
     @Override
     public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
+        if (cancelClicks) {
+            event.setCancelled(true);
+            event.setResult(Event.Result.DENY);
+        }
+
         ItemStack current = event.getCurrentItem();
         if (current == null) return;
 
