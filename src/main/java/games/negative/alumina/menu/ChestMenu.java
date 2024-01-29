@@ -665,6 +665,7 @@ package games.negative.alumina.menu;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import games.negative.alumina.AluminaPlugin;
+import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.MathUtil;
 import games.negative.alumina.util.NBTEditor;
@@ -693,7 +694,6 @@ public class ChestMenu implements InteractiveMenu {
     private int rows = 1;
 
     private final Set<MenuButton> buttons;
-    private final Set<MenuFiller> fillers;
 
     protected Inventory inventory;
 
@@ -705,22 +705,17 @@ public class ChestMenu implements InteractiveMenu {
         this.rows = rows;
 
         this.buttons = Sets.newHashSet();
-        this.fillers = Sets.newHashSet();
-
-        this.inventory = Bukkit.createInventory(null, rows * 9, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
     }
 
     public ChestMenu() {
         this.buttons = Sets.newHashSet();
-        this.fillers = Sets.newHashSet();
     }
 
     public void open(@NotNull Player player) {
         Preconditions.checkNotNull(player, "Player cannot be null");
 
-        if (inventory == null) {
-            inventory = Bukkit.createInventory(null, rows * 9, ColorUtil.translate(title));
-        }
+        if (inventory == null) inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
 
         refresh();
 
@@ -730,18 +725,9 @@ public class ChestMenu implements InteractiveMenu {
     public void refresh() {
         inventory.clear();
 
-        for (MenuFiller filler : fillers) {
-            int[] slots = filler.getSlots();
-            for (int slot : slots) {
-                if (!checkSlot(slot, true)) continue;
-
-                inventory.setItem(slot, filler.getItem());
-            }
-        }
-
         for (MenuButton button : buttons) {
             int slot = button.getSlot();
-            if (!checkSlot(slot, false)) continue;
+            if (isSlotOccupied(slot)) continue;
 
             ItemStack item = button.getItem();
             ItemMeta meta = item.getItemMeta();
@@ -752,7 +738,6 @@ public class ChestMenu implements InteractiveMenu {
             item.setItemMeta(meta);
 
             if (slot == -1) slot = getFreeSlot();
-
             if (slot == -1) continue;
 
             inventory.setItem(slot, item);
@@ -762,19 +747,18 @@ public class ChestMenu implements InteractiveMenu {
     public void refreshButton(int slot) {
         Preconditions.checkArgument(MathUtil.between(slot, 0, rows * 9), "Slot must be between 0 and " + (rows * 9));
 
-        for (MenuButton button : buttons) {
-            if (button.getSlot() != slot) continue;
+        MenuButton button = buttons.stream().filter(menuButton -> menuButton.getSlot() == slot).findFirst().orElse(null);
+        if (button == null) return;
 
-            ItemStack item = button.getItem();
-            ItemMeta meta = item.getItemMeta();
-            if (meta == null) continue;
+        ItemStack item = button.getItem();
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return;
 
-            NBTEditor.set(meta, FUNCTION, PersistentDataType.STRING, button.uuid().toString());
+        NBTEditor.set(meta, FUNCTION, PersistentDataType.STRING, button.uuid().toString());
 
-            item.setItemMeta(meta);
+        item.setItemMeta(meta);
 
-            inventory.setItem(slot, item);
-        }
+        inventory.setItem(slot, item);
     }
 
     @Override
@@ -811,6 +795,18 @@ public class ChestMenu implements InteractiveMenu {
         button.process(player, event);
     }
 
+    public void addButton(@NotNull MenuButton button) {
+        Preconditions.checkNotNull(button, "Button cannot be null");
+
+        buttons.add(button);
+    }
+
+    public void removeButton(@NotNull MenuButton button) {
+        Preconditions.checkNotNull(button, "Button cannot be null");
+
+        buttons.remove(button);
+    }
+
     private int getFreeSlot() {
         int index = 0;
         for (ItemStack content : inventory.getContents()) {
@@ -821,13 +817,12 @@ public class ChestMenu implements InteractiveMenu {
         return -1;
     }
 
-    private boolean checkSlot(int slot, boolean filler) {
-        if (slot == -1) return getFreeSlot() != -1;
+    private boolean isSlotOccupied(int slot) {
+        if (slot == -1) return getFreeSlot() == -1;
 
-        boolean found = buttons.stream().anyMatch(menuButton -> menuButton.getSlot() == slot);
-        if (found && filler) return false;
+        Preconditions.checkArgument(MathUtil.between(slot, 0, rows * 9), "Slot must be between 0 and " + (rows * 9));
 
-        return inventory.getItem(slot) == null;
+        return inventory.getItem(slot) != null;
     }
 
 }
