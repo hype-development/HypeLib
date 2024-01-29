@@ -241,14 +241,14 @@ public abstract class AluminaPlugin extends JavaPlugin {
     public void onLoad() {
         instance = this;
 
-        new MenuListener();
-
         load();
     }
 
     @Override
     public void onEnable() {
         this.colorAgent = new AluminaColorAgent();
+
+        new MenuListener();
 
         enable();
     }
