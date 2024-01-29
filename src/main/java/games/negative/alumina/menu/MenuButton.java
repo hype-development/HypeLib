@@ -664,7 +664,6 @@ package games.negative.alumina.menu;
 
 import com.google.common.base.Preconditions;
 import games.negative.alumina.model.Unique;
-import games.negative.alumina.util.ItemUpdater;
 import lombok.Builder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -672,8 +671,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Represents a menu button that can be clicked and triggers an action.
@@ -684,6 +683,7 @@ public class MenuButton implements Unique {
     private ItemStack item;
     private final int slot;
     private final ClickAction action;
+    private final Predicate<Player> viewCondition;
     private final UUID uuid = UUID.randomUUID();
 
     /**
@@ -701,21 +701,60 @@ public class MenuButton implements Unique {
         action.onClick(player, event);
     }
 
+    /**
+     * Updates the item associated with the menu button using the provided function.
+     * The function takes the current item as input and returns the updated item.
+     *
+     * @param function The function to update the item. Cannot be null.
+     * @throws NullPointerException if the function is null.
+     */
     public void updateItem(@NotNull Function<ItemStack, ItemStack> function) {
         Preconditions.checkNotNull(function, "Function cannot be null");
 
         item = function.apply(item);
     }
 
+    /**
+     * Checks if a player can view a menu button.
+     *
+     * @param player The player to check.
+     * @return {@code true} if the player can view the menu button, {@code false} otherwise.
+     * @throws NullPointerException if the player is null.
+     */
+    public boolean canView(@NotNull Player player) {
+        Preconditions.checkNotNull(player, "Player cannot be null");
+
+        return viewCondition == null || viewCondition.test(player);
+    }
+
+    /**
+     * Returns the universally unique identifier (UUID) for this object.
+     *
+     * @return A UUID representing the unique identifier for this object.
+     *
+     * @throws NullPointerException if the UUID is null.
+     *
+     * @see UUID
+     */
     @Override
     public @NotNull UUID uuid() {
         return uuid;
     }
 
+    /**
+     * Retrieves the slot number of the MenuButton.
+     *
+     * @return The slot number of the MenuButton.
+     */
     public int getSlot() {
         return slot;
     }
 
+    /**
+     * Retrieves the ItemStack associated with this MenuButton.
+     *
+     * @return The ItemStack associated with this MenuButton.
+     */
     public ItemStack getItem() {
         return item;
     }
