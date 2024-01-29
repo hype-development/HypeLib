@@ -763,7 +763,7 @@ public class MenuButton implements Unique {
      * Represents an action that can be performed when a player clicks on a menu button.
      */
     @FunctionalInterface
-    interface ClickAction {
+    public interface ClickAction {
 
         void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
