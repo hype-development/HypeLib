@@ -660,47 +660,47 @@
  *
  */
 
-package games.negative.alumina.menu;
+package games.negative.alumina.menu.holder;
 
-import games.negative.alumina.event.Events;
-import games.negative.alumina.menu.base.AluminaMenuHolder;
+import games.negative.alumina.menu.InteractiveMenuHolder;
+import games.negative.alumina.menu.PaginatedMenu;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
-/**
- * Represents the menu listener.
- */
-public class MenuListener {
+@RequiredArgsConstructor
+public class PaginatedMenuHolder implements InteractiveMenuHolder<PaginatedMenu> {
 
-    public MenuListener() {
-        Events.listen(InventoryClickEvent.class, event -> {
-            InventoryHolder holder = event.getInventory().getHolder();
-            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
+    private final PaginatedMenu menu;
+    private Inventory inventory;
 
-            Player player = (Player) event.getWhoClicked();
+    @Override
+    public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
+        menu.onOpen(player, event);
+    }
 
-            menuHolder.onClick(player, event);
-        });
+    @Override
+    public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
+        menu.onClose(player, event);
+    }
 
-        Events.listen(InventoryOpenEvent.class, event -> {
-            InventoryHolder holder = event.getInventory().getHolder();
-            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
+    @Override
+    public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
+        menu.onClick(player, event);
+    }
 
-            Player player = (Player) event.getPlayer();
+    @Override
+    public @NotNull PaginatedMenu getMenu() {
+        return menu;
+    }
 
-            menuHolder.onOpen(player, event);
-        });
-
-        Events.listen(InventoryCloseEvent.class, event -> {
-            InventoryHolder holder = event.getInventory().getHolder();
-            if (!(holder instanceof AluminaMenuHolder<?> menuHolder)) return;
-
-            Player player = (Player) event.getPlayer();
-
-            menuHolder.onClose(player, event);
-        });
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        return inventory;
     }
 }
