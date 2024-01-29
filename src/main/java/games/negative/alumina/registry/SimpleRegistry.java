@@ -38,6 +38,7 @@ import java.util.Set;
  * @param <K> The key type.
  * @param <V> The value type.
  */
+@Deprecated
 public class SimpleRegistry<K, V> implements Registry<K, V> {
 
     private final Map<K, V> registry;

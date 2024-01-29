@@ -32,6 +32,7 @@ import java.util.Map;
  * @param <K> The key type.
  * @param <V> The value type.
  */
+@Deprecated
 public interface Registry<K, V> extends Map<K, V> {
 
 }

@@ -32,7 +32,7 @@ import games.negative.alumina.command.structure.AluminaCommand;
 import games.negative.alumina.dependency.DependencyLoader;
 import games.negative.alumina.dependency.MavenDependency;
 import games.negative.alumina.dependency.MavenRepository;
-import games.negative.alumina.listener.MenuListener;
+import games.negative.alumina.menu.MenuListener;
 import games.negative.alumina.message.color.AluminaColorAgent;
 import games.negative.alumina.message.color.ColorAgent;
 import games.negative.alumina.util.FileLoader;

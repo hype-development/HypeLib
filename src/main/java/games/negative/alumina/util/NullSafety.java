@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 /**
  * The NullSafety class provides methods for handling null values in a safe manner.
  */
+@Deprecated
 public class NullSafety {
 
     /**
