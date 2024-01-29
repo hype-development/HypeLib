@@ -660,61 +660,44 @@
  *
  */
 
-package games.negative.alumina.menu.holder;
+package games.negative.alumina.menu.listener;
 
-import com.google.common.base.Preconditions;
-import games.negative.alumina.menu.ChestMenu;
+import games.negative.alumina.event.Events;
 import games.negative.alumina.menu.InteractiveMenuHolder;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.inventory.InventoryHolder;
 
-@RequiredArgsConstructor
-public class ChestMenuHolder implements InteractiveMenuHolder<ChestMenu> {
+public class MenuListener {
 
-    private final ChestMenu menu;
-    private Inventory inventory;
+    public MenuListener() {
+        Events.listen(InventoryClickEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof InteractiveMenuHolder<?> menuHolder)) return;
 
-    @Override
-    public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
-        Preconditions.checkNotNull(player, "Player cannot be null");
-        Preconditions.checkNotNull(event, "Event cannot be null");
+            Player player = (Player) event.getWhoClicked();
 
-        menu.onOpen(player, event);
-    }
+            menuHolder.onClick(player, event);
+        });
 
-    @Override
-    public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
-        Preconditions.checkNotNull(player, "Player cannot be null");
-        Preconditions.checkNotNull(event, "Event cannot be null");
+        Events.listen(InventoryOpenEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof InteractiveMenuHolder<?> menuHolder)) return;
 
-        menu.onClose(player, event);
-    }
+            Player player = (Player) event.getPlayer();
 
-    @Override
-    public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
-        Preconditions.checkNotNull(player, "Player cannot be null");
-        Preconditions.checkNotNull(event, "Event cannot be null");
+            menuHolder.onOpen(player, event);
+        });
 
-        menu.onClick(player, event);
-    }
+        Events.listen(InventoryCloseEvent.class, event -> {
+            InventoryHolder holder = event.getInventory().getHolder();
+            if (!(holder instanceof InteractiveMenuHolder<?> menuHolder)) return;
 
-    @Override
-    public @NotNull ChestMenu getMenu() {
-        return menu;
-    }
+            Player player = (Player) event.getPlayer();
 
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(@NotNull Inventory inventory) {
-        this.inventory = inventory;
+            menuHolder.onClose(player, event);
+        });
     }
 }
