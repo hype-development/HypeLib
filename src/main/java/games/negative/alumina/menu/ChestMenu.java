@@ -722,12 +722,12 @@ public abstract class ChestMenu implements InteractiveMenu {
         player.openInventory(inventory);
     }
 
-    public void refresh() {
+    public void refresh(@NotNull Player player) {
         inventory.clear();
 
         for (MenuButton button : buttons) {
             int slot = button.getSlot();
-            if (isSlotOccupied(slot)) continue;
+            if (isSlotOccupied(slot) || !button.canView(player)) continue;
 
             ItemStack item = button.getItem();
             ItemMeta meta = item.getItemMeta();
