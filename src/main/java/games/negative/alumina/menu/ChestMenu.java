@@ -683,7 +683,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-public class ChestMenu implements InteractiveMenu {
+public abstract class ChestMenu implements InteractiveMenu {
 
     private static final int MIN_ROWS = 1;
     private static final int MAX_ROWS = 6;
