@@ -5,7 +5,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import games.negative.alumina.AluminaPlugin;
-import games.negative.alumina.menu.holder.ChestMenuHolder;
 import games.negative.alumina.menu.holder.PaginatedMenuHolder;
 import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.MathUtil;
@@ -131,6 +130,8 @@ public abstract class PaginatedMenu implements InteractiveMenu {
 
         List<MenuButton> all = Lists.newArrayList(buttons);
         all.addAll(listings);
+        all.add(nextPageButton);
+        all.add(previousPageButton);
 
         String function = NBTEditor.get(meta, FUNCTION, PersistentDataType.STRING);
         if (function == null) {
@@ -195,20 +196,18 @@ public abstract class PaginatedMenu implements InteractiveMenu {
         }
 
         List<Integer> listingSlots = Lists.newArrayList(paginatedSlots);
-
         int limit = listingSlots.size();
+
         List<MenuButton> items = listings.stream().filter(button -> button.canView(player))
                 .skip((long) (page - 1) * limit)
                 .limit(limit)
                 .toList();
 
         for (MenuButton item : items) {
-            if (!item.canView(player)) continue;
-
             int available = listingSlots.stream().min(Comparator.comparingInt(value -> value)).orElse(-1);
             if (available == -1) break;
 
-            listingSlots.remove(available);
+            listingSlots.remove(Integer.valueOf(available));
 
             ItemStack itemStack = item.getItem();
             ItemMeta meta = itemStack.getItemMeta();
@@ -235,7 +234,7 @@ public abstract class PaginatedMenu implements InteractiveMenu {
             inventory.setItem(previousPageButton.getSlot(), item);
         }
 
-        if (items.size() > (page * limit)) {
+        if (listings.size() > (page * limit)) {
             Preconditions.checkNotNull(nextPageButton, "Next page button cannot be null");
 
             ItemStack item = nextPageButton.getItem();
@@ -332,7 +331,7 @@ public abstract class PaginatedMenu implements InteractiveMenu {
 
         for (HumanEntity viewer : inventory.getViewers()) {
             InventoryView view = viewer.getOpenInventory();
-            if (!(view.getTopInventory().getHolder() instanceof ChestMenuHolder)) continue;
+            if (!(view.getTopInventory().getHolder() instanceof PaginatedMenuHolder)) continue;
 
             view.setTitle(ColorUtil.translate(title));
         }
