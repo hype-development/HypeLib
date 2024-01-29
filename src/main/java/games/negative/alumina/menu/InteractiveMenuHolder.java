@@ -669,12 +669,44 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
-public interface InteractiveMenuHolder extends InventoryHolder {
+/**
+ * This interface represents an Interactive Menu Holder. It extends the InventoryHolder interface.
+ * Classes implementing this interface should provide implementations for handling certain events related to the interactive menu.
+ * It also provides a method to get the Interactive Menu associated with the holder.
+ *
+ * @param <T> The type of the Interactive Menu associated with the holder.
+ */
+public interface InteractiveMenuHolder<T extends InteractiveMenu> extends InventoryHolder {
 
+    /**
+     * Called when a player opens an inventory in an InteractiveMenuHolder.
+     *
+     * @param player The player who opened the inventory.
+     * @param event The InventoryOpenEvent triggered by the player opening the inventory.
+     */
     void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event);
 
+    /**
+     * Called when the player closes the inventory associated with this InteractiveMenuHolder.
+     *
+     * @param player The player who closed the inventory.
+     * @param event The InventoryCloseEvent triggered by the player closing the inventory.
+     */
     void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event);
 
+    /**
+     * Handles the click event when the player interacts with the inventory.
+     *
+     * @param player The player who clicked on the inventory.
+     * @param event The InventoryClickEvent triggered by the player's click.
+     */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
+    /**
+     * Retrieves the Interactive Menu associated with the holder.
+     *
+     * @return The Interactive Menu associated with the holder.
+     */
+    @NotNull
+    T getMenu();
 }
