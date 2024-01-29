@@ -674,7 +674,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
-public class ChestMenuHolder implements InteractiveMenuHolder {
+public class ChestMenuHolder implements InteractiveMenuHolder<ChestMenu> {
 
     private final ChestMenu menu;
     private Inventory inventory;
@@ -702,6 +702,11 @@ public class ChestMenuHolder implements InteractiveMenuHolder {
         Preconditions.checkNotNull(event, "Event cannot be null");
 
         menu.onClick(player, event);
+    }
+
+    @Override
+    public @NotNull ChestMenu getMenu() {
+        return menu;
     }
 
     @NotNull
