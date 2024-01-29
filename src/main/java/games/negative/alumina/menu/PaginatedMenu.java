@@ -72,7 +72,7 @@ public abstract class PaginatedMenu implements InteractiveMenu {
         this.listings = Sets.newLinkedHashSet();
         this.paginatedSlots = Sets.newHashSet();
 
-        this.inventory = Bukkit.createInventory(null, rows * 9, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new PaginatedMenuHolder(this), rows * 9, ColorUtil.translate(title));
     }
 
     /**
