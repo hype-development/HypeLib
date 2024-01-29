@@ -668,12 +668,33 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Interface for an interactive menu.
+ */
 public interface InteractiveMenu {
 
+    /**
+     * Called when a player opens an inventory.
+     *
+     * @param player The player who opened the inventory.
+     * @param event The InventoryOpenEvent triggered by the player opening the inventory.
+     */
     void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event);
 
+    /**
+     * Called when the player closes the inventory associated with this menu.
+     *
+     * @param player the player who closed the inventory
+     * @param event the close event
+     */
     void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event);
 
+    /**
+     * Called when the player clicks on the inventory.
+     *
+     * @param player the player who clicked on the inventory
+     * @param event the inventory click event
+     */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
 }
