@@ -697,8 +697,18 @@ public interface InteractiveMenu {
      */
     void onClick(@NotNull Player player, @NotNull InventoryClickEvent event);
 
+    /**
+     * Opens an interactive menu for the given player.
+     *
+     * @param player The player who will open the menu.
+     */
     void open(@NotNull Player player);
 
+    /**
+     * Refreshes the inventory of the InteractiveMenu for the specified player.
+     *
+     * @param player The player whose inventory needs to be refreshed. Must not be null.
+     */
     void refresh(@NotNull Player player);
 
 }
