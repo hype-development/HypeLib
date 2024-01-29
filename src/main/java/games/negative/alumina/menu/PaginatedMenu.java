@@ -41,6 +41,7 @@ public abstract class PaginatedMenu implements InteractiveMenu {
 
     private static final NamespacedKey FUNCTION = new NamespacedKey(AluminaPlugin.getAluminaInstance(), "paginated-menu-function");
 
+    @Setter
     private String title = "Paginated Menu";
     private int rows = 1;
     protected int page = 1;
@@ -266,6 +267,8 @@ public abstract class PaginatedMenu implements InteractiveMenu {
         List<MenuButton> generated = Lists.newArrayList();
         for (K key : collection) {
             MenuButton button = function.apply(key);
+            if (button == null) continue;
+            
             generated.add(button);
         }
 
