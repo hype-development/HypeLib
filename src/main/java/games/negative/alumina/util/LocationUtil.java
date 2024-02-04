@@ -37,74 +37,7 @@ import java.util.Map;
 /**
  * A location utility to handle some location-related tasks.
  */
-@Deprecated
 public class LocationUtil {
-
-    /**
-     * This method is used to convert a location to a yaml map.
-     *
-     * @param location The location to convert.
-     * @return The yaml map.
-     */
-    public static Map<String, Object> toYaml(@NotNull Location location) {
-        Preconditions.checkNotNull(location, "Location cannot be null!");
-
-        World world = location.getWorld();
-        Preconditions.checkNotNull(world, "World cannot be null!");
-
-        return Map.of(
-                "world", world.getName(),
-                "x", location.getX(),
-                "y", location.getY(),
-                "z", location.getZ(),
-                "yaw", location.getYaw(),
-                "pitch", location.getPitch()
-        );
-    }
-
-    /**
-     * This method is used to convert a configuration section to a location.
-     *
-     * @param section The section to convert.
-     * @return The location.
-     */
-    public static Location fromYaml(@NotNull ConfigurationSection section) {
-        Preconditions.checkNotNull(section, "Section cannot be null!");
-
-        World world = Bukkit.getWorld(section.getString("world", "world"));
-        Preconditions.checkNotNull(world, "World cannot be null!");
-
-        return new Location(
-                world,
-                section.getDouble("x", 0),
-                section.getDouble("y", 0),
-                section.getDouble("z", 0),
-                (float) section.getDouble("yaw", 0),
-                (float) section.getDouble("pitch", 0)
-        );
-    }
-
-    /**
-     * This method is used to convert a map to a location.
-     *
-     * @param map The map to convert.
-     * @return The location.
-     */
-    public static Location fromYaml(final Map<String, Object> map) {
-        Preconditions.checkNotNull(map, "Map cannot be null!");
-
-        World world = Bukkit.getWorld((String) map.get("world"));
-        Preconditions.checkNotNull(world, "World cannot be null!");
-
-        return new Location(
-                world,
-                (double) map.get("x"),
-                (double) map.get("y"),
-                (double) map.get("z"),
-                (float) map.get("yaw"),
-                (float) map.get("pitch")
-        );
-    }
 
     /**
      * Check if a location is inside a cuboid.
@@ -114,7 +47,7 @@ public class LocationUtil {
      * @param max      The maximum location of the cuboid.
      * @return Whether the location is inside the cuboid.
      */
-    public static boolean isInside(final Location location, final Location min, final Location max) {
+    public static boolean isInside(@NotNull Location location, @NotNull Location min, @NotNull Location max) {
         Preconditions.checkNotNull(location, "'location' cannot be null!");
         Preconditions.checkNotNull(min, "'min' cannot be null!");
         Preconditions.checkNotNull(max, "'max' cannot be null!");
