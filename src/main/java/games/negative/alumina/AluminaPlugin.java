@@ -27,8 +27,6 @@ package games.negative.alumina;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import games.negative.alumina.command.builder.CommandBuilder;
-import games.negative.alumina.command.structure.AluminaCommand;
 import games.negative.alumina.dependency.DependencyLoader;
 import games.negative.alumina.dependency.MavenDependency;
 import games.negative.alumina.dependency.MavenRepository;
@@ -73,35 +71,27 @@ public abstract class AluminaPlugin extends JavaPlugin {
      */
     public abstract void disable();
 
-    /**
-     * This method is used to register a command.
-     * You do not need to register commands in the plugin.yml because this method will do it for you.
-     * This method will also unregister any existing commands with the same name.
-     *
-     * @param builder The builder used to create the command.
-     */
-    public void registerCommand(@NotNull CommandBuilder builder) {
-        Preconditions.checkNotNull(builder, "Command builder cannot be null!");
+    public void registerCommand(@NotNull games.negative.alumina.command.Command command) {
+        Preconditions.checkNotNull(command, "Command cannot be null!");
 
         CommandMap commandMap = initCommandMap();
         if (commandMap == null) return;
 
-        String name = builder.getName();
+        String name = command.getName();
 
         Command existing = commandMap.getCommand(name);
         if (existing != null) {
             cleanse(name, existing, commandMap);
         }
 
-        AluminaCommand command = builder.build();
         commandMap.register(getName(), command);
 
-        List<AluminaCommand> sub = getRecursiveSubCommand(command);
+        List<games.negative.alumina.command.Command> sub = getRecursiveSubCommand(command);
         if (sub.isEmpty()) return;
 
-        for (AluminaCommand cmd : sub) {
-            String[] shortcuts = cmd.getShortcuts();
-            if (shortcuts == null) continue;
+        for (games.negative.alumina.command.Command cmd : sub) {
+            List<String> shortcuts = cmd.getShortcuts();
+            if (shortcuts == null || shortcuts.isEmpty()) continue;
 
             for (String shortcut : shortcuts) {
                 Command existingShortcut = commandMap.getCommand(shortcut);
@@ -119,14 +109,14 @@ public abstract class AluminaPlugin extends JavaPlugin {
      * @param parent The parent command.
      * @return A list of all subcommands.
      */
-    private List<AluminaCommand> getRecursiveSubCommand(@NotNull AluminaCommand parent) {
+    private List<games.negative.alumina.command.Command> getRecursiveSubCommand(@NotNull games.negative.alumina.command.Command parent) {
         Preconditions.checkNotNull(parent, "Parent command cannot be null!");
 
         // Recursively get all subcommands of all subcommands.
-        List<AluminaCommand> list = Lists.newArrayList(parent.getSubCommands());
+        List<games.negative.alumina.command.Command> list = Lists.newArrayList(parent.getSubCommands());
 
-        for (AluminaCommand subCommand : parent.getSubCommands()) {
-            List<AluminaCommand> recursiveSubCommands = getRecursiveSubCommand(subCommand);
+        for (games.negative.alumina.command.Command subCommand : parent.getSubCommands()) {
+            List<games.negative.alumina.command.Command> recursiveSubCommands = getRecursiveSubCommand(subCommand);
             if (recursiveSubCommands.isEmpty())
                 break;
 
