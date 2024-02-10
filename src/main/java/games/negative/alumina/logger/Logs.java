@@ -684,22 +684,44 @@ public enum Logs {
      * It is used to print log messages with a warning level.
      */
     WARNING(Level.WARNING),
-    
+
     /**
      * This constant represents the SEVERE level of logs. The log message at this level indicates a serious error that may prevent the application from functioning correctly.
      */
-    SEVERE(Level.SEVERE)
-    ;
+    SEVERE(Level.SEVERE);
 
     private final Level level;
+
+    private static boolean disabled = false;
 
     /**
      * This method is used to print a log message with the given content and log level.
      *
      * @param content The content of the log message.
+     * @param force   true to force the log message to be printed, false to print the log message only if the log messages are not disabled
      */
-    public void print(@NotNull String content) {
+    public void print(@NotNull String content, boolean force) {
+        if (disabled && !force) return;
+
         AluminaPlugin.getAluminaInstance().getLogger().log(level, content);
     }
 
+    /**
+     * This method is used to print a log message with the given content.
+     * If the log messages are disabled, the log message will not be printed.
+     *
+     * @param content The content of the log message.
+     */
+    public void print(@NotNull String content) {
+        print(content, false);
+    }
+
+    /**
+     * Sets the disabled status for log messages.
+     *
+     * @param disabled true to disable log messages, false to enable log messages
+     */
+    public static void setDisabled(boolean disabled) {
+        Logs.disabled = disabled;
+    }
 }
