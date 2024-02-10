@@ -45,7 +45,7 @@ import java.util.UUID;
  */
 public class InputListener {
 
-    private static final Map<UUID, InputListenerResponse> listeners = Maps.newHashMap();
+    private static final Map<UUID, InputProcessor> listeners = Maps.newHashMap();
 
     static {
         // Listen to chat messages
@@ -54,7 +54,7 @@ public class InputListener {
             UUID uuid = player.getUniqueId();
             if (!listeners.containsKey(uuid)) return;
 
-            InputListenerResponse response = listeners.get(uuid);
+            InputProcessor response = listeners.get(uuid);
             if (response == null) return;
 
             try {
@@ -71,7 +71,7 @@ public class InputListener {
             UUID uuid = player.getUniqueId();
             if (!listeners.containsKey(uuid)) return;
 
-            InputListenerResponse response = listeners.get(uuid);
+            InputProcessor response = listeners.get(uuid);
             if (response == null) return;
 
             try {
@@ -92,7 +92,7 @@ public class InputListener {
      * @param uuid The UUID of the player to register the listener for.
      * @param response The input listener response that will be executed when the player sends a chat message or command.
      */
-    public static void listen(@NotNull UUID uuid, @NotNull InputListenerResponse response) {
+    public static void listen(@NotNull UUID uuid, @NotNull InputListener.InputProcessor response) {
         listeners.put(uuid, response);
     }
 
@@ -100,7 +100,7 @@ public class InputListener {
      * Functional interface for handling input responses from players.
      */
     @FunctionalInterface
-    public interface InputListenerResponse {
+    public interface InputProcessor {
 
         /**
          * Process the input message from a player.
