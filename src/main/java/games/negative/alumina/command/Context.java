@@ -27,7 +27,6 @@ package games.negative.alumina.command;
 
 import com.google.common.base.Preconditions;
 import games.negative.alumina.future.BukkitFuture;
-import games.negative.alumina.message.Message;
 import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.PlayerUtil;
 import org.bukkit.Bukkit;
@@ -74,16 +73,6 @@ public record Context(String[] args, CommandSender sender) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
         sender().sendMessage(ColorUtil.translate(message));
-    }
-
-    /**
-     * Send a message to the sender of the command.
-     * @param message The message to send.
-     */
-    public void message(@NotNull final Message message) {
-        Preconditions.checkNotNull(message, "message cannot be null");
-
-        message.send(sender());
     }
 
     /**

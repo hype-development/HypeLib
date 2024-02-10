@@ -28,9 +28,8 @@
 package games.negative.alumina.message;
 
 import com.google.common.base.Preconditions;
-import games.negative.alumina.AluminaPlugin;
-import games.negative.alumina.message.color.ColorAgent;
 import games.negative.alumina.model.Deliverable;
+import games.negative.alumina.util.ColorUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -38,6 +37,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.CheckReturnValue;
 import java.util.List;
 
 /**
@@ -46,12 +46,8 @@ import java.util.List;
  * This supports color codes, placeholders, and hex colors.
  * <p>
  */
+@Deprecated // This class is deprecated and will be removed in a future update.
 public class Message implements Deliverable<CommandSender> {
-
-    /*
-     * This is the color agent used to translate color codes.
-     */
-    private final ColorAgent colorAgent;
 
     /*
      * This is the default, unmodified message.
@@ -78,7 +74,6 @@ public class Message implements Deliverable<CommandSender> {
 
         this.def = text;
         this.current = text;
-        this.colorAgent = AluminaPlugin.getAluminaInstance().getColorAgent();
     }
 
     /**
@@ -88,6 +83,7 @@ public class Message implements Deliverable<CommandSender> {
      * @param replacement The replacement.
      * @return The message.
      */
+    @CheckReturnValue
     public Message replace(@NotNull final String placeholder, @NotNull final String replacement) {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null.");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null.");
@@ -102,6 +98,7 @@ public class Message implements Deliverable<CommandSender> {
      * @return The message.
      * @throws IllegalStateException If PlaceholderAPI is not installed.
      */
+    @CheckReturnValue
     public Message parsePlaceholderAPI() {
         Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
         this.parsePlaceholderAPI = true;
@@ -117,7 +114,7 @@ public class Message implements Deliverable<CommandSender> {
     public void send(@NotNull final CommandSender sender) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
-        String translate = colorAgent.translate(this.current);
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(sender, translate);
         String[] message = text.split("\n");
 
@@ -138,7 +135,7 @@ public class Message implements Deliverable<CommandSender> {
         Preconditions.checkNotNull(iterable, "Iterable cannot be null.");
         Preconditions.checkArgument(iterable.iterator().hasNext(), "Iterable cannot be empty.");
 
-        String translate = colorAgent.translate(this.current);
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 
@@ -155,7 +152,7 @@ public class Message implements Deliverable<CommandSender> {
      * Broadcast the final message to the server.
      */
     public void broadcast() {
-        String translate = colorAgent.translate(this.current);
+        String translate = ColorUtil.translate(this.current);
         String text = parsePAPI(null, translate);
         String[] message = text.split("\n");
 

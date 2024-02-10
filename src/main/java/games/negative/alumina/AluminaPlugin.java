@@ -31,8 +31,6 @@ import games.negative.alumina.dependency.DependencyLoader;
 import games.negative.alumina.dependency.MavenDependency;
 import games.negative.alumina.dependency.MavenRepository;
 import games.negative.alumina.menu.listener.MenuListener;
-import games.negative.alumina.message.color.AluminaColorAgent;
-import games.negative.alumina.message.color.ColorAgent;
 import games.negative.alumina.util.FileLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -54,7 +52,6 @@ import java.util.Map;
 public abstract class AluminaPlugin extends JavaPlugin {
 
     private static AluminaPlugin instance;
-    private ColorAgent colorAgent;
 
     /**
      * This method is called when the plugin is initially loaded.
@@ -236,8 +233,6 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.colorAgent = new AluminaColorAgent();
-
         new MenuListener();
 
         enable();
@@ -250,19 +245,5 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     public static AluminaPlugin getAluminaInstance() {
         return instance;
-    }
-
-    public ColorAgent getColorAgent() {
-        // Complete null-safety check.
-        if (this.colorAgent == null)
-            this.colorAgent = new AluminaColorAgent();
-
-        return colorAgent;
-    }
-
-    public void setColorAgent(@NotNull ColorAgent colorAgent) {
-        Preconditions.checkNotNull(colorAgent, "Color Agent cannot be null!");
-
-        this.colorAgent = colorAgent;
     }
 }
