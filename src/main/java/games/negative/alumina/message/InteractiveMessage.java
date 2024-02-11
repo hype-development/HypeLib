@@ -663,6 +663,8 @@
 package games.negative.alumina.message;
 
 import games.negative.alumina.util.ColorUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -675,73 +677,124 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.CheckReturnValue;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a class for creating interactive chat messages using Text Components.
+ */
+@NoArgsConstructor
 public class InteractiveMessage {
 
     private final LinkedList<TextComponent> components = new LinkedList<>();
 
-    public InteractiveMessage() {
-    }
-
-    public InteractiveMessage(@NotNull String content) {
-        components.add(new TextComponent(ColorUtil.translate(content)));
-    }
-
-    public InteractiveMessage(@NotNull Consumer<TextComponent> content) {
-        TextComponent component = new TextComponent();
-        content.accept(component);
-        components.add(component);
-    }
-
+    /**
+     * Appends a TextComponent to the InteractiveMessage.
+     *
+     * @param component The TextComponent to be appended.
+     * @return The updated InteractiveMessage.
+     */
+    @CheckReturnValue
+    @NotNull
     public InteractiveMessage append(@NotNull TextComponent component) {
         components.add(component);
         return this;
     }
 
+    /**
+     * Appends the given content to the TextBuilder.
+     *
+     * @param content The string content to be appended.
+     * @return The updated TextBuilder object.
+     */
+    @CheckReturnValue
+    @NotNull
     public TextBuilder append(@NotNull String content) {
         return new TextBuilder(content);
     }
 
+    /**
+     * Sends a delivery message to the specified recipient.
+     *
+     * @param recipient The CommandSender to which the message will be sent. Must not be null.
+     * @return A Delivery object representing the message being sent.
+     */
     @CheckReturnValue
     @NotNull
     public Delivery send(@NotNull CommandSender recipient) {
         return new Delivery(recipient, components);
     }
 
+    /**
+     * A utility class for building interactive text messages.
+     */
     public class TextBuilder {
         private final String text;
         private ClickEvent click;
         private HoverEvent hover;
 
-        public TextBuilder(@NotNull String text) {
+        protected TextBuilder(@NotNull String text) {
             this.text = ColorUtil.translate(text);
         }
 
+        /**
+         * Applies a click event to the text builder.
+         *
+         * @param click The ClickEvent to be clicked.
+         * @return The updated TextBuilder.
+         */
         @NotNull
+        @CheckReturnValue
         public TextBuilder click(@NotNull ClickEvent click) {
             this.click = click;
             return this;
         }
 
+        /**
+         * Applies a click event to the text builder.
+         *
+         * @param action The click event action.
+         * @param value The value associated with the click event.
+         * @return The updated TextBuilder object.
+         */
         @NotNull
+        @CheckReturnValue
         public TextBuilder click(@NotNull ClickEvent.Action action, @NotNull String value) {
             return click(new ClickEvent(action, value));
         }
 
+        /**
+         * Applies a hover event to the text builder.
+         *
+         * @param hover the hover event to be set
+         * @return the updated text builder
+         */
         @NotNull
+        @CheckReturnValue
         public TextBuilder hover(@NotNull HoverEvent hover) {
             this.hover = hover;
             return this;
         }
 
+        /**
+         * Applies a hover event to the text builder.
+         *
+         * @param action the action of the hover event
+         * @param content the content of the hover event
+         * @return the modified text builder
+         */
         @NotNull
+        @CheckReturnValue
         public TextBuilder hover(@NotNull HoverEvent.Action action, @NotNull List<String> content) {
             return hover(new HoverEvent(action, content.stream().map(s -> new Text(ColorUtil.translate(s))).collect(Collectors.toList())));
         }
 
+        /**
+         * Builds and returns an InteractiveMessage object.
+         *
+         * @return The built InteractiveMessage object.
+         */
         @NotNull
+        @CheckReturnValue
         public InteractiveMessage build() {
             TextComponent component = new TextComponent(ColorUtil.translate(text));
 
@@ -752,12 +805,23 @@ public class InteractiveMessage {
         }
     }
 
-    @RequiredArgsConstructor
+    /**
+     * Represents a class for delivering messages to a CommandSender with placeholder replacement.
+     */
+    @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Delivery {
 
         private final CommandSender target;
         private final LinkedList<TextComponent> components;
 
+        /**
+         * Replace the given placeholder with the replacement value in the delivery message.
+         *
+         * @param placeholder The placeholder to be replaced.
+         * @param replacement The replacement value for the placeholder.
+         * @return This Delivery instance with the replaced placeholder.
+         */
+        @NotNull
         @CheckReturnValue
         public Delivery replace(@NotNull String placeholder, @NotNull String replacement) {
             for (TextComponent component : components) {
@@ -781,6 +845,9 @@ public class InteractiveMessage {
             return this;
         }
 
+        /**
+         * Delivers messages to a CommandSender.
+         */
         public void complete() {
             target.spigot().sendMessage(components.toArray(new TextComponent[0]));
         }
