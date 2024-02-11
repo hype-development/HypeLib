@@ -25,7 +25,6 @@
 
 package games.negative.alumina.model;
 
-import games.negative.alumina.message.InteractiveMessage;
 import games.negative.alumina.message.Message;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
  * @param <T> The type of the receiver.
  * @see Message
  */
-@Deprecated // This class is deprecated and will be removed in a future update.
 public interface Deliverable<T> {
 
     /**

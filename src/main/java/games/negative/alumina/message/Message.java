@@ -46,7 +46,6 @@ import java.util.List;
  * This supports color codes, placeholders, and hex colors.
  * <p>
  */
-@Deprecated // This class is deprecated and will be removed in a future update.
 public class Message implements Deliverable<CommandSender> {
 
     /*
