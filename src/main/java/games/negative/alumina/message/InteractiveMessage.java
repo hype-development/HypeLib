@@ -662,6 +662,7 @@
 
 package games.negative.alumina.message;
 
+import com.google.common.collect.Lists;
 import games.negative.alumina.util.ColorUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -721,7 +722,13 @@ public class InteractiveMessage {
     @CheckReturnValue
     @NotNull
     public Delivery send(@NotNull CommandSender recipient) {
-        return new Delivery(recipient, components);
+        LinkedList<TextComponent> cloned = Lists.newLinkedList();
+
+        for (TextComponent component : this.components) {
+            cloned.add(new TextComponent(component));
+        }
+
+        return new Delivery(recipient, cloned);
     }
 
     /**
