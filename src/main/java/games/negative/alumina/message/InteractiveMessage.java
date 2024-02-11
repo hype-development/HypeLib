@@ -723,7 +723,6 @@ public class InteractiveMessage {
     @NotNull
     public Delivery send(@NotNull CommandSender recipient) {
         LinkedList<TextComponent> cloned = Lists.newLinkedList();
-
         for (TextComponent component : this.components) {
             cloned.add(new TextComponent(component));
         }
