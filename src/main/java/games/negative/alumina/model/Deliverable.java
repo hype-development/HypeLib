@@ -25,12 +25,13 @@
 
 package games.negative.alumina.model;
 
+import games.negative.alumina.message.Message;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a piece of content that can be sent to a receiver.
  * @param <T> The type of the receiver.
- * @see games.negative.alumina.message.Message
+ * @see Message
  */
 public interface Deliverable<T> {
 
