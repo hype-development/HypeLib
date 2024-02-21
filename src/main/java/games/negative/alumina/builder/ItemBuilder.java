@@ -424,4 +424,24 @@ public class ItemBuilder {
         return this.item;
     }
 
+    /**
+     * Get the {@link ItemMeta} of the item.
+     *
+     * @return The {@link ItemMeta} object representing the metadata of the item.
+     */
+    @NotNull
+    public ItemMeta meta() {
+        return this.meta;
+    }
+
+    /**
+     * Returns the ItemStack associated with this ItemBuilder.
+     *
+     * @return The ItemStack.
+     */
+    @NotNull
+    public ItemStack item() {
+        return this.item;
+    }
+
 }
