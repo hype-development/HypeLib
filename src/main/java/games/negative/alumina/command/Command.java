@@ -45,37 +45,37 @@ import java.util.List;
 @Getter
 public abstract class Command extends org.bukkit.command.Command {
 
-    /*
+    /**
      * The message for when the player does not have permission to use the command.
      */
     private static final Message NO_PERMISSION = Message.of("&cYou do not have permission to use this command.");
 
-    /*
+    /**
      * The message for when a player-only command is used as a console.
      */
     private static final Message CANNOT_USE_AS_CONSOLE = Message.of("&cYou cannot use this command as console.");
 
-    /*
+    /**
      * The message for when a console-only command is used as a player.
      */
     private static final Message CANNOT_USE_AS_PLAYER = Message.of("&cYou cannot use this command as a player.");
 
-    /*
+    /**
      * The message for when a command is used incorrectly.
      */
     private static final Message USAGE = Message.of("&cUsage: &7/%command% %usage%");
 
-    /*
+    /**
      * The sub commands of this command.
      */
     private final List<Command> subCommands;
 
-    /*
+    /**
      * The permissions of this command.
      */
     private final List<Permission> permissions;
 
-    /*
+    /**
      * The required parameters of this command.
      */
     private final List<String> params;
@@ -85,12 +85,17 @@ public abstract class Command extends org.bukkit.command.Command {
      */
     private final List<String> shortcuts;
 
-    /*
+    /**
+     * The aliases of this command. Only applicable for subcommands
+     */
+    private List<String> subAliases;
+
+    /**
      * Whether this command is player-only.
      */
     private final boolean playerOnly;
 
-    /*
+    /**
      * Whether this command is console-only.
      */
     private final boolean consoleOnly;
@@ -100,7 +105,7 @@ public abstract class Command extends org.bukkit.command.Command {
      */
     private final boolean smartTabComplete;
 
-    /*
+    /**
      * The parent command of this command.
      */
     private Command parent;
@@ -129,7 +134,11 @@ public abstract class Command extends org.bukkit.command.Command {
         this.smartTabComplete = properties.smartTabComplete();
 
         if (properties.aliases() != null) {
-            this.setAliases(properties.aliases());
+            if (parent == null)
+                this.setAliases(properties.aliases());
+            else {
+                this.subAliases = properties.aliases();
+            }
         }
 
         if (properties.description() != null) {
@@ -267,6 +276,7 @@ public abstract class Command extends org.bukkit.command.Command {
 
             List<String> match = Lists.newArrayList(command.getName());
             match.addAll(command.getAliases());
+            if (command.parent != null && command.subAliases != null) match.addAll(command.subAliases);
 
             List<String> matched = match.stream().filter(entry -> entry.toLowerCase().contains(current)).toList();
             result.addAll(matched);
@@ -378,7 +388,7 @@ public abstract class Command extends org.bukkit.command.Command {
         Preconditions.checkNotNull(argument, "Argument cannot be null.");
 
         for (Command subCommand : subCommands) {
-            if (subCommand.getName().equalsIgnoreCase(argument) || subCommand.getAliases().contains(argument.toLowerCase()))
+            if (subCommand.getName().equalsIgnoreCase(argument) || subCommand.getAliases().contains(argument.toLowerCase()) || (subAliases != null && subAliases.contains(argument.toLowerCase())))
                 return subCommand;
         }
         return null;
@@ -434,5 +444,4 @@ public abstract class Command extends org.bukkit.command.Command {
 
         return true;
     }
-
 }
