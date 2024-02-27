@@ -678,6 +678,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.CheckReturnValue;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 /**
@@ -846,6 +847,37 @@ public class InteractiveMessage {
                 ClickEvent clickEvent = component.getClickEvent();
                 if (clickEvent != null) {
                     component.setClickEvent(new ClickEvent(clickEvent.getAction(), clickEvent.getValue().replaceAll(placeholder, replacement)));
+                }
+            }
+            return this;
+        }
+
+        /**
+         * Replaces the text components and any associated hover events and click events in the delivery message
+         * using the provided operation.
+         *
+         * @param operation The unary operator function used to replace the text components.
+         * @return This Delivery instance with the replaced text components, hover events, and click events.
+         */
+        @NotNull
+        @CheckReturnValue
+        public Delivery replace(@NotNull UnaryOperator<String> operation) {
+            for (TextComponent component : components) {
+                component.setText(operation.apply(component.getText()));
+
+                HoverEvent hoverEvent = component.getHoverEvent();
+                if (hoverEvent != null) {
+                    List<Content> content = hoverEvent.getContents().stream()
+                            .map(Text.class::cast)
+                            .map(text -> new Text(operation.apply((String) text.getValue())))
+                            .collect(Collectors.toList());
+
+                    component.setHoverEvent(new HoverEvent(hoverEvent.getAction(), content));
+                }
+
+                ClickEvent clickEvent = component.getClickEvent();
+                if (clickEvent != null) {
+                    component.setClickEvent(new ClickEvent(clickEvent.getAction(), operation.apply(clickEvent.getValue())));
                 }
             }
             return this;
