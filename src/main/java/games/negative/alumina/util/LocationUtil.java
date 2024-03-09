@@ -26,13 +26,9 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
 
 /**
  * A location utility to handle some location-related tasks.

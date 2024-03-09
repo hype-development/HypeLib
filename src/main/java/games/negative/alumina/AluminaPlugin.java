@@ -30,7 +30,6 @@ import com.google.common.collect.Lists;
 import games.negative.alumina.dependency.DependencyLoader;
 import games.negative.alumina.dependency.MavenDependency;
 import games.negative.alumina.dependency.MavenRepository;
-import games.negative.alumina.logger.Logs;
 import games.negative.alumina.menu.listener.MenuListener;
 import games.negative.alumina.util.FileLoader;
 import org.bukkit.Bukkit;
