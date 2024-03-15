@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Getter
+@SuppressWarnings("unused")
 public abstract class Command extends org.bukkit.command.Command {
 
     /**
@@ -133,21 +134,14 @@ public abstract class Command extends org.bukkit.command.Command {
         this.consoleOnly = properties.consoleOnly();
         this.smartTabComplete = properties.smartTabComplete();
 
-        if (properties.aliases() != null) {
-            if (parent == null)
-                this.setAliases(properties.aliases());
-            else {
-                this.subAliases = properties.aliases();
-            }
-        }
+        if (properties.aliases() != null)
+            applyAliases(properties);
 
-        if (properties.description() != null) {
+        if (properties.description() != null)
             this.setDescription(properties.description());
-        }
 
-        if (properties.usage() != null) {
+        if (properties.usage() != null)
             this.setUsage(properties.usage());
-        }
     }
 
     /**
@@ -167,9 +161,16 @@ public abstract class Command extends org.bukkit.command.Command {
      */
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (checkConsolePlayerCommand(sender) || !checkPermissions(sender, true) || !checkParams(sender, args) || checkSubCommands(sender, args))
+        // Long if-check, here's the breakdown:
+        // 1. Check if the console is using a player-only command,
+        //    or if the player is using a console-only command.
+        // 2. Check if the sender has the required permissions.
+        // 3. Check if there are any required parameters to be filled in.
+        // 4. Check if there are any subcommands to be executed before parent commands are executed.
+        if (checkConsolePlayerCommand(sender) || !hasInvalidPermissions(sender, true) || !checkParams(sender, args) || checkSubCommands(sender, args))
             return true;
 
+        // If all requirements are met, execute the command.
         Context context = new Context(args, sender);
         execute(context);
         return true;
@@ -272,7 +273,7 @@ public abstract class Command extends org.bukkit.command.Command {
 
         Collection<Command> commands = subMap.get(placement);
         for (Command command : commands) {
-            if (!checkPermissions(sender, false)) continue;
+            if (hasInvalidPermissions(sender, false)) continue;
 
             List<String> match = Lists.newArrayList(command.getName());
             match.addAll(command.getAliases());
@@ -341,19 +342,18 @@ public abstract class Command extends org.bukkit.command.Command {
      * @param message Flag indicating whether to send a no permission message to the sender.
      * @return True if the sender has the required permissions, false otherwise.
      */
-    private boolean checkPermissions(@NotNull final CommandSender sender, final boolean message) {
+    private boolean hasInvalidPermissions(@NotNull final CommandSender sender, final boolean message) {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
 
-        if (this.permissions == null)
-            return true;
+        if (this.permissions == null) return false;
 
         for (Permission permission : this.permissions) {
             if (sender.hasPermission(permission))
-                return true;
+                return false;
         }
 
         if (message) NO_PERMISSION.send(sender);
-        return false;
+        return true;
     }
 
     /**
@@ -367,8 +367,7 @@ public abstract class Command extends org.bukkit.command.Command {
         Preconditions.checkNotNull(sender, "Sender cannot be null.");
         Preconditions.checkNotNull(args, "Arguments cannot be null.");
 
-        if (args.length == 0 || subCommands.isEmpty())
-            return false;
+        if (args.length == 0 || subCommands.isEmpty()) return false;
 
         String begin = args[0];
         String[] snippet = Arrays.copyOfRange(args, 1, args.length);
@@ -411,9 +410,8 @@ public abstract class Command extends org.bukkit.command.Command {
 
         if (args.length < params.size()) {
             StringBuilder builder = new StringBuilder();
-            for (String param : params) {
+            for (String param : params)
                 builder.append("<").append(param).append(">").append(" ");
-            }
 
             List<String> parentNames = Lists.newArrayList();
             parentNames.add(getName());
@@ -443,5 +441,22 @@ public abstract class Command extends org.bukkit.command.Command {
         }
 
         return true;
+    }
+
+    /**
+     * Apply the aliases from the given CommandProperties to the command.
+     *
+     * @param properties The properties of the command. Must not be null.
+     */
+    private void applyAliases(@NotNull CommandProperties properties) {
+        List<String> aliases = properties.aliases();
+        assert aliases != null; // Checked in the constructor
+
+        if (parent == null) {
+            this.setAliases(aliases);
+            return;
+        }
+
+        this.subAliases = properties.aliases();
     }
 }
