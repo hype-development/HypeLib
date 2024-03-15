@@ -44,7 +44,7 @@ import java.util.Optional;
  * @param args The arguments of the command
  * @param sender The sender of the command
  */
-public record Context(String[] args, CommandSender sender) {
+public record Context(@NotNull String[] args, @NotNull CommandSender sender) {
 
     /**
      * Returns the player who executed the command.
