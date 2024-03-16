@@ -660,51 +660,30 @@
  *
  */
 
-package games.negative.alumina.menu.holder;
+package games.negative.alumina.util;
 
-import games.negative.alumina.menu.InteractiveMenuHolder;
-import games.negative.alumina.menu.PaginatedMenu;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
+import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
-public class PaginatedMenuHolder implements InteractiveMenuHolder<PaginatedMenu> {
+/**
+ * MiniMessageUtil is a utility class for translating messages using the MiniMessage library.
+ */
+@UtilityClass
+public class MiniMessageUtil {
 
-    private final PaginatedMenu menu;
-    private Inventory inventory;
+    private final MiniMessage mm = MiniMessage.miniMessage();
 
-    @Override
-    public void onOpen(@NotNull Player player, @NotNull InventoryOpenEvent event) {
-        menu.onOpen(player, event);
-    }
-
-    @Override
-    public void onClose(@NotNull Player player, @NotNull InventoryCloseEvent event) {
-        menu.onClose(player, event);
-    }
-
-    @Override
-    public void onClick(@NotNull Player player, @NotNull InventoryClickEvent event) {
-        menu.onClick(player, event);
-    }
-
-    @Override
-    public @NotNull PaginatedMenu getMenu() {
-        return menu;
-    }
-
+    /**
+     * Translates the given message into a Component using the MiniMessage library.
+     *
+     * @param message the message to be translated
+     * @return the translated Component
+     */
     @NotNull
-    @Override
-    public Inventory getInventory() {
-        return inventory;
+    public Component translate(@NotNull String message) {
+        return mm.deserialize(message);
     }
 
-    public void setInventory(@NotNull Inventory inventory) {
-        this.inventory = inventory;
-    }
 }

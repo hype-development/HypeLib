@@ -687,6 +687,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
+/**
+ * @apiNote This system still uses the old Spigot method of formatting titles, such as &c for red.
+ */
 public abstract class ChestMenu implements InteractiveMenu {
 
     private static final int MIN_ROWS = 1;

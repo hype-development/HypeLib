@@ -27,9 +27,12 @@
 
 package games.negative.alumina.builder;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.MiniMessageUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -42,12 +45,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * Represents a builder utility for {@link ItemStack} to make item creation easier for the developer.
@@ -106,7 +110,7 @@ public class ItemBuilder {
     public ItemBuilder setName(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
 
-        this.meta.setDisplayName(ColorUtil.translate(text));
+        this.meta.displayName(MiniMessageUtil.translate(text));
         return this;
     }
 
@@ -120,7 +124,12 @@ public class ItemBuilder {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null!");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null!");
 
-        return this.setName(this.meta.getDisplayName().replace(placeholder, replacement));
+        Component component = this.meta.displayName();
+        if (component == null) return this;
+
+        Component modified = component.replaceText(TextReplacementConfig.builder().matchLiteral(placeholder).replacement(replacement).build());
+        this.meta.displayName(modified);
+        return this;
     }
 
     /**
@@ -133,13 +142,8 @@ public class ItemBuilder {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(text.length > 0, "Text cannot be empty!");
 
-        List<String> parsed = Lists.newArrayList();
-
-        for (String line : text) {
-            parsed.add(ColorUtil.translate(line));
-        }
-
-        this.meta.setLore(parsed);
+        List<Component> components = Arrays.stream(text).map(MiniMessageUtil::translate).collect(Collectors.toList());
+        this.meta.lore(components);
         return this;
     }
 
@@ -152,13 +156,8 @@ public class ItemBuilder {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(!text.isEmpty(), "Text cannot be empty!");
 
-        List<String> parsed = Lists.newArrayList();
-
-        for (String line : text) {
-            parsed.add(ColorUtil.translate(line));
-        }
-
-        this.meta.setLore(parsed);
+        List<Component> components = text.stream().map(MiniMessageUtil::translate).collect(Collectors.toList());
+        this.meta.lore(components);
         return this;
     }
 
@@ -170,11 +169,11 @@ public class ItemBuilder {
     public ItemBuilder addLoreLine(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
 
-        List<String> lore = this.meta.getLore();
+        List<Component> lore = this.meta.lore();
         if (lore == null) lore = Lists.newArrayList();
 
-        lore.add(ColorUtil.translate(text));
-        this.meta.setLore(lore);
+        lore.add(MiniMessageUtil.translate(text));
+        this.meta.lore(lore);
 
         return this;
     }
@@ -188,14 +187,13 @@ public class ItemBuilder {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(text.length > 0, "Text cannot be empty!");
 
-        List<String> lore = this.meta.getLore();
+        List<Component> lore = this.meta.lore();
         if (lore == null) lore = Lists.newArrayList();
 
-        for (String line : text) {
-            lore.add(ColorUtil.translate(line));
-        }
+        List<Component> components = Arrays.stream(text).map(MiniMessageUtil::translate).collect(Collectors.toList());
+        lore.addAll(components);
 
-        this.meta.setLore(lore);
+        this.meta.lore(lore);
 
         return this;
     }
@@ -209,15 +207,13 @@ public class ItemBuilder {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(!text.isEmpty(), "Text cannot be empty!");
 
-        List<String> lore = this.meta.getLore();
+        List<Component> lore = this.meta.lore();
         if (lore == null) lore = Lists.newArrayList();
 
-        for (String line : text) {
-            lore.add(ColorUtil.translate(line));
-        }
+        List<Component> components = text.stream().map(MiniMessageUtil::translate).toList();
+        lore.addAll(components);
 
-        this.meta.setLore(lore);
-
+        this.meta.lore(lore);
         return this;
     }
 
@@ -225,7 +221,9 @@ public class ItemBuilder {
      * Replace the lore of the item.
      * @param function The function to replace the lore.
      * @return The current instance of the builder.
+     * @deprecated Please ise {@link #replaceLore(String, String)} instead.
      */
+    @Deprecated(since = "2.0.0", forRemoval = true)
     public ItemBuilder replaceLore(@NotNull final UnaryOperator<String> function) {
         Preconditions.checkNotNull(function, "Function cannot be null!");
 
@@ -248,7 +246,15 @@ public class ItemBuilder {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null!");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null!");
 
-        return this.replaceLore(line -> line.replace(placeholder, replacement));
+        List<Component> lore = this.meta.lore();
+        if (lore == null) lore = Lists.newArrayList();
+
+        List<Component> modified = lore.stream()
+                .map(component -> component.replaceText(TextReplacementConfig.builder().matchLiteral(placeholder).replacement(replacement).build()))
+                .collect(Collectors.toList());
+
+        this.meta.lore(modified);
+        return this;
     }
 
     /**
@@ -336,7 +342,7 @@ public class ItemBuilder {
     public ItemBuilder setSkullOwner(@NotNull final PlayerProfile profile) {
         Preconditions.checkNotNull(profile, "Profile cannot be null!");
         SkullMeta skullMeta = (SkullMeta) this.meta;
-        skullMeta.setOwnerProfile(profile);
+        skullMeta.setPlayerProfile(profile);
         return this;
     }
 

@@ -685,6 +685,7 @@ import java.util.stream.Collectors;
  * Represents a class for creating interactive chat messages using Text Components.
  */
 @NoArgsConstructor
+@Deprecated(since = "2.0.0", forRemoval = true)
 public class InteractiveMessage {
 
     private final LinkedList<TextComponent> components = new LinkedList<>();

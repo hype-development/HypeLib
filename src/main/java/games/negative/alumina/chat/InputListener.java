@@ -27,9 +27,8 @@ package games.negative.alumina.chat;
 
 import com.google.common.collect.Maps;
 import games.negative.alumina.event.Events;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,7 +48,7 @@ public class InputListener {
 
     static {
         // Listen to chat messages
-        Events.listen(AsyncPlayerChatEvent.class, event -> {
+        Events.listen(AsyncChatEvent.class, event -> {
             Player player = event.getPlayer();
             UUID uuid = player.getUniqueId();
             if (!listeners.containsKey(uuid)) return;
@@ -59,24 +58,7 @@ public class InputListener {
 
             try {
                 event.setCancelled(true);
-                response.process(player, event.getMessage());
-            } catch (Exception ignored) {} finally {
-                listeners.remove(uuid);
-            }
-        });
-
-        // Listen to command events
-        Events.listen(PlayerCommandPreprocessEvent.class, event -> {
-            Player player = event.getPlayer();
-            UUID uuid = player.getUniqueId();
-            if (!listeners.containsKey(uuid)) return;
-
-            InputProcessor response = listeners.get(uuid);
-            if (response == null) return;
-
-            try {
-                event.setCancelled(true);
-                response.process(player, event.getMessage());
+                response.process(event);
             } catch (Exception ignored) {} finally {
                 listeners.remove(uuid);
             }
@@ -105,10 +87,9 @@ public class InputListener {
         /**
          * Process the input message from a player.
          *
-         * @param player The player object from whom the message is received.
-         * @param message The input message received from the player.
+         * @param event The chat event that contains the input message.
          */
-        void process(@NotNull Player player, @NotNull String message);
+        void process(@NotNull AsyncChatEvent event);
 
     }
 }
