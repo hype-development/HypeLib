@@ -703,4 +703,8 @@ public class PaginatedMenuHolder implements InteractiveMenuHolder<PaginatedMenu>
     public Inventory getInventory() {
         return inventory;
     }
+
+    public void setInventory(@NotNull Inventory inventory) {
+        this.inventory = inventory;
+    }
 }

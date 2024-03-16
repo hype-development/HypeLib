@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 import games.negative.alumina.future.BukkitCompletableFuture;
 import games.negative.alumina.future.BukkitFuture;
+import lombok.experimental.UtilityClass;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -55,6 +56,7 @@ import java.util.UUID;
 /**
  * Player utility to handle some player-related tasks.
  */
+@UtilityClass
 public class PlayerUtil {
 
     /**
@@ -62,7 +64,7 @@ public class PlayerUtil {
      *
      * @param player The player to reset.
      */
-    public static void reset(@NotNull Player player) {
+    public void reset(@NotNull Player player) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         for (PotionEffect effect : player.getActivePotionEffects())
@@ -96,7 +98,7 @@ public class PlayerUtil {
      *
      * @param player The player to reset.
      */
-    private static void resetHealth(@NotNull Player player) {
+    private void resetHealth(@NotNull Player player) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -117,7 +119,7 @@ public class PlayerUtil {
      * @param <T>        The type of collection
      * @return The collection of items that could not be added to the player's inventory
      */
-    public static  <T extends Iterable<ItemStack>> Collection<ItemStack> fillInventory(@NotNull Player player, @NotNull T collection) {
+    public <T extends Iterable<ItemStack>> Collection<ItemStack> fillInventory(@NotNull Player player, @NotNull T collection) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
         Preconditions.checkNotNull(collection, "'collection' cannot be null!");
 
@@ -166,7 +168,7 @@ public class PlayerUtil {
      * @return The UUID of the player.
      * @throws IOException If an error occurs while getting the UUID.
      */
-    public static UUID getByName(@NotNull String username) throws IOException {
+    public UUID getByName(@NotNull String username) throws IOException {
         Preconditions.checkNotNull(username, "'username' cannot be null!");
 
         JsonObject response = HTTPUtil.get("https://api.mojang.com/users/profiles/minecraft/" + username);
@@ -186,7 +188,7 @@ public class PlayerUtil {
      * @return A BukkitFuture object that completes with the OfflinePlayer.
      * @throws NullPointerException if 'username' is null.
      */
-    public static BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
+    public BukkitFuture<OfflinePlayer> getOfflinePlayer(@NotNull String username) {
         Preconditions.checkNotNull(username, "'username' cannot be null!");;
 
         BukkitFuture<OfflinePlayer> future = new BukkitCompletableFuture<>();
@@ -218,7 +220,7 @@ public class PlayerUtil {
      * @return true if the player is online, false otherwise.
      * @throws NullPointerException if 'uuid' is null.
      */
-    public static boolean isOnline(@NotNull UUID uuid) {
+    public boolean isOnline(@NotNull UUID uuid) {
         Preconditions.checkNotNull(uuid, "'uuid' cannot be null!");
 
         return Bukkit.getPlayer(uuid) != null;
@@ -230,7 +232,7 @@ public class PlayerUtil {
      * @param username The username to check.
      * @return {@code true} if the username is online, {@code false} otherwise.
      */
-    public static boolean isOnline(@NotNull String username) {
+    public boolean isOnline(@NotNull String username) {
         Preconditions.checkNotNull(username, "'username' cannot be null!");
 
         return Bukkit.getPlayer(username) != null;
@@ -243,7 +245,7 @@ public class PlayerUtil {
      * @return Optional<Player> The player, or an empty Optional if the player is not found.
      * @throws NullPointerException if 'uuid' is null.
      */
-    public static Optional<Player> getPlayer(@NotNull UUID uuid) {
+    public Optional<Player> getPlayer(@NotNull UUID uuid) {
         Preconditions.checkNotNull(uuid, "'uuid' cannot be null!");
 
         return Optional.ofNullable(Bukkit.getPlayer(uuid));
@@ -260,7 +262,8 @@ public class PlayerUtil {
      * @throws IllegalArgumentException If the player is null.
      * @throws IllegalStateException If both title and subtitle are null.
      */
-    public static void sendTitle(@NotNull Player player, @Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
+    @Deprecated
+    public void sendTitle(@NotNull Player player, @Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         if (title == null && subtitle == null) throw new IllegalStateException("You cannot have `title` and `subtitle` be null at the same time!");
@@ -276,6 +279,7 @@ public class PlayerUtil {
      *
      * @throws NullPointerException if {@code player} or {@code message} is null.
      */
+    @Deprecated
     public static void sendActionBar(@NotNull Player player, @NotNull String message) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
         Preconditions.checkNotNull(message, "'message' cannot be null!");

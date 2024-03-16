@@ -38,7 +38,9 @@ import java.util.regex.Pattern;
 
 /**
  * Represents a utility class which contains methods for color manipulation.
+ * @deprecated This class is deprecated and will be removed in a future update.
  */
+@Deprecated(since = "1.6.2" ,forRemoval = true)
 public class ColorUtil {
 
     /*
