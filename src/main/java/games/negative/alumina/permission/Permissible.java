@@ -698,7 +698,7 @@ public interface Permissible {
      *
      * @throws UnsupportedOperationException if the method is not supported for this class
      */
-    default void setPermission() {
+    default void setPermission(Permission permission) {
         throw new UnsupportedOperationException("This method is not supported for this class");
     }
 
