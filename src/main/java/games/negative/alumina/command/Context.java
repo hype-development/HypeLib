@@ -28,6 +28,7 @@ package games.negative.alumina.command;
 import com.google.common.base.Preconditions;
 import games.negative.alumina.future.BukkitFuture;
 import games.negative.alumina.util.ColorUtil;
+import games.negative.alumina.util.MiniMessageUtil;
 import games.negative.alumina.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -72,7 +73,7 @@ public record Context(@NotNull String[] args, @NotNull CommandSender sender) {
     public void message(@NotNull final String message) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
-        sender().sendMessage(ColorUtil.translate(message));
+        sender().sendMessage(MiniMessageUtil.translate(message));
     }
 
     /**

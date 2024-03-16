@@ -29,11 +29,10 @@ package games.negative.alumina.message;
 
 import com.google.common.base.Preconditions;
 import games.negative.alumina.logger.Logs;
+import games.negative.alumina.util.MiniMessageUtil;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,17 +40,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Represents a message that can be sent to a {@link CommandSender}.
+ * Represents a message that can be sent to a {@link Audience}.
  * <p>
  * This supports color codes, placeholders, and hex colors.
  * <p>
  */
+@SuppressWarnings("unused")
 public class Message {
-
-    /**
-     * MiniMessage instance.
-     */
-    private static final MiniMessage mm = MiniMessage.miniMessage();
 
     /*
      * This is the default, unmodified message.
@@ -106,7 +101,7 @@ public class Message {
             }
         }
 
-        Component component = mm.deserialize(current);
+        Component component = MiniMessageUtil.translate(current);
         audience.sendMessage(component);
     }
 
@@ -150,7 +145,7 @@ public class Message {
             }
         }
 
-        Component component = mm.deserialize(current);
+        Component component = MiniMessageUtil.translate(current);
         Bukkit.getServer().broadcast(component);
     }
 
