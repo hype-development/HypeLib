@@ -49,22 +49,22 @@ public abstract class Command extends org.bukkit.command.Command {
     /**
      * The message for when the player does not have permission to use the command.
      */
-    private static final Message NO_PERMISSION = Message.of("&cYou do not have permission to use this command.");
+    private static final Message NO_PERMISSION = Message.of("<red>You do not have permission to use this command.");
 
     /**
      * The message for when a player-only command is used as a console.
      */
-    private static final Message CANNOT_USE_AS_CONSOLE = Message.of("&cYou cannot use this command as console.");
+    private static final Message CANNOT_USE_AS_CONSOLE = Message.of("<red>You cannot use this command as console.");
 
     /**
      * The message for when a console-only command is used as a player.
      */
-    private static final Message CANNOT_USE_AS_PLAYER = Message.of("&cYou cannot use this command as a player.");
+    private static final Message CANNOT_USE_AS_PLAYER = Message.of("<red>You cannot use this command as a player.");
 
     /**
      * The message for when a command is used incorrectly.
      */
-    private static final Message USAGE = Message.of("&cUsage: &7/%command% %usage%");
+    private static final Message USAGE = Message.of("<click:suggest_command:'/%command% %usage%'><red>Usage: <gray>/%command% %usage%</click>");
 
     /**
      * The sub commands of this command.
@@ -436,7 +436,7 @@ public abstract class Command extends org.bukkit.command.Command {
                 iteration++;
             }
 
-            USAGE.replace("%command%", parentBuilder.toString()).replace("%usage%", builder.toString()).send(sender);
+            USAGE.send(sender, "%command%", parentBuilder.toString(), "%usage%", builder.toString());
             return false;
         }
 
