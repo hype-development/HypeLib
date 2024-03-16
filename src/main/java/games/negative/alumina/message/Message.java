@@ -28,16 +28,16 @@
 package games.negative.alumina.message;
 
 import com.google.common.base.Preconditions;
-import games.negative.alumina.model.Deliverable;
-import games.negative.alumina.util.ColorUtil;
-import me.clip.placeholderapi.PlaceholderAPI;
+import games.negative.alumina.logger.Logs;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.CheckReturnValue;
 import java.util.List;
 
 /**
@@ -46,120 +46,112 @@ import java.util.List;
  * This supports color codes, placeholders, and hex colors.
  * <p>
  */
-public class Message implements Deliverable<CommandSender> {
+public class Message {
+
+    /**
+     * MiniMessage instance.
+     */
+    private static final MiniMessage mm = MiniMessage.miniMessage();
 
     /*
      * This is the default, unmodified message.
      */
-    private final String def;
+    private final String content;
 
-    /*
-     * This is the current message with all modifications.
+    /**
+     * Whether to parse PlaceholderAPI placeholders.
      */
-    private String current;
+    private final boolean papi;
 
-    /*
-     * This is used to determine if PlaceholderAPI should be used.
-     */
-    private boolean parsePlaceholderAPI = false;
 
     /**
      * Creates a new message.
      *
      * @param text The text of the message.
      */
-    protected Message(@NotNull final String text) {
+    public Message(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null.");
 
-        this.def = text;
-        this.current = text;
+        this.content = text;
+        this.papi = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
     }
 
-    /**
-     * Replaces a placeholder with a replacement.
-     *
-     * @param placeholder The placeholder to replace.
-     * @param replacement The replacement.
-     * @return The message.
-     */
-    @CheckReturnValue
-    public Message replace(@NotNull final String placeholder, @NotNull final String replacement) {
-        Preconditions.checkNotNull(placeholder, "Placeholder cannot be null.");
-        Preconditions.checkNotNull(replacement, "Replacement cannot be null.");
-
-        this.current = this.current.replace(placeholder, replacement);
-        return this;
-    }
 
     /**
-     * Allow the message to be parsed by PlaceholderAPI.
+     * Send the final message to a {@link Audience}.
      *
-     * @return The message.
-     * @throws IllegalStateException If PlaceholderAPI is not installed.
+     * @param audience The recipient of the message.
      */
-    @CheckReturnValue
-    public Message parsePlaceholderAPI() {
-        Preconditions.checkState(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null, "PlaceholderAPI is not installed.");
-        this.parsePlaceholderAPI = true;
-        return this;
-    }
+    public void send(@NotNull Audience audience, @Nullable String... placeholders) {
+        Preconditions.checkNotNull(audience, "Audience cannot be null.");
 
-    /**
-     * Send the final message to a {@link CommandSender}.
-     *
-     * @param sender The sender to send the message to.
-     */
-    @Override
-    public void send(@NotNull final CommandSender sender) {
-        Preconditions.checkNotNull(sender, "Sender cannot be null.");
-
-        String translate = ColorUtil.translate(this.current);
-        String text = parsePAPI(sender, translate);
-        String[] message = text.split("\n");
-
-        for (String line : message) {
-            sender.sendMessage(line);
+        String current = content;
+        if (papi) {
+            current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((audience instanceof Player player ? player : null), current);
         }
 
-        this.current = def;
-    }
+        if (placeholders != null) {
+            Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in key-value pairs.");
 
-    /**
-     * Send the final message to an iterable collection of a class that extends {@link CommandSender}
-     *
-     * @param iterable The iterable collection of a class that extends {@link CommandSender}
-     * @param <T>      The class that extends {@link CommandSender}
-     */
-    public <T extends Iterable<? extends CommandSender>> void send(@NotNull final T iterable) {
-        Preconditions.checkNotNull(iterable, "Iterable cannot be null.");
-        Preconditions.checkArgument(iterable.iterator().hasNext(), "Iterable cannot be empty.");
+            for (int i = 0; i < placeholders.length; i += 2) {
+                String placeholder = placeholders[i];
+                String replacement = placeholders[i + 1];
 
-        String translate = ColorUtil.translate(this.current);
-        String text = parsePAPI(null, translate);
-        String[] message = text.split("\n");
+                if (placeholder == null || replacement == null) {
+                    Logs.WARNING.print("Placeholder of " + placeholder + " has result of " + replacement + ". None of these value can be null. Skipping.", true);
+                    continue;
+                }
 
-        for (CommandSender sender : iterable) {
-            for (String line : message) {
-                sender.sendMessage(line);
+                current = current.replaceAll(placeholder, replacement);
             }
         }
 
-        this.current = def;
+        Component component = mm.deserialize(current);
+        audience.sendMessage(component);
+    }
+
+    /**
+     * Send the final message to an iterable collection of a class that extends {@link Audience}
+     *
+     * @param iterable The iterable collection of a class that extends {@link Audience}
+     * @param <T>      The class that extends {@link Audience}
+     */
+    public <T extends Iterable<? extends Audience>> void send(@NotNull final T iterable) {
+        Preconditions.checkNotNull(iterable, "Iterable cannot be null.");
+        Preconditions.checkArgument(iterable.iterator().hasNext(), "Iterable cannot be empty.");
+
+        for (Audience audience : iterable) {
+            send(audience);
+        }
     }
 
     /**
      * Broadcast the final message to the server.
      */
-    public void broadcast() {
-        String translate = ColorUtil.translate(this.current);
-        String text = parsePAPI(null, translate);
-        String[] message = text.split("\n");
-
-        for (String line : message) {
-            Bukkit.broadcastMessage(line);
+    public void broadcast(@Nullable String... placeholders) {
+        String current = content;
+        if (papi) {
+            current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders( null, current);
         }
 
-        this.current = def;
+        if (placeholders != null) {
+            Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in key-value pairs.");
+
+            for (int i = 0; i < placeholders.length; i += 2) {
+                String placeholder = placeholders[i];
+                String replacement = placeholders[i + 1];
+
+                if (placeholder == null || replacement == null) {
+                    Logs.WARNING.print("Placeholder of " + placeholder + " has result of " + replacement + ". None of these value can be null. Skipping.", true);
+                    continue;
+                }
+
+                current = current.replaceAll(placeholder, replacement);
+            }
+        }
+
+        Component component = mm.deserialize(current);
+        Bukkit.getServer().broadcast(component);
     }
 
     /**
@@ -200,21 +192,4 @@ public class Message implements Deliverable<CommandSender> {
         return new Message(String.join("\n", text));
     }
 
-    /**
-     * Parses the message using PlaceholderAPI.
-     *
-     * @param sender  The sender to parse the message for.
-     * @param message The message to parse.
-     * @return The parsed message.
-     * @apiNote The sender parameter can be null if you want to parse the message for the console.
-     */
-    @NotNull
-    private String parsePAPI(@Nullable final CommandSender sender, @NotNull final String message) {
-        Preconditions.checkNotNull(message, "Message cannot be null.");
-
-        boolean enabled = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
-        if (!enabled || !parsePlaceholderAPI) return message;
-
-        return (sender == null ? PlaceholderAPI.setPlaceholders(null, message) : (sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : PlaceholderAPI.setPlaceholders(null, message)));
-    }
 }
