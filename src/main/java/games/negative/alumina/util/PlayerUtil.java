@@ -31,6 +31,9 @@ import com.google.gson.JsonObject;
 import games.negative.alumina.future.BukkitCompletableFuture;
 import games.negative.alumina.future.BukkitFuture;
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.TitlePart;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -48,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -262,13 +266,65 @@ public class PlayerUtil {
      * @throws IllegalArgumentException If the player is null.
      * @throws IllegalStateException If both title and subtitle are null.
      */
-    @Deprecated
+    @Deprecated(since = "2.0.0", forRemoval = true)
     public void sendTitle(@NotNull Player player, @Nullable String title, @Nullable String subtitle, int fadeIn, int stay, int fadeOut) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
 
         if (title == null && subtitle == null) throw new IllegalStateException("You cannot have `title` and `subtitle` be null at the same time!");
 
         player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
+    }
+
+    /**
+     * Displays a title to the specified audience with the given fadeIn, stay, and fadeOut times.
+     * Only the title component of the title will be shown.
+     *
+     * @param audience The audience to display the title to. Cannot be null.
+     * @param title The title to display. Cannot be null.
+     * @param fadeIn The time in ticks for the title to fade in.
+     * @param stay The time in ticks for the title to stay on the screen.
+     * @param fadeOut The time in ticks for the title to fade out.
+     * @throws NullPointerException if 'audience' or 'title' is null.
+     */
+    public void showTitleOnly(@NotNull Audience audience, @NotNull String title, int fadeIn, int stay, int fadeOut) {
+        Preconditions.checkNotNull(audience, "'audience' cannot be null!");
+
+        audience.sendTitlePart(TitlePart.TIMES, Title.Times.times(Duration.ofSeconds(fadeIn), Duration.ofSeconds(stay), Duration.ofSeconds(fadeOut)));
+        audience.sendTitlePart(TitlePart.TITLE, MiniMessageUtil.translate(title));
+    }
+
+    /**
+     * Displays the subtitle message only to the given audience with specified fade in, stay, and fade out times.
+     *
+     * @param audience The audience to display the subtitle to. Must not be null.
+     * @param subtitle The subtitle message. Must not be null.
+     * @param fadeIn   The time in ticks for the subtitle to fade in.
+     * @param stay     The time in ticks for the subtitle to stay on the screen.
+     * @param fadeOut  The time in ticks for the subtitle to fade out.
+     * @throws NullPointerException if the audience or subtitle is null.
+     */
+    public void showSubtitleOnly(@NotNull Audience audience, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        Preconditions.checkNotNull(audience, "'audience' cannot be null!");
+
+        audience.sendTitlePart(TitlePart.TIMES, Title.Times.times(Duration.ofSeconds(fadeIn), Duration.ofSeconds(stay), Duration.ofSeconds(fadeOut)));
+        audience.sendTitlePart(TitlePart.SUBTITLE, MiniMessageUtil.translate(subtitle));
+    }
+
+    /**
+     * Displays a title and subtitle message to the specified audience with specified fade in, stay, and fade out times.
+     *
+     * @param audience   The audience to display the title and subtitle to.
+     * @param title      The title message. Cannot be null.
+     * @param subtitle   The subtitle message. Cannot be null.
+     * @param fadeIn     The time in ticks for the title and subtitle to fade in.
+     * @param stay       The time in ticks for the title and subtitle to stay on the screen.
+     * @param fadeOut    The time in ticks for the title and subtitle to fade out.
+     * @throws NullPointerException if 'audience', 'title', or 'subtitle' is null.
+     */
+    public void showTitle(@NotNull Audience audience, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+        Preconditions.checkNotNull(audience, "'audience' cannot be null!");
+
+        audience.showTitle(Title.title(MiniMessageUtil.translate(title), MiniMessageUtil.translate(subtitle), Title.Times.times(Duration.ofSeconds(fadeIn), Duration.ofSeconds(stay), Duration.ofSeconds(fadeOut))));
     }
 
     /**
@@ -279,11 +335,25 @@ public class PlayerUtil {
      *
      * @throws NullPointerException if {@code player} or {@code message} is null.
      */
-    @Deprecated
+    @Deprecated(since = "2.0.0", forRemoval = true)
     public static void sendActionBar(@NotNull Player player, @NotNull String message) {
         Preconditions.checkNotNull(player, "'player' cannot be null!");
         Preconditions.checkNotNull(message, "'message' cannot be null!");
 
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+    }
+
+    /**
+     * Sends an action bar message to the specified audience.
+     *
+     * @param audience the audience to send the action bar message to
+     * @param message the message to be displayed in the action bar
+     * @throws NullPointerException if {@code audience} or {@code message} is null
+     */
+    public void sendActionBar(@NotNull Audience audience, @NotNull String message) {
+        Preconditions.checkNotNull(audience, "'audience' cannot be null!");
+        Preconditions.checkNotNull(message, "'message' cannot be null!");
+
+        audience.sendActionBar(MiniMessageUtil.translate(message));
     }
 }
