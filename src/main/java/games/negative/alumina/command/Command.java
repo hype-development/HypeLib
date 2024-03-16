@@ -167,7 +167,7 @@ public abstract class Command extends org.bukkit.command.Command {
         // 2. Check if the sender has the required permissions.
         // 3. Check if there are any required parameters to be filled in.
         // 4. Check if there are any subcommands to be executed before parent commands are executed.
-        if (checkConsolePlayerCommand(sender) || !hasInvalidPermissions(sender, true) || !checkParams(sender, args) || checkSubCommands(sender, args))
+        if (checkConsolePlayerCommand(sender) || hasInvalidPermissions(sender, true) || !checkParams(sender, args) || checkSubCommands(sender, args))
             return true;
 
         // If all requirements are met, execute the command.
