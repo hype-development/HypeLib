@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * This is a class used to reduce boilerplate when working with persistent data.
  */
+@SuppressWarnings("unused")
 public class NBTEditor {
 
     /**
