@@ -356,4 +356,39 @@ public class PlayerUtil {
 
         audience.sendActionBar(MiniMessageUtil.translate(message));
     }
+
+    /**
+     * Checks if the player is in the specified world.
+     *
+     * @param player The player to check.
+     * @param world The name of the world.
+     * @return {@code true} if the player is in the world, {@code false} otherwise.
+     * @throws NullPointerException if {@code player} or {@code world} is null.
+     */
+    public boolean isInWorld(@NotNull Player player, @NotNull String world) {
+        Preconditions.checkNotNull(player, "'player' cannot be null!");
+        Preconditions.checkNotNull(world, "'world' cannot be null!");
+
+        return player.getWorld().getName().equalsIgnoreCase(world);
+    }
+
+    /**
+     * Checks if the player is in any of the specified worlds.
+     *
+     * @param player The player to check.
+     * @param worlds The names of the worlds.
+     * @return {@code true} if the player is in any of the worlds, {@code false} otherwise.
+     * @throws NullPointerException if {@code player} or {@code worlds} is null.
+     */
+    public boolean isInWorld(@NotNull Player player, @NotNull String... worlds) {
+        Preconditions.checkNotNull(player, "'player' cannot be null!");
+        Preconditions.checkNotNull(worlds, "'worlds' cannot be null!");
+
+        String current = player.getWorld().getName();
+        for (String world : worlds) {
+            if (current.equalsIgnoreCase(world)) return true;
+        }
+
+        return false;
+    }
 }
