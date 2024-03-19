@@ -26,6 +26,7 @@
 package games.negative.alumina.util;
 
 import com.google.common.base.Preconditions;
+import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A location utility to handle some location-related tasks.
  */
+@UtilityClass
 public class LocationUtil {
 
     /**
@@ -43,7 +45,7 @@ public class LocationUtil {
      * @param max      The maximum location of the cuboid.
      * @return Whether the location is inside the cuboid.
      */
-    public static boolean isInside(@NotNull Location location, @NotNull Location min, @NotNull Location max) {
+    public boolean isInside(@NotNull Location location, @NotNull Location min, @NotNull Location max) {
         Preconditions.checkNotNull(location, "'location' cannot be null!");
         Preconditions.checkNotNull(min, "'min' cannot be null!");
         Preconditions.checkNotNull(max, "'max' cannot be null!");
@@ -74,4 +76,45 @@ public class LocationUtil {
 
         return (x >= x1 && x <= x2) && (y >= y1 && y <= y2) && (z >= z1 && z <= z2);
     }
+
+    /**
+     * Check if the location is in the specified world.
+     *
+     * @param location The location to check.
+     * @param world    The name of the world to check against.
+     * @return {@code true} if the location is in the specified world, {@code false} otherwise.
+     * @throws NullPointerException if either the location or world is null.
+     */
+    public boolean isInWorld(@NotNull Location location, @NotNull String world) {
+        Preconditions.checkNotNull(location, "'location' cannot be null!");
+        Preconditions.checkNotNull(world, "'world' cannot be null!");
+
+        World current = location.getWorld();
+        if (current == null) return false;
+
+        return current.getName().equals(world);
+    }
+
+    /**
+     * Check if a given location is in one of the specified worlds.
+     *
+     * @param location The location to check.
+     * @param worlds   The list of worlds to check against.
+     * @return true if the location is in one of the specified worlds, false otherwise.
+     * @throws NullPointerException if either the location or the worlds list is null.
+     */
+    public boolean isInWorld(@NotNull Location location, @NotNull String... worlds) {
+        Preconditions.checkNotNull(location, "'location' cannot be null!");
+        Preconditions.checkNotNull(worlds, "'worlds' cannot be null!");
+
+        World current = location.getWorld();
+        if (current == null) return false;
+
+        for (String world : worlds) {
+            if (current.getName().equals(world)) return true;
+        }
+
+        return false;
+    }
+    
 }
