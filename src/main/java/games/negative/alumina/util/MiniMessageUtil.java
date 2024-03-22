@@ -664,6 +664,7 @@ package games.negative.alumina.util;
 
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -701,4 +702,20 @@ public class MiniMessageUtil {
         return mm.deserialize(message);
     }
 
+    /**
+     * Searches for a specific piece of text in a given TextComponent.
+     *
+     * @param component The TextComponent to search in.
+     * @param search The string to search for.
+     * @return true if the component contains a matching TextComponent, false otherwise.
+     */
+    public boolean searchComponent(@NotNull TextComponent component, @NotNull String search) {
+        return component.contains(Component.text(search), (component1, component2) -> {
+            if (component1 instanceof TextComponent first && component2 instanceof TextComponent second) {
+                return first.content().equalsIgnoreCase(search) && second.content().equalsIgnoreCase(search);
+            }
+
+            return false;
+        });
+    }
 }
