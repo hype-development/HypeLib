@@ -150,6 +150,43 @@ public class Message {
     }
 
     /**
+     * Converts the message to a Component.
+     *
+     * @param audience     The audience to display the message to.
+     * @param placeholders The optional key-value pairs of placeholders to replace in the message.
+     * @return The Component representation of the message.
+     * @throws NullPointerException     if the audience is null.
+     * @throws IllegalArgumentException if the number of placeholders is not even.
+     */
+    @NotNull
+    public Component asComponent(@Nullable Audience audience, @Nullable String... placeholders) {
+        Preconditions.checkNotNull(audience, "Audience cannot be null.");
+
+        String current = content;
+        if (papi) {
+            current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((audience instanceof Player player ? player : null), current);
+        }
+
+        if (placeholders != null) {
+            Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in key-value pairs.");
+
+            for (int i = 0; i < placeholders.length; i += 2) {
+                String placeholder = placeholders[i];
+                String replacement = placeholders[i + 1];
+
+                if (placeholder == null || replacement == null) {
+                    Logs.WARNING.print("Placeholder of " + placeholder + " has result of " + replacement + ". None of these value can be null. Skipping.", true);
+                    continue;
+                }
+
+                current = current.replaceAll(placeholder, replacement);
+            }
+        }
+
+        return MiniMessageUtil.translate(current);
+    }
+
+    /**
      * Statically create a new message instance using {@link Message#of(String...)}
      *
      * @param text The text of the message.
