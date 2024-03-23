@@ -19,7 +19,7 @@
 <dependency>
     <groupId>games.negative.alumina</groupId>
     <artifactId>alumina</artifactId>
-    <version>1.5.2</version>
+    <version>2.2.2</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -56,7 +56,7 @@ In case other software in your JVM is using this library, you should shade it in
 maven { url 'https://repo.negative.games/repository/maven-releases/' }
 ```
 ```groovy
-implementation("games.negative.alumina:alumina:1.5.2")
+implementation("games.negative.alumina:alumina:2.2.2")
 ```
 ***
 ![discord](assets/Discord.png)
