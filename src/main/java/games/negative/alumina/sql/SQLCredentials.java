@@ -668,6 +668,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The SQLCredentials class represents the credentials required to connect to an SQL database.
  * It contains the host, port, database name, username, and password.
+ * @deprecated Will be moved into dedicated library.
  */
 public record SQLCredentials(String host, int port, String database, String username, String password) {
 

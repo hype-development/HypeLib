@@ -673,7 +673,9 @@ import java.sql.SQLException;
  * The SQLDatabase interface represents an abstraction of an SQL database connection.
  * It provides methods to obtain a database connection and create a prepared statement.
  * It also provides a method to disconnect from the database.
+ * @deprecated Will be moved into dedicated library.
  */
+@Deprecated
 public interface SQLDatabase {
 
     /**

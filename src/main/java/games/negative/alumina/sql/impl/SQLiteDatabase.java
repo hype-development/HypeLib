@@ -674,7 +674,9 @@ import java.sql.SQLException;
 
 /**
  * Represents a SQLite database.
+ * @deprecated Will be moved into dedicated library.
  */
+@Deprecated
 public class SQLiteDatabase implements SQLDatabase {
 
     private final File file;

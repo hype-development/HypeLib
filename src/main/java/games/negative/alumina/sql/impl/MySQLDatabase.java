@@ -673,7 +673,9 @@ import java.sql.SQLException;
 
 /**
  * Represents a MySQL database.
+ * @deprecated Will be moved into dedicated library.
  */
+@Deprecated
 public class MySQLDatabase implements SQLDatabase {
 
     private final Connection connection;

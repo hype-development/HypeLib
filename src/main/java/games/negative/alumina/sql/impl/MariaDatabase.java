@@ -673,7 +673,9 @@ import java.sql.SQLException;
 
 /**
  * Represents a MariaDB database.
+ * @deprecated Will be moved into dedicated library.
  */
+@Deprecated
 public class MariaDatabase implements SQLDatabase {
 
     private final Connection connection;

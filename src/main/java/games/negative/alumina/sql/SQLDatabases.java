@@ -674,7 +674,9 @@ import java.sql.SQLException;
 /**
  * The SQLDatabases class provides factory methods to create instances of SQLDatabase implementations.
  * It provides methods to create connections to various SQL databases such as SQLite, MySQL, and MariaDB.
+ * @deprecated Will be moved into dedicated library.
  */
+@Deprecated
 public interface SQLDatabases {
 
     /**
