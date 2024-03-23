@@ -80,28 +80,7 @@ public class Message {
     public void send(@NotNull Audience audience, @Nullable String... placeholders) {
         Preconditions.checkNotNull(audience, "Audience cannot be null.");
 
-        String current = content;
-        if (papi) {
-            current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((audience instanceof Player player ? player : null), current);
-        }
-
-        if (placeholders != null) {
-            Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in key-value pairs.");
-
-            for (int i = 0; i < placeholders.length; i += 2) {
-                String placeholder = placeholders[i];
-                String replacement = placeholders[i + 1];
-
-                if (placeholder == null || replacement == null) {
-                    Logs.WARNING.print("Placeholder of " + placeholder + " has result of " + replacement + ". None of these value can be null. Skipping.", true);
-                    continue;
-                }
-
-                current = current.replaceAll(placeholder, replacement);
-            }
-        }
-
-        Component component = MiniMessageUtil.translate(current);
+        Component component = asComponent(audience, placeholders);
         audience.sendMessage(component);
     }
 
@@ -112,40 +91,39 @@ public class Message {
      * @param <T>      The class that extends {@link Audience}
      */
     public <T extends Iterable<? extends Audience>> void send(@NotNull final T iterable) {
+        send(iterable, (String) null);
+    }
+
+    /**
+     * Send the final message to an iterable collection of a class that extends {@link Audience}
+     * @param iterable The iterable collection of a class that extends {@link Audience}
+     * @param placeholders The optional key-value pairs of placeholders to replace in the message.
+     * @param <T> The class that extends {@link Audience}
+     */
+    public <T extends Iterable<? extends Audience>> void send(@NotNull T iterable, @Nullable String... placeholders) {
         Preconditions.checkNotNull(iterable, "Iterable cannot be null.");
         Preconditions.checkArgument(iterable.iterator().hasNext(), "Iterable cannot be empty.");
 
         for (Audience audience : iterable) {
-            send(audience);
+            send(audience, placeholders);
         }
     }
 
     /**
      * Broadcast the final message to the server.
+     * @param placeholders The optional key-value pairs of placeholders to replace in the message.
      */
     public void broadcast(@Nullable String... placeholders) {
-        String current = content;
-        if (papi) {
-            current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders( null, current);
-        }
+        broadcast(null, placeholders);
+    }
 
-        if (placeholders != null) {
-            Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in key-value pairs.");
-
-            for (int i = 0; i < placeholders.length; i += 2) {
-                String placeholder = placeholders[i];
-                String replacement = placeholders[i + 1];
-
-                if (placeholder == null || replacement == null) {
-                    Logs.WARNING.print("Placeholder of " + placeholder + " has result of " + replacement + ". None of these value can be null. Skipping.", true);
-                    continue;
-                }
-
-                current = current.replaceAll(placeholder, replacement);
-            }
-        }
-
-        Component component = MiniMessageUtil.translate(current);
+    /**
+     * Broadcast the final message to the server.
+     * @param audience The audience to display the message to.
+     * @param placeholders The optional key-value pairs of placeholders to replace in the message.
+     */
+    public void broadcast(@Nullable Audience audience, @Nullable String... placeholders) {
+        Component component = asComponent(audience, placeholders);
         Bukkit.getServer().broadcast(component);
     }
 
@@ -160,8 +138,6 @@ public class Message {
      */
     @NotNull
     public Component asComponent(@Nullable Audience audience, @Nullable String... placeholders) {
-        Preconditions.checkNotNull(audience, "Audience cannot be null.");
-
         String current = content;
         if (papi) {
             current = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((audience instanceof Player player ? player : null), current);
