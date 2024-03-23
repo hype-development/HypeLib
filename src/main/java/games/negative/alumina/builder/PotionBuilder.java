@@ -27,6 +27,7 @@ package games.negative.alumina.builder;
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -57,6 +58,7 @@ public class PotionBuilder {
      * @param duration the duration of the PotionEffect in ticks
      * @return the PotionBuilder instance
      */
+    @CheckReturnValue
     public PotionBuilder duration(int duration) {
         this.duration = duration;
         return this;
@@ -69,6 +71,7 @@ public class PotionBuilder {
      * @param duration the duration of the PotionEffect
      * @return the PotionBuilder instance with the updated duration
      */
+    @CheckReturnValue
     public PotionBuilder duration(@NotNull Duration duration) {
         this.duration = (int) duration.toMillis() / 50;
         return this;
@@ -80,6 +83,7 @@ public class PotionBuilder {
      * @param amplifier the amplifier of the PotionEffect
      * @return the PotionBuilder object with the specified amplifier
      */
+    @CheckReturnValue
     public PotionBuilder amplifier(int amplifier) {
         this.amplifier = amplifier;
         return this;
@@ -91,6 +95,7 @@ public class PotionBuilder {
      * @param ambient a boolean value indicating whether the PotionEffect should have an ambient effect or not
      * @return the PotionBuilder with the updated ambient flag
      */
+    @CheckReturnValue
     public PotionBuilder ambient(boolean ambient) {
         this.ambient = ambient;
         return this;
@@ -102,6 +107,7 @@ public class PotionBuilder {
      * @param particles true if particles should be shown, false otherwise
      * @return the updated PotionBuilder instance
      */
+    @CheckReturnValue
     public PotionBuilder particles(boolean particles) {
         this.particles = particles;
         return this;
@@ -113,6 +119,7 @@ public class PotionBuilder {
      * @param icon The value indicating whether the potion effect should display an icon.
      * @return The PotionBuilder object with the updated "icon" option.
      */
+    @CheckReturnValue
     public PotionBuilder icon(boolean icon) {
         this.icon = icon;
         return this;

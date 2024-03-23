@@ -47,6 +47,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.CheckReturnValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -112,6 +113,7 @@ public class ItemBuilder {
      * @param text The text to set the display name to.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder setName(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
 
@@ -125,6 +127,7 @@ public class ItemBuilder {
      * @param replacement The replacement for the placeholder.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder replaceName(@NotNull final String placeholder, @NotNull final String replacement) {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null!");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null!");
@@ -142,7 +145,7 @@ public class ItemBuilder {
      * @param text The text to set the lore to.
      * @return The current instance of the builder.
      */
-    @NotNull
+    @CheckReturnValue
     public ItemBuilder setLore(@NotNull final String... text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(text.length > 0, "Text cannot be empty!");
@@ -157,6 +160,7 @@ public class ItemBuilder {
      * @param text The text to set the lore to.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder setLore(@NotNull final List<String> text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(!text.isEmpty(), "Text cannot be empty!");
@@ -171,6 +175,7 @@ public class ItemBuilder {
      * @param text The text to add to the lore.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addLoreLine(@NotNull final String text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
 
@@ -188,6 +193,7 @@ public class ItemBuilder {
      * @param text The text to add to the lore.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addLoreLines(@NotNull final String... text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(text.length > 0, "Text cannot be empty!");
@@ -208,6 +214,7 @@ public class ItemBuilder {
      * @param text The text to add to the lore.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addLoreLines(@NotNull final List<String> text) {
         Preconditions.checkNotNull(text, "Text cannot be null!");
         Preconditions.checkArgument(!text.isEmpty(), "Text cannot be empty!");
@@ -229,6 +236,7 @@ public class ItemBuilder {
      * @deprecated Please ise {@link #replaceLore(String, String)} instead.
      */
     @Deprecated(since = "2.0.0", forRemoval = true)
+    @CheckReturnValue
     public ItemBuilder replaceLore(@NotNull final UnaryOperator<String> function) {
         Preconditions.checkNotNull(function, "Function cannot be null!");
 
@@ -247,6 +255,7 @@ public class ItemBuilder {
      * @param replacement The replacement for the placeholder.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder replaceLore(@NotNull final String placeholder, @NotNull final String replacement) {
         Preconditions.checkNotNull(placeholder, "Placeholder cannot be null!");
         Preconditions.checkNotNull(replacement, "Replacement cannot be null!");
@@ -268,6 +277,7 @@ public class ItemBuilder {
      * @param level The level of the enchantment.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addEnchantment(@NotNull final Enchantment enchantment, final int level) {
         Preconditions.checkNotNull(enchantment, "Enchantment cannot be null!");
         Preconditions.checkArgument(level > 0, "Level must be greater than 0!");
@@ -281,6 +291,7 @@ public class ItemBuilder {
      * @param enchantment The enchantment to remove.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder removeEnchantment(@NotNull final Enchantment enchantment) {
         Preconditions.checkNotNull(enchantment, "Enchantment cannot be null!");
 
@@ -293,6 +304,7 @@ public class ItemBuilder {
      * @param unbreakable Whether the item should be unbreakable.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder setUnbreakable(final boolean unbreakable) {
         this.meta.setUnbreakable(unbreakable);
         return this;
@@ -303,6 +315,7 @@ public class ItemBuilder {
      * @param flags The flags to add.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addItemFlags(@NotNull final ItemFlag... flags) {
         Preconditions.checkNotNull(flags, "Flags cannot be null!");
         Preconditions.checkArgument(flags.length > 0, "Flags cannot be empty!");
@@ -316,6 +329,7 @@ public class ItemBuilder {
      * @param flags The flags to remove.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder removeItemFlags(@NotNull final ItemFlag... flags) {
         Preconditions.checkNotNull(flags, "Flags cannot be null!");
         Preconditions.checkArgument(flags.length > 0, "Flags cannot be empty!");
@@ -330,6 +344,7 @@ public class ItemBuilder {
      * @return The current instance of the builder.
      * @throws ClassCastException If the item is not a skull.
      */
+    @CheckReturnValue
     public ItemBuilder setSkullOwner(@NotNull final OfflinePlayer player) {
         Preconditions.checkNotNull(player, "Player cannot be null!");
 
@@ -344,6 +359,7 @@ public class ItemBuilder {
      * @return The current instance of the builder.
      * @throws ClassCastException If the item is not a skull.
      */
+    @CheckReturnValue
     public ItemBuilder setSkullOwner(@NotNull final PlayerProfile profile) {
         Preconditions.checkNotNull(profile, "Profile cannot be null!");
         SkullMeta skullMeta = (SkullMeta) this.meta;
@@ -356,6 +372,7 @@ public class ItemBuilder {
      * @param data The custom model data to set.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder setCustomModelData(@NotNull final Integer data) {
         this.meta.setCustomModelData(data);
         return this;
@@ -367,6 +384,7 @@ public class ItemBuilder {
      * @return The current instance of the builder.
      * @throws ClassCastException If the item is not a leather armor piece.
      */
+    @CheckReturnValue
     public ItemBuilder setLeatherColor(@NotNull final Color color) {
         LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) this.meta;
         leatherArmorMeta.setColor(color);
@@ -378,6 +396,7 @@ public class ItemBuilder {
      * @param function The function to apply the persistent data.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder applyPersistentData(@NotNull final Consumer<PersistentDataContainer> function) {
         Preconditions.checkNotNull(function, "Function cannot be null!");
 
@@ -391,6 +410,7 @@ public class ItemBuilder {
      * @param modifier The modifier to add.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder addAttributeModifier(@NotNull Attribute attribute, @NotNull AttributeModifier modifier) {
         Preconditions.checkNotNull(attribute, "Attribute cannot be null!");
         Preconditions.checkNotNull(modifier, "Modifier cannot be null!");
@@ -404,6 +424,7 @@ public class ItemBuilder {
      * @param attribute The attribute to remove the modifier from.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder removeAttributeModifier(@NotNull final Attribute attribute) {
         Preconditions.checkNotNull(attribute, "Attribute cannot be null!");
 
@@ -417,6 +438,7 @@ public class ItemBuilder {
      * @param modifier The modifier to remove.
      * @return The current instance of the builder.
      */
+    @CheckReturnValue
     public ItemBuilder removeAttributeModifier(@NotNull final Attribute attribute, @NotNull final AttributeModifier modifier) {
         Preconditions.checkNotNull(attribute, "Attribute cannot be null!");
         Preconditions.checkNotNull(modifier, "Modifier cannot be null!");
