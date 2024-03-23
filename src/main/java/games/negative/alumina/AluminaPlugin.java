@@ -42,7 +42,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +70,7 @@ public abstract class AluminaPlugin extends JavaPlugin {
     public void registerCommand(@NotNull games.negative.alumina.command.Command command) {
         Preconditions.checkNotNull(command, "Command cannot be null!");
 
-        CommandMap commandMap = initCommandMap();
-        if (commandMap == null) return;
+        CommandMap commandMap = Bukkit.getCommandMap();
 
         String name = command.getName();
 
@@ -134,44 +132,11 @@ public abstract class AluminaPlugin extends JavaPlugin {
         Preconditions.checkNotNull(existing, "Existing command cannot be null!");
         Preconditions.checkNotNull(commandMap, "Command map cannot be null!");
 
-        Map<String, Command> map;
-        try {
-            map = (Map<String, Command>) commandMap.getClass().getDeclaredMethod("getKnownCommands").invoke(commandMap);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            getLogger().severe("Could not retrieve the command map. (Illegal Access, Invocation Target, No Such Method)");
-            return;
-        }
+        Map<String, Command> map = commandMap.getKnownCommands();
 
         existing.unregister(commandMap);
         map.remove(name);
         existing.getAliases().forEach(map::remove);
-    }
-
-    /**
-     * This method is used to initialize the command map.
-     * @return The command map.
-     */
-    private CommandMap initCommandMap() {
-        Server server = Bukkit.getServer();
-        Field field;
-        try {
-            field = server.getClass().getDeclaredField("commandMap");
-        } catch (NoSuchFieldException e) {
-            getLogger().severe("Could not retrieve the command map. (No Such Field)");
-            return null;
-        }
-
-        field.setAccessible(true);
-
-        CommandMap commandMap;
-        try {
-            commandMap = (CommandMap) field.get(server);
-        } catch (IllegalAccessException e) {
-            getLogger().severe("Could not retrieve the command map. (Illegal Access)");
-            return null;
-        }
-
-        return commandMap;
     }
     
     public void registerListeners(@NotNull Listener... listeners) {
