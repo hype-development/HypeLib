@@ -163,6 +163,16 @@ public class Message {
     }
 
     /**
+     * Returns the content of the message.
+     *
+     * @return The content of the message.
+     */
+    @NotNull
+    public String content() {
+        return this.content;
+    }
+
+    /**
      * Statically create a new message instance using {@link Message#of(String...)}
      *
      * @param text The text of the message.
