@@ -1,24 +1,45 @@
+// Plugins
 plugins {
     id 'java'
 }
 
-group = 'games.negative.engine'
-version = '1.0-SNAPSHOT'
+// Project Credentials
+def group = 'games.negative.alumina'
+def version = '2.3.2'
 
+// Project Repositories
 repositories {
+    // Maven Central
     mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+
+    // PaperMC
+    maven { url = "https://repo.papermc.io/repository/maven-public/" }
+
+    // Sonatype
+    maven { url = "https://oss.sonatype.org/content/groups/public/" }
+
+    // PlaceholderAPI
+    maven { url = "https://repo.extendedclip.com/content/repositories/placeholderapi/" }
+
+    // Maven2
+    maven { url = "https://repo.maven.apache.org/maven2/" }
 }
 
+// Project Dependencies
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT"
+    // PaperMC API
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+
+    // JetBrains Annotations
+    compileOnly("org.jetbrains:annotations:24.1.0")
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:1.18.32")
+
+    // PlaceholderAPI
+    compileOnly("me.clip:placeholderapi:2.11.3")
+
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 def targetJavaVersion = 17
@@ -31,6 +52,7 @@ java {
     }
 }
 
+// Java Compile
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 
@@ -39,11 +61,23 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('plugin.yml') {
-        expand props
+// Allow to build sources jar
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
+    archiveClassifier.set("sources")
+    from sourceSets.main.allSource
+}
+
+// Artifact Information
+artifacts {
+    archives sourcesJar
+}
+
+// Tasks
+tasks {
+    build {
+        dependsOn(sourcesJar)
     }
 }
+
+
