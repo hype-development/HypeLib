@@ -83,7 +83,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'games.negative.alumina'
             artifactId = 'alumina'
-            version = '2.3.2'
+            version = '2.4.2'
             from components.java
 
             artifact sourcesJar {
