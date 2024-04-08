@@ -666,10 +666,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import games.negative.alumina.AluminaPlugin;
 import games.negative.alumina.menu.holder.ChestMenuHolder;
-import games.negative.alumina.util.ColorUtil;
 import games.negative.alumina.util.MathUtil;
+import games.negative.alumina.util.MiniMessageUtil;
 import games.negative.alumina.util.NBTEditor;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.HumanEntity;
@@ -692,13 +694,15 @@ import java.util.Set;
  */
 public abstract class ChestMenu implements InteractiveMenu {
 
+    public static final LegacyComponentSerializer TITLE_SERIALIZER = LegacyComponentSerializer.legacySection();
+
     private static final int MIN_ROWS = 1;
     private static final int MAX_ROWS = 6;
 
     private static final NamespacedKey FUNCTION = new NamespacedKey(AluminaPlugin.getAluminaInstance(), "chest-menu-function");
 
     @Setter
-    private String title = "Chest Menu";
+    private Component title = Component.text("Chest Menu");
     private int rows = 1;
 
     @Setter
@@ -715,11 +719,25 @@ public abstract class ChestMenu implements InteractiveMenu {
         Preconditions.checkNotNull(title, "Title cannot be null");
         Preconditions.checkArgument(MathUtil.between(rows, MIN_ROWS, MAX_ROWS), "Rows must be between " + MIN_ROWS + " and " + MAX_ROWS);
 
+        this.title = MiniMessageUtil.translate(title);
+        this.rows = rows;
+
+        this.buttons = Sets.newHashSet();
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, this.title);
+    }
+
+    /**
+     * Represents a chest menu with a specific title and number of rows.
+     */
+    public ChestMenu(@NotNull Component title, int rows) {
+        Preconditions.checkNotNull(title, "Title cannot be null");
+        Preconditions.checkArgument(MathUtil.between(rows, MIN_ROWS, MAX_ROWS), "Rows must be between " + MIN_ROWS + " and " + MAX_ROWS);
+
         this.title = title;
         this.rows = rows;
 
         this.buttons = Sets.newHashSet();
-        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
+        this.inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, this.title);
     }
 
     /**
@@ -738,7 +756,7 @@ public abstract class ChestMenu implements InteractiveMenu {
     public void open(@NotNull Player player) {
         Preconditions.checkNotNull(player, "Player cannot be null");
 
-        if (inventory == null) inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
+        if (inventory == null) inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, title);
 
         refresh(player);
 
@@ -929,16 +947,38 @@ public abstract class ChestMenu implements InteractiveMenu {
     public void updateTitle(@NotNull String input) {
         Preconditions.checkNotNull(input, "Title cannot be null");
 
-        this.title = input;
+        this.title = MiniMessageUtil.translate(input);
 
         if (inventory == null)
-            inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, ColorUtil.translate(title));
+            inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, title);
 
         for (HumanEntity viewer : inventory.getViewers()) {
             InventoryView view = viewer.getOpenInventory();
             if (!(view.getTopInventory().getHolder() instanceof ChestMenuHolder)) continue;
 
-            view.setTitle(ColorUtil.translate(title));
+            view.setTitle(TITLE_SERIALIZER.serialize(title));
+        }
+    }
+
+    /**
+     * Updates the title of the chest menu and refreshes the inventory for all viewers.
+     *
+     * @param input The new title to set. Must not be null.
+     * @throws NullPointerException if the input parameter is null.
+     */
+    public void updateTitle(@NotNull Component input) {
+        Preconditions.checkNotNull(input, "Title cannot be null");
+
+        this.title = input;
+
+        if (inventory == null)
+            inventory = Bukkit.createInventory(new ChestMenuHolder(this), rows * 9, title);
+
+        for (HumanEntity viewer : inventory.getViewers()) {
+            InventoryView view = viewer.getOpenInventory();
+            if (!(view.getTopInventory().getHolder() instanceof ChestMenuHolder)) continue;
+
+            view.setTitle(TITLE_SERIALIZER.serialize(title));
         }
     }
 }
