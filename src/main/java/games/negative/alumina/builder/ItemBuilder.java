@@ -416,7 +416,7 @@ public class ItemBuilder {
      * @param <V> The value of the data.
      */
     @CheckReturnValue
-    public <T extends PersistentDataType<V, V>, V> ItemBuilder addNamespacedKey(@NotNull NamespacedKey key, T type, V value) {
+    public <T extends PersistentDataType<V, V>, V> ItemBuilder addNamespacedKey(@NotNull NamespacedKey key, @NotNull T type, @NotNull V value) {
         this.meta.getPersistentDataContainer().set(key, type, value);
         return this;
     }
