@@ -240,6 +240,38 @@ public class TimeUtil {
     }
 
     /**
+     * Converts a {@link Duration} object into a human-readable string format like "1h30m".
+     *
+     * @param duration The Duration object to convert.
+     * @return A string representing the human-readable format of the duration.
+     * @throws NullPointerException if the duration is null.
+     */
+    @NotNull
+    public static String parse(@NotNull Duration duration) {
+        Preconditions.checkNotNull(duration, "'duration' cannot be null!");
+
+        long days = duration.toDays();
+        duration = duration.minusDays(days);
+
+        long hours = duration.toHours();
+        duration = duration.minusHours(hours);
+
+        long minutes = duration.toMinutes();
+        duration = duration.minusMinutes(minutes);
+
+        long seconds = duration.getSeconds();
+
+        StringBuilder builder = new StringBuilder();
+
+        if (days > 0) builder.append(days).append("d");
+        if (hours > 0) builder.append(hours).append("h");
+        if (minutes > 0) builder.append(minutes).append("m");
+        if (seconds > 0) builder.append(seconds).append("s");
+
+        return builder.toString();
+    }
+
+    /**
      * The class to format time
      */
     private static class TimeFormatter {
