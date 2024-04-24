@@ -25,14 +25,16 @@
 
 package games.negative.alumina.chat;
 
-import com.google.common.collect.Maps;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import games.negative.alumina.event.Events;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 /**
@@ -44,28 +46,30 @@ import java.util.UUID;
  */
 public class InputListener {
 
-    private static final Map<UUID, InputProcessor> listeners = Maps.newHashMap();
+    private static final Cache<UUID, InputProcessor> cache = CacheBuilder.newBuilder()
+            .expireAfterWrite(Duration.of(10, ChronoUnit.MINUTES))
+            .build();
 
     static {
         // Listen to chat messages
         Events.listen(AsyncChatEvent.class, event -> {
             Player player = event.getPlayer();
             UUID uuid = player.getUniqueId();
-            if (!listeners.containsKey(uuid)) return;
+            if (!cache.asMap().containsKey(uuid)) return;
 
-            InputProcessor response = listeners.get(uuid);
+            InputProcessor response = cache.getIfPresent(uuid);
             if (response == null) return;
 
             try {
                 event.setCancelled(true);
                 response.process(event);
             } catch (Exception ignored) {} finally {
-                listeners.remove(uuid);
+                cache.invalidate(uuid);
             }
         });
 
         // Remove the listener when the player quits the server
-        Events.listen(PlayerQuitEvent.class, event -> listeners.remove(event.getPlayer().getUniqueId()));
+        Events.listen(PlayerQuitEvent.class, event -> cache.invalidate(event.getPlayer().getUniqueId()));
     }
 
     /**
@@ -75,7 +79,7 @@ public class InputListener {
      * @param response The input listener response that will be executed when the player sends a chat message or command.
      */
     public static void listen(@NotNull UUID uuid, @NotNull InputListener.InputProcessor response) {
-        listeners.put(uuid, response);
+        cache.put(uuid, response);
     }
 
     /**
