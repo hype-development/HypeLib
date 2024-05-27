@@ -122,6 +122,10 @@ public class YamlItemStack {
             builder.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
+        if (customModelData != null) {
+            builder.setCustomModelData(customModelData);
+        }
+
         return builder.build();
     }
 }
