@@ -30,9 +30,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @UtilityClass
 public class TabCompleteUtil {
@@ -65,5 +67,43 @@ public class TabCompleteUtil {
                 .map(Player::getName)
                 .collect(Collectors.toList());
     }
-    
+
+    /**
+     * Get a list of matching strings from a collection.
+     * @param input The input to match.
+     * @param strings The collection of strings to match against.
+     * @return A list of matching strings from the collection.
+     */
+    @NotNull
+    public Collection<String> getStringsMatching(@NotNull String input, @NotNull Collection<String> strings) {
+        return strings.stream()
+                .filter(string -> StringUtil.startsWithIgnoreCase(string, input))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get a list of matching strings from an array.
+     * @param input The input to match.
+     * @param strings The array of strings to match against.
+     * @return A list of matching strings from the array.
+     */
+    @NotNull
+    public Collection<String> getStringsMatching(@NotNull String input, @NotNull String... strings) {
+        return Stream.of(strings)
+                .filter(string -> StringUtil.startsWithIgnoreCase(string, input))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get a list of matching strings from a list.
+     * @param input The input to match.
+     * @param strings The list of strings to match against.
+     * @return A list of matching strings from the list.
+     */
+    @NotNull
+    public List<String> getStringsMatching(@NotNull String input, @NotNull List<String> strings) {
+        return strings.stream()
+                .filter(string -> StringUtil.startsWithIgnoreCase(string, input))
+                .collect(Collectors.toList());
+    }
 }
