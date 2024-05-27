@@ -88,4 +88,89 @@ public enum Logs {
     public static void setDisabled(boolean disabled) {
         Logs.disabled = disabled;
     }
+
+    /**
+     * Send a log message with the given content.
+     * @param content The content of the log message.
+     */
+    public static void log(@NotNull String content) {
+        INFO.print(content);
+    }
+
+    /**
+     * Send a log message with the given content and force flag.
+     * @param content The content of the log message.
+     * @param force true to force the log message to be printed, false to print the log message only if the log messages are not disabled
+     */
+    public static void log(@NotNull String content, boolean force) {
+        INFO.print(content, force);
+    }
+
+    /**
+     * Send an info log message with the given content.
+     * @param content The content of the log message.
+     */
+    public static void info(@NotNull String content) {
+        INFO.print(content);
+    }
+
+    /**
+     * Send an info log message with the given content and force flag.
+     * @param content The content of the log message.
+     * @param force true to force the log message to be printed, false to print the log message only if the log messages are not disabled
+     */
+    public static void info(@NotNull String content, boolean force) {
+        INFO.print(content, force);
+    }
+
+    /**
+     * Send a warning log message with the given content.
+     * @param content The content of the log message.
+     */
+    public static void warning(@NotNull String content) {
+        WARNING.print(content);
+    }
+
+    /**
+     * Send a warning log message with the given content and force flag.
+     * @param content The content of the log message.
+     * @param force true to force the log message to be printed, false to print the log message only if the log messages are not disabled
+     */
+    public static void warning(@NotNull String content, boolean force) {
+        WARNING.print(content, force);
+    }
+
+    /**
+     * Send a severe log message with the given content.
+     * @param content The content of the log message.
+     */
+    public static void severe(@NotNull String content) {
+        SEVERE.print(content);
+    }
+
+    /**
+     * Send a severe log message with the given content and force flag.
+     * @param content The content of the log message.
+     * @param force true to force the log message to be printed, false to print the log message only if the log messages are not disabled
+     */
+    public static void severe(@NotNull String content, boolean force) {
+        SEVERE.print(content, force);
+    }
+
+    /**
+     * Send an error log message with the given content.
+     * @param content The content of the log message.
+     */
+    public static void error(@NotNull String content) {
+        SEVERE.print(content);
+    }
+
+    /**
+     * Send an error log message with the given content and force flag.
+     * @param content The content of the log message.
+     * @param force true to force the log message to be printed, false to print the log message only if the log messages are not disabled
+     */
+    public static void error(@NotNull String content, boolean force) {
+        SEVERE.print(content, force);
+    }
 }
