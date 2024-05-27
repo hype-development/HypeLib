@@ -36,7 +36,9 @@ import java.util.function.Consumer;
 /**
  * Represents a utility class used to update {@link ItemStack}s
  * without needing to write boilerplate code.
+ * @deprecated Paper API provides a native method in {@link ItemStack} to update items.
  */
+@Deprecated
 public class ItemUpdater {
 
     /**
