@@ -34,7 +34,9 @@ import org.jetbrains.annotations.NotNull;
  * Represents a piece of content that can be sent to a receiver.
  * @param <T> The type of the receiver.
  * @see Message
+ * @deprecated Not used anymore.
  */
+@Deprecated
 public interface Deliverable<T> {
 
     /**
