@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import games.negative.alumina.future.BukkitFuture;
 import games.negative.alumina.util.MiniMessageUtil;
 import games.negative.alumina.util.PlayerUtil;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -73,6 +74,17 @@ public record Context(@NotNull String[] args, @NotNull CommandSender sender) {
         Preconditions.checkNotNull(message, "message cannot be null");
 
         sender().sendMessage(MiniMessageUtil.translate(message));
+    }
+
+    /**
+     * Send a message to the specified receiver.
+     * @param receiver The receiver of the message.
+     * @param message The message to send.
+     */
+    public void message(@NotNull Audience receiver, @NotNull final String message) {
+        Preconditions.checkNotNull(message, "message cannot be null");
+
+        receiver.sendMessage(MiniMessageUtil.translate(message));
     }
 
     /**
