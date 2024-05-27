@@ -115,4 +115,12 @@ public record Context(@NotNull String[] args, @NotNull CommandSender sender) {
 
         return PlayerUtil.getOfflinePlayer(username);
     }
+
+    /**
+     * Returns the length of the arguments.
+     * @return the length of the arguments.
+     */
+    public int length() {
+        return args.length;
+    }
 }
