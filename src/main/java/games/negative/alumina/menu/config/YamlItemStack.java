@@ -63,6 +63,7 @@ public class YamlItemStack {
     private List<String> lore = null;
     private String headTextureValue = null;
     private String headTextureSignature = null;
+    private Integer customModelData = null;
 
     /**
      * Converts this YamlItemStack to an {@link ItemStack}.
