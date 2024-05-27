@@ -62,18 +62,11 @@ public class TextUtil {
      * @param list     The list of strings to search through.
      * @param argument The string to compare with the elements in the list.
      * @return A list of strings similar to the argument.
+     * @deprecated Use {@link TabCompleteUtil#getSimilarStrings(List, String)}
      */
+    @Deprecated
     public static List<String> getSimilarStrings(@NotNull List<String> list, @NotNull String argument) {
-        List<String> similar = Lists.newArrayList();
-        String lower = argument.toLowerCase();
-
-        for (String option : list) {
-            if (!option.toLowerCase().contains(lower)) continue;
-
-            similar.add(option);
-        }
-
-        return similar;
+        return TabCompleteUtil.getSimilarStrings(list, argument);
     }
 
     /**

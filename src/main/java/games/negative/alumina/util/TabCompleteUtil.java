@@ -24,6 +24,7 @@
 
 package games.negative.alumina.util;
 
+import com.google.common.collect.Lists;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -105,5 +106,25 @@ public class TabCompleteUtil {
         return strings.stream()
                 .filter(string -> StringUtil.startsWithIgnoreCase(string, input))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a list of strings from the given list that are similar to the argument.
+     *
+     * @param list     The list of strings to search through.
+     * @param argument The string to compare with the elements in the list.
+     * @return A list of strings similar to the argument.
+     */
+    public static List<String> getSimilarStrings(@NotNull List<String> list, @NotNull String argument) {
+        List<String> similar = Lists.newArrayList();
+        String lower = argument.toLowerCase();
+
+        for (String option : list) {
+            if (!TextUtil.containsIgnoreCase(option, argument)) continue;
+
+            similar.add(option);
+        }
+
+        return similar;
     }
 }
