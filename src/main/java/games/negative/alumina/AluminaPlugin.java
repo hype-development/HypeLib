@@ -34,13 +34,14 @@ import games.negative.alumina.event.Events;
 import games.negative.alumina.menu.listener.MenuListener;
 import games.negative.alumina.util.FileLoader;
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,8 @@ public abstract class AluminaPlugin extends JavaPlugin {
     public void registerCommand(@NotNull games.negative.alumina.command.Command command) {
         Preconditions.checkNotNull(command, "Command cannot be null!");
 
-        CommandMap commandMap = Bukkit.getCommandMap();
+        CommandMap commandMap = initCommandMap();
+        if (commandMap == null) return;
 
         String name = command.getName();
 
@@ -136,6 +138,33 @@ public abstract class AluminaPlugin extends JavaPlugin {
         existing.unregister(commandMap);
         map.remove(name);
         existing.getAliases().forEach(map::remove);
+    }
+
+    /**
+     * This method is used to initialize the command map.
+     * @return The command map.
+     */
+    private CommandMap initCommandMap() {
+        Server server = Bukkit.getServer();
+        Field field;
+        try {
+            field = server.getClass().getDeclaredField("commandMap");
+        } catch (NoSuchFieldException e) {
+            getLogger().severe("Could not retrieve the command map. (No Such Field)");
+            return null;
+        }
+
+        field.setAccessible(true);
+
+        CommandMap commandMap;
+        try {
+            commandMap = (CommandMap) field.get(server);
+        } catch (IllegalAccessException e) {
+            getLogger().severe("Could not retrieve the command map. (Illegal Access)");
+            return null;
+        }
+
+        return commandMap;
     }
 
     /**
