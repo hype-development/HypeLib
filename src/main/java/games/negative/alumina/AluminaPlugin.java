@@ -42,6 +42,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -133,7 +134,13 @@ public abstract class AluminaPlugin extends JavaPlugin {
         Preconditions.checkNotNull(existing, "Existing command cannot be null!");
         Preconditions.checkNotNull(commandMap, "Command map cannot be null!");
 
-        Map<String, Command> map = commandMap.getKnownCommands();
+        Map<String, Command> map;
+        try {
+            map = (Map<String, Command>) commandMap.getClass().getDeclaredMethod("getKnownCommands").invoke(commandMap);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            getLogger().severe("Could not retrieve the command map. (Illegal Access, Invocation Target, No Such Method)");
+            return;
+        }
 
         existing.unregister(commandMap);
         map.remove(name);
