@@ -35,6 +35,7 @@ import games.negative.alumina.model.Pair;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -44,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -54,6 +56,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class YamlItemStack {
+
+    private static Enchantment GLOWING;
 
     private String displayName = null;
     private Material material = null;
@@ -118,7 +122,7 @@ public class YamlItemStack {
         }
 
         if (glowing != null && glowing) {
-            builder.addEnchantment(Enchantment.LUCK, 10);
+            builder.addEnchantment(GLOWING, 10);
             builder.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
 
@@ -127,5 +131,65 @@ public class YamlItemStack {
         }
 
         return builder.build();
+    }
+
+    /**
+     * Converts this YamlItemStack to an {@link ItemStack}.
+     * @return The ItemStack.
+     */
+    @NotNull
+    public ItemStack asItemStack(@Nullable Map.Entry<String, Component>... placeholders) {
+        Preconditions.checkNotNull(material, "Material must not be null");
+
+        ItemBuilder builder = new ItemBuilder(material, (amount == null ? 1 : amount));
+
+        if (displayName != null) {
+            builder.setName(displayName);
+
+            if (placeholders != null) {
+                List<Pair<String, String>> mapped = Lists.newArrayList();
+
+                for (Map.Entry<String, Component> entry : placeholders) {
+                    builder.replaceName(entry.getKey(), entry.getValue());
+                }
+            }
+
+        }
+
+        if (lore != null && !lore.isEmpty()) {
+            builder.setLore(lore);
+
+            if (placeholders != null) {
+                for (Map.Entry<String, Component> entry : placeholders) {
+                    builder.replaceLore(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+
+        if (material == Material.PLAYER_HEAD && headTextureValue != null && headTextureSignature != null) {
+            PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
+            profile.setProperty(new ProfileProperty("textures", headTextureValue, headTextureSignature));
+
+            builder.setSkullOwner(profile);
+        }
+
+        if (glowing != null && glowing) {
+            builder.addEnchantment(GLOWING, 10);
+            builder.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        if (customModelData != null) {
+            builder.setCustomModelData(customModelData);
+        }
+
+        return builder.build();
+    }
+
+    /**
+     * Sets the glowing enchantment.
+     * @param enchantment The enchantment.
+     */
+    public static void setGlowingEnchantment(@NotNull Enchantment enchantment) {
+        GLOWING = enchantment;
     }
 }

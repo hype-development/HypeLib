@@ -31,12 +31,15 @@ import games.negative.alumina.dependency.DependencyLoader;
 import games.negative.alumina.dependency.MavenDependency;
 import games.negative.alumina.dependency.MavenRepository;
 import games.negative.alumina.event.Events;
+import games.negative.alumina.logger.Logs;
+import games.negative.alumina.menu.config.YamlItemStack;
 import games.negative.alumina.menu.listener.MenuListener;
 import games.negative.alumina.util.FileLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -237,6 +240,12 @@ public abstract class AluminaPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         instance = this;
+
+        try {
+            YamlItemStack.setGlowingEnchantment(Enchantment.CHANNELING);
+        } catch (Exception ignored) {
+            Logs.severe("Could not initialize glowing enchantment. (Exception)");
+        }
 
         load();
     }
