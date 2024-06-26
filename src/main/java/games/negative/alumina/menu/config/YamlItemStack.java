@@ -82,7 +82,7 @@ public class YamlItemStack {
         if (displayName != null) {
             builder.setName(displayName);
 
-            if (placeholders != null) {
+            if (placeholders != null && placeholders.length > 1) {
                 List<Pair<String, String>> mapped = Lists.newArrayList();
 
                 Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in pairs");
@@ -100,7 +100,7 @@ public class YamlItemStack {
         if (lore != null && !lore.isEmpty()) {
             builder.setLore(lore);
 
-            if (placeholders != null) {
+            if (placeholders != null && placeholders.length > 1) {
                 List<Pair<String, String>> mapped = Lists.newArrayList();
 
                 Preconditions.checkArgument(placeholders.length % 2 == 0, "Placeholders must be in pairs");
@@ -147,8 +147,6 @@ public class YamlItemStack {
             builder.setName(displayName);
 
             if (placeholders != null) {
-                List<Pair<String, String>> mapped = Lists.newArrayList();
-
                 for (Map.Entry<String, Component> entry : placeholders) {
                     builder.replaceName(entry.getKey(), entry.getValue());
                 }
