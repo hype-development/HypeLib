@@ -30,6 +30,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import games.negative.alumina.util.MiniMessageUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -53,6 +54,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -401,6 +403,48 @@ public class ItemBuilder {
                 .collect(Collectors.toList());
 
         this.meta.lore(modified);
+        return this;
+    }
+
+    /**
+     * Replace a single line of lore with multiple lines.
+     * @param placeholder The placeholder to replace.
+     * @param replacement The replacement for the placeholder.
+     * @return The current instance of the builder.
+     */
+    @CheckReturnValue
+    public ItemBuilder replaceLore(@NotNull String placeholder, @NotNull List<String> replacement) {
+        return replaceLore(placeholder, replacement.stream().map(s -> MiniMessageUtil.translate(s, mm)).map(component -> (TextComponent) component).toList());
+    }
+
+    /**
+     * Replace a single line of lore with multiple lines.
+     * @param placeholder The placeholder to replace.
+     * @param replacement The replacement for the placeholder.
+     * @return The current instance of the builder.
+     */
+    @CheckReturnValue
+    public ItemBuilder replaceLore(@NotNull final String placeholder, @NotNull final Collection<TextComponent> replacement) {
+        Preconditions.checkNotNull(placeholder, "Placeholder cannot be null!");
+        Preconditions.checkNotNull(replacement, "Replacement cannot be null!");
+
+        List<TextComponent> lore = Objects.requireNonNull(this.meta.lore()).stream()
+                .filter(component -> component instanceof TextComponent)
+                .map(component -> (TextComponent) component)
+                .toList();
+
+        List<TextComponent> components = Lists.newArrayList();
+
+        for (TextComponent component : lore) {
+            if (MiniMessageUtil.searchComponent(component, placeholder)) {
+                components.addAll(replacement);
+                continue;
+            }
+
+            components.add(component);
+        }
+
+        this.meta.lore(components);
         return this;
     }
 
