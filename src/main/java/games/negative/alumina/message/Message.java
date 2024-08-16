@@ -32,6 +32,7 @@ import games.negative.alumina.logger.Logs;
 import games.negative.alumina.util.MiniMessageUtil;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +48,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class Message {
+
+    private static Component PREFIX;
 
     /*
      * This is the default, unmodified message.
@@ -159,7 +162,12 @@ public class Message {
             }
         }
 
-        return MiniMessageUtil.translate(current);
+        Component component = MiniMessageUtil.translate(current);
+        if (PREFIX != null) {
+            component = component.replaceText(TextReplacementConfig.builder().matchLiteral("%prefix%").replacement(PREFIX).build());
+        }
+
+        return component;
     }
 
     /**
@@ -210,4 +218,16 @@ public class Message {
         return new Message(String.join("\n", text));
     }
 
+    /**
+     * Set the prefix of the message.
+     * @param component The prefix of the message.
+     */
+    public static void setPrefix(@Nullable Component component) {
+        PREFIX = component;
+    }
+
+    @Nullable
+    public static Component prefix() {
+        return PREFIX;
+    }
 }

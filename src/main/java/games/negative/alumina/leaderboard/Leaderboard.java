@@ -189,4 +189,43 @@ public abstract class Leaderboard<K, V extends Comparable<V>> {
 
         return null;
     }
+
+    /**
+     * Gets the position and other data of the given key.
+     * @param index Index to get the position of.
+     * @return Positioned leaderboard entry.
+     */
+    @Nullable
+    public PositionedLeaderboardEntry<K, V> getSelectedPosition(@NotNull int index) {
+        int position = 1;
+        for (LeaderboardEntry<K, V> entry : sorted) {
+            if (position == index)
+                return new PositionedLeaderboardEntry<>(entry.key(), entry.value(), position);
+
+            position++;
+        }
+        return null;
+    }
+
+    /**
+     * Gets the position and other data of the given key.
+     * @param index Index to get the position of.
+     * @return Positioned leaderboard entry.
+     */
+    @Nullable
+    public PositionedLeaderboardEntry<String, String> getParsedSelectedPosition(@NotNull int index) {
+        int position = 1;
+        for (LeaderboardEntry<K, V> entry : sorted) {
+            if (position == index)
+                return new PositionedLeaderboardEntry<>(parseKey(entry.key()), parseValue(entry.value()), position);
+
+            position++;
+        }
+        return null;
+    }
+
+    @NotNull
+    public String name() {
+        return this.name;
+    }
 }

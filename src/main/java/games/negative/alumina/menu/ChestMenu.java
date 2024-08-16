@@ -71,7 +71,7 @@ public abstract class ChestMenu implements InteractiveMenu {
     @Setter
     private boolean cancelClicks = false;
 
-    private final Set<MenuButton> buttons;
+    protected final Set<MenuButton> buttons;
 
     protected Inventory inventory;
 
@@ -343,5 +343,14 @@ public abstract class ChestMenu implements InteractiveMenu {
 
             view.setTitle(TITLE_SERIALIZER.serialize(title));
         }
+    }
+
+    /**
+     * Returns the {@link MenuButton} set of this chest menu.
+     * @return The set of buttons in this chest menu.
+     */
+    @NotNull
+    public Set<MenuButton> buttons() {
+        return buttons;
     }
 }

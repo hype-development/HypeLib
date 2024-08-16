@@ -27,7 +27,9 @@
 package games.negative.alumina.logger;
 
 import games.negative.alumina.AluminaPlugin;
+import games.negative.alumina.util.MiniMessageUtil;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.logging.Level;
@@ -172,5 +174,24 @@ public enum Logs {
      */
     public static void error(@NotNull String content, boolean force) {
         SEVERE.print(content, force);
+    }
+
+    /**
+     * Broadcast a message to all players.
+     * @param content The content of the message.
+     * @param force true to force the message to be broadcasted, false to broadcast the message only if the log messages are not disabled
+     */
+    public static void broadcast(@NotNull String content, boolean force) {
+        if (disabled && !force) return;
+
+        Bukkit.broadcast(MiniMessageUtil.translate(content));
+    }
+
+    /**
+     * Broadcast a message to all players.
+     * @param content The content of the message.
+     */
+    public static void broadcast(@NotNull String content) {
+        broadcast(content, false);
     }
 }

@@ -78,9 +78,9 @@ public abstract class PaginatedMenu implements InteractiveMenu {
     private MenuButton nextPageButton;
     private MenuButton previousPageButton;
 
-    private final Set<MenuButton> buttons;
-    private final Set<MenuButton> listings;
-    private final Set<Integer> paginatedSlots;
+    protected final Set<MenuButton> buttons;
+    protected final Set<MenuButton> listings;
+    protected final Set<Integer> paginatedSlots;
 
     protected Inventory inventory;
 
@@ -521,6 +521,33 @@ public abstract class PaginatedMenu implements InteractiveMenu {
         this.page = page;
 
         refresh(player);
+    }
+
+    /**
+     * Returns the static {@link MenuButton} set for the paginated menu.
+     * @return the set of buttons
+     */
+    @NotNull
+    public Set<MenuButton> buttons() {
+        return buttons;
+    }
+
+    /**
+     * Returns the dynamic listings {@link MenuButton} set for the paginated menu.
+     * @return the set of listings
+     */
+    @NotNull
+    public Set<MenuButton> listings() {
+        return listings;
+    }
+
+    /**
+     * Returns the set of paginated slots for the paginated menu.
+     * @return the set of paginated slots
+     */
+    @NotNull
+    public Set<Integer> paginatedSlots() {
+        return paginatedSlots;
     }
 
 }
