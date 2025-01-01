@@ -35,6 +35,9 @@ import games.negative.alumina.logger.Logs;
 import games.negative.alumina.menu.config.YamlItemStack;
 import games.negative.alumina.menu.listener.MenuListener;
 import games.negative.alumina.util.FileLoader;
+import lombok.Getter;
+import me.joehosten.Sentinel.Sentinel;
+import me.joehosten.Sentinel.builder.SentinelBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -236,6 +239,13 @@ public abstract class AluminaPlugin extends JavaPlugin {
         DependencyLoader.loadDependency(this, new MavenDependency(groupId, artifactId, version, new MavenRepository(repoUrl)));
     }
 
+    public boolean licence(String productId, LicencePlatform platform, String platformValue) {
+        SentinelBuilder builder = new SentinelBuilder(this).url("https://licence.auth.joehosten.me/api/v1").auth("ojftuh3npbvc9cpj3q8hjgfu60").platform(platform.getValue()).platformValue(platformValue).product(productId);
+        Sentinel sentinel = builder.build();
+
+        return sentinel.authenticate();
+    }
+
 
     @Override
     public void onLoad() {
@@ -264,5 +274,20 @@ public abstract class AluminaPlugin extends JavaPlugin {
 
     public static AluminaPlugin getAluminaInstance() {
         return instance;
+    }
+
+    @Getter
+    public enum LicencePlatform {
+        DISCORD("Discord"),
+        BUILT_BY_BIT("BuiltByBit"),
+        EMAIL("Email"),
+        SPIGOT("SpigotMC");
+
+        private final String value;
+
+        LicencePlatform(String value) {
+            this.value = value;
+        }
+
     }
 }

@@ -8,6 +8,7 @@ plugins {
 repositories {
     // Maven Central
     mavenCentral()
+    mavenLocal()
 
     // PaperMC
     maven { url = "https://repo.papermc.io/repository/maven-public/" }
@@ -31,7 +32,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
 
     // Lombok
-    compileOnly("org.projectlombok:lombok:1.18.32")
+    compileOnly('org.projectlombok:lombok:1.18.34')
 
     // PlaceholderAPI
     compileOnly("me.clip:placeholderapi:2.11.3")
@@ -39,7 +40,10 @@ dependencies {
     // ConfigLib
     compileOnly("de.exlll:configlib-yaml:4.5.0")
 
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    annotationProcessor('org.projectlombok:lombok:1.18.34')
+
+    // Sentinel
+    compileOnly("me.joehosten:Sentinel:1.0-SNAPSHOT")
 }
 
 def targetJavaVersion = 17
