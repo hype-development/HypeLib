@@ -2,7 +2,11 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
+
+def ver = '1.1'
+version = ver
 
 // Project Repositories
 repositories {
@@ -43,7 +47,7 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok:1.18.34')
 
     // Sentinel
-    compileOnly("me.joehosten:Sentinel:1.0-SNAPSHOT")
+    implementation("me.joehosten:Sentinel:1.0-SNAPSHOT")
 }
 
 def targetJavaVersion = 17
@@ -72,6 +76,16 @@ tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allSource
 }
 
+tasks.shadowJar {
+    archiveClassifier.set("shadow") // Optional: Adds "shadow" to the JAR name
+    configurations = [project.configurations.runtimeClasspath]
+
+    archiveBaseName.set("HypeLib")
+    archiveVersion.set(ver)
+    // Relocate Sentinel to avoid conflicts
+    relocate("me.joehosten.sentinel", "me.joehosten.hypelib.shaded.sentinel")
+}
+
 // Artifact Information
 artifacts {
     archives sourcesJar
@@ -81,6 +95,7 @@ artifacts {
 tasks {
     build {
         dependsOn(sourcesJar)
+        dependsOn(tasks.shadowJar)
     }
 }
 
@@ -88,9 +103,9 @@ tasks {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'games.negative.alumina'
-            artifactId = 'alumina'
-            version = '2.9.2'
+            groupId = 'me.joehosten.hypelib' as Publication
+            artifactId = 'HypeLib' as Publication
+            version = ver as Publication
             from components.java
 
             artifact sourcesJar {
