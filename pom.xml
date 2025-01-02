@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>games.negative.alumina</groupId>
-    <artifactId>alumina</artifactId>
-    <version>3.0.0-BETA-1</version>
+    <groupId>me.joehosten</groupId>
+    <artifactId>HypeLib</artifactId>
+    <version>2.0</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -15,7 +15,6 @@
     </properties>
 
     <build>
-        <finalName>alumina</finalName>
 
         <plugins>
             <!-- Maven Compiler -->
@@ -48,6 +47,12 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>dev.demeng.sentinel</pattern>
+                                    <shadedPattern>me.joehosten.hypelib.sentinel</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -101,6 +106,11 @@
             <name>Maven Central</name>
             <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
+
+        <repository>
+            <id>skyhawk</id>
+            <url>https://repo.skyhawk.joehosten.me/repository/maven-public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -142,6 +152,14 @@
             <artifactId>lombok</artifactId>
             <version>1.18.34</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Sentinel -->
+        <dependency>
+            <groupId>me.joehosten</groupId>
+            <artifactId>Sentinel</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
