@@ -32,6 +32,7 @@ import com.google.common.collect.Multimap;
 import me.joehosten.hypelib.command.annotation.CommandInfo;
 import me.joehosten.hypelib.command.builder.CommandBuilder;
 import me.joehosten.hypelib.command.task.AsyncCommandRunner;
+import me.joehosten.hypelib.logger.Logs;
 import me.joehosten.hypelib.message.Message;
 import me.joehosten.hypelib.util.MathUtil;
 import me.joehosten.hypelib.util.TabCompleteUtil;
@@ -119,6 +120,8 @@ public abstract class Command extends org.bukkit.command.Command {
         this.smartTabComplete = annotation.smartTabComplete();
         this.async = annotation.async();
         this.parameters = null; // builder-style only
+
+        Logs.info("Initializing command: " + this.getClass().getSimpleName());
     }
 
     public Command(@NotNull CommandBuilder builder) {
