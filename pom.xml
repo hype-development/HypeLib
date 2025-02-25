@@ -6,7 +6,7 @@
 
     <groupId>me.joehosten</groupId>
     <artifactId>HypeLib</artifactId>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
