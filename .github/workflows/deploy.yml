@@ -33,7 +33,24 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings>
+            <servers>
+              <server>
+                <id>hypedev-nexus-snapshots</id>
+                <username>${{ secrets.NEXUS_USER }}</username>
+                <password>${{ secrets.NEXUS_PASS }}</password>
+              </server>
+              <server>
+                <id>hypedev-nexus-releases</id>
+                <username>${{ secrets.NEXUS_USER }}</username>
+                <password>${{ secrets.NEXUS_PASS }}</password>
+              </server>
+            </servers>
+          </settings>" > ~/.m2/settings.xml
       - name: Run Maven Deploy
         working-directory: ./
-        run: mvn -B -s .m2/settings.xml -f pom.xml deploy
+        run: mvn -B deploy
       - run: echo "Package deployed to Nexus."
