@@ -36,12 +36,8 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '.m2/settings.xml') }} # Cache settings.xml too
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '.m2/settings.xml') }} # Cache settings.xml
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Set up Maven settings.xml
-        run: |
-          mkdir -p ~/.m2
-          echo "${{ secrets.MAVEN_SETTINGS_XML }}" > ~/.m2/settings.xml # Using secrets
       - run: mvn -B deploy
       - run: echo "Package deployed to Nexus."
