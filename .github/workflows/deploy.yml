@@ -36,10 +36,12 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '.m2/settings.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '.m2/settings.xml') }} # Cache settings.xml
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Print settings.xml
+        run: cat .m2/settings.xml
       - name: Run Maven Deploy
-        working-directory: ./ #
+        working-directory: ./
         run: mvn -B deploy
       - run: echo "Package deployed to Nexus."
