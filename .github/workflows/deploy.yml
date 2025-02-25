@@ -39,7 +39,5 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '.m2/settings.xml') }} # Cache settings.xml
           restore-keys: |
             ${{ runner.os }}-maven-
-      - run: echo ${{ secrets.NEXUS_PASS }}
-      - run: echo ${{ secrets.NEXUS_USER }}
       - run: mvn -B -X deploy
       - run: echo "Package deployed to Nexus."
