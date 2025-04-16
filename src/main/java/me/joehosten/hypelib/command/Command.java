@@ -120,8 +120,6 @@ public abstract class Command extends org.bukkit.command.Command {
         this.smartTabComplete = annotation.smartTabComplete();
         this.async = annotation.async();
         this.parameters = null; // builder-style only
-
-        Logs.info("Initializing command: " + this.getClass().getSimpleName());
     }
 
     public Command(@NotNull CommandBuilder builder) {
