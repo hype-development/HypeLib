@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("deprecation")
 public enum Logs {
-    INFO(ChatColor.WHITE),
+    INFO(ChatColor.AQUA),
     WARNING(ChatColor.YELLOW),
     SEVERE(ChatColor.RED),
     SUCCESS(ChatColor.GREEN);
@@ -27,7 +27,8 @@ public enum Logs {
     public void print(@NotNull String content, boolean force) {
         if (disabled && !force) return;
 
-        Bukkit.getConsoleSender().sendMessage(color + content);
+        String prefixedContent = "[HypeLib] " + color + content;
+        Bukkit.getConsoleSender().sendMessage(prefixedContent);
     }
 
     /**
