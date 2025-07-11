@@ -29,7 +29,10 @@ public enum Logs {
         if (disabled && !force) return;
 
         String prefixedContent = "[%s] ".formatted(prefix) + color + content;
-        Bukkit.getConsoleSender().sendMessage(prefixedContent);
+        // Loop over the lines to ensure each line is printed separately
+        for (String line : prefixedContent.split("\n")) {
+            Bukkit.getConsoleSender().sendMessage(line);
+        }
     }
 
     /**
