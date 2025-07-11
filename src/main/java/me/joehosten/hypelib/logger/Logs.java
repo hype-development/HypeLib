@@ -13,6 +13,7 @@ public enum Logs {
 
     private final ChatColor color;
     private static boolean disabled = false;
+    private static String prefix = "[Hypelib] ";
 
     Logs(ChatColor color) {
         this.color = color;
@@ -27,7 +28,7 @@ public enum Logs {
     public void print(@NotNull String content, boolean force) {
         if (disabled && !force) return;
 
-        String prefixedContent = "[HypeLib] " + color + content;
+        String prefixedContent = "[%s] ".formatted(prefix) + color + content;
         Bukkit.getConsoleSender().sendMessage(prefixedContent);
     }
 
@@ -47,6 +48,15 @@ public enum Logs {
      */
     public static void setDisabled(boolean disabled) {
         Logs.disabled = disabled;
+    }
+
+    /**
+     * Sets the prefix for log messages.
+     *
+     * @param prefix The prefix to be used in log messages.
+     */
+    public static void setPrefix(@NotNull String prefix) {
+        Logs.prefix = prefix;
     }
 
     /**
